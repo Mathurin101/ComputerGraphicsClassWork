@@ -1,6 +1,6 @@
 #pragma once
 #include "MiniClasses.h"
-
+#include "tiles_12.h"
 
 // A function to clear the color buffer to a solid color of your choice.
 void CCBuffer(PColor color, unsigned int *PixelArry, int ArrySize) {
@@ -56,6 +56,9 @@ void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTe
 	{
 		for (int x = SourceRect.x; x < SourceRect.width + SourceRect.x; x++)
 		{
+			if (((RasterPos.x + x - SourceRect.x) >= RasterPos.width) || (RasterPos.y + y - SourceRect.y) >= RasterPos.height) {
+				continue;
+			}
 			PColor TileP = pSourceTextureArray[Convert2Dto1D(x, y, SourceWidth)];
 
 			// copy a pixel from pSourceTextureArray to the Raster
@@ -64,6 +67,7 @@ void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTe
 	}
 }
 
+/*
 void DrawTile(Position &SourceRect, Position &RasterPos, const unsigned int* pSourceTextureArray, 
 	unsigned int* ArryScreen, unsigned int SourceWidth) {
 
@@ -78,3 +82,4 @@ void DrawTile(Position &SourceRect, Position &RasterPos, const unsigned int* pSo
 		}
 	}
 }
+*/

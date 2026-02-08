@@ -2,6 +2,7 @@
 #include "Helper.h"
 #include "XTime.h"
 #include "tiles_12.h"
+#include <random> //random number class "std::rand()"
 
 const char* Name = "MathurinGenty_ProgrammingAssignment 1";
 const unsigned int PixelWidth = 500;
@@ -13,37 +14,64 @@ unsigned int TotalPixels[MaxPixels];
 
 int main()
 {
-    //Position scrRect[4] = { 149,44, 190, 95 };
-    Position scrRect(0, 0, tiles_12_width, tiles_12_height);
-	Position RasterPos(0, 0, PixelWidth, PixelHeight);
+	//Position scrRect[4] = { 149,44, 190, 95 };
+	Position scrRect(0, 0, tiles_12_width, tiles_12_height);
+	const Position RasterPos(0, 0, PixelWidth, PixelHeight);
 
-    Position GrassRect(288, 128, 32, 32);
+	Position GrassRect(288, 128, 32, 32);
 
-    PColor ColorOG (0xFF8e6acc);//purple
+	Position GrassWFlower(64, 192, 16, 16);
 
-    PColor ColorCH (0xFF123524);//green
-                   
-    RS_Initialize(Name, PixelWidth, PixelHeight);
+	Position GrassHouse(208, 32, 96, 65);
 
-    //will print on the screen
-    do {
-        
-        //CCBuffer(ColorOG.color, TotalPixels, MaxPixels);
-        //CCBuffer(BGRAtoARGB(ColorCH.color).color, TotalPixels, MaxPixels);
+	PColor ColorOG(0xFF8e6acc);//purple
 
-        //DrawPixel(72, ColorG.color, TotalPixels, MaxPixels);
+	PColor ColorCH(0xFF123524);//green
 
-        //BLIT(scrRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
-        //BLIT(Position(0,0,100,100), RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
-        //BLIT(GrassRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
+	RS_Initialize(Name, PixelWidth, PixelHeight);
+	srand(time(0));
+	int randomNumber = (rand() % PixelWidth);
+	int randomNumber2 = (rand() % PixelHeight);
+	int randomNumber3 = (rand() % PixelWidth);
+	int randomNumber4 = (rand() % PixelHeight);
 
-        DrawTile(GrassRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
+	//will print on the screen
+	do {
 
-        
-    } while (RS_Update(TotalPixels, MaxPixels));
+		//CCBuffer(ColorOG.color, TotalPixels, MaxPixels);
+		//CCBuffer(BGRAtoARGB(ColorCH.color).color, TotalPixels, MaxPixels);
 
-    RS_Shutdown();
+		//DrawPixel(72, ColorG.color, TotalPixels, MaxPixels);
 
-    return 0;
+		//BLIT(scrRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
+		//BLIT(Position(0,0,100,100), RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
+		//BLIT(GrassRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
+
+		//grass
+		//DrawTile(GrassRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
+
+		for (int width = 0; width <= PixelWidth/GrassRect.width; width++) {
+
+			for (int height = 0; height <= PixelHeight/GrassRect.height; height++) {
+
+				Position GrassPos(width * GrassRect.width, height * GrassRect.height, PixelWidth, PixelHeight);
+
+				BLIT(GrassRect, GrassPos, tiles_12_pixels, TotalPixels, tiles_12_width);
+
+			}
+		}
+		
+
+		Position RandomRasterPos(randomNumber, randomNumber2, PixelWidth, PixelHeight);
+		BLIT(GrassWFlower, RandomRasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
+
+		Position RandomRasterPos2(randomNumber3, randomNumber4, PixelWidth, PixelHeight);
+		BLIT(GrassHouse, RandomRasterPos2, tiles_12_pixels, TotalPixels, tiles_12_width);
+
+	} while (RS_Update(TotalPixels, MaxPixels));
+
+	RS_Shutdown();
+
+	return 0;
 }
 
