@@ -20,27 +20,24 @@ int main()
 
     Position GrassRect(288, 128, 32, 32);
 
-    PColor Color (0xFF8e6acc);//purple
+    PColor ColorOG (0xFF8e6acc);//purple
 
-    PColor ColorG (0xFF123524);
-
-    PColor ColorGd(0xFF00FFFF); 
+    PColor ColorCH (0xFF123524);//green
                    
     RS_Initialize(Name, PixelWidth, PixelHeight);
 
     //will print on the screen
     do {
         
-        //CCBuffer(Color.color, TotalPixels, MaxPixels);
+        //CCBuffer(ColorOG.color, TotalPixels, MaxPixels);
+        //CCBuffer(BGRAtoARGB(ColorCH.color).color, TotalPixels, MaxPixels);
 
         //DrawPixel(72, ColorG.color, TotalPixels, MaxPixels);
 
-        CCBuffer(BGRAtoARGB(ColorGd.color).color, TotalPixels, MaxPixels);
-        //CCBuffer(ColorG.color, TotalPixels, MaxPixels);
+        //BLIT(scrRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
+        //BLIT(Position(0,0,100,100), RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
 
-        //BLIT(scrRect, RasterPos, tiles_12_pixels, TotalPixels);
-
-        //BLIT(GrassRect, RasterPos, tiles_12_pixels, TotalPixels);
+        BLIT(GrassRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
 
 
 

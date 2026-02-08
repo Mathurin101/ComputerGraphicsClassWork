@@ -28,25 +28,10 @@ void DrawPixel(int ArrySpot, PColor color, unsigned int* PixelArry, int ArrySize
 	}
 }
 
-// A function to BLIT (Block Image Transfer)
-void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTextureArray, unsigned int* ArryScreen)
-{
-	for (int y = 0; y < SourceRect.height; y++)
-	{
-		for (int x = 0; x < SourceRect.width; x++)
-		{
-			// copy a pixel from pSourceTextureArray to the Raster
-			ArryScreen[Convert2Dto1D(x, y, RasterPos.width)] = pSourceTextureArray[Convert2Dto1D(x, y, SourceRect.width)];
-		}
-	}
-}
-
 // Color conversion BGRAtoARGB
 PColor BGRAtoARGB(unsigned int C)
 {
 	PColor ColorConverted;
-
-	//1) use the & operator (bitwise - and) with a bitmask to isolate each of the 4 color channels contained in C
 
 						   // BBGGRRAA
 						  //0x000000FF = AA   //0xAARRGGBB
@@ -59,12 +44,23 @@ PColor BGRAtoARGB(unsigned int C)
 	ColorConverted.G = (C & 0x00FF0000) >> 8; //0x0000FF00 = GG
 
 						  //0xFF000000 = BB
-	ColorConverted.B = (C & 0xFF000000) >> 24;//0x000000FF= BB
-
-
-	//2) use the << and >> operators(bitwise left - shift and right - shift) to shift each channel to its new position
-
-	//3) use the | operator (bitwise - or ) to re - combine the 4 color channels into a single unsigned int, and return it
+	ColorConverted.B = (C & 0xFF000000) >> 24;//0x000000FF = BB
 
 	return ColorConverted.CombineColor();
+}
+
+// A function to BLIT (Block Image Transfer)
+void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTextureArray, unsigned int* ArryScreen,
+ unsigned int SourceWidth)
+{
+	for (int y = SourceRect.y; y < SourceRect.height + SourceRect.y; y++)
+	{
+		for (int x = SourceRect.x; x < SourceRect.width + SourceRect.x; x++)
+		{
+			PColor TileP = pSourceTextureArray[Convert2Dto1D(x, y, SourceWidth)];
+
+			// copy a pixel from pSourceTextureArray to the Raster
+			ArryScreen[Convert2Dto1D(RasterPos.x + x - SourceRect.x, RasterPos.y + y - SourceRect.y, RasterPos.width)] = BGRAtoARGB(TileP.color).color;
+		}
+	}
 }
