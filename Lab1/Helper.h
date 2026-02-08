@@ -50,8 +50,7 @@ PColor BGRAtoARGB(unsigned int C)
 }
 
 // A function to BLIT (Block Image Transfer)
-void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTextureArray, unsigned int* ArryScreen,
- unsigned int SourceWidth)
+void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTextureArray, unsigned int* ArryScreen, unsigned int SourceWidth)
 {
 	for (int y = SourceRect.y; y < SourceRect.height + SourceRect.y; y++)
 	{
@@ -61,6 +60,21 @@ void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTe
 
 			// copy a pixel from pSourceTextureArray to the Raster
 			ArryScreen[Convert2Dto1D(RasterPos.x + x - SourceRect.x, RasterPos.y + y - SourceRect.y, RasterPos.width)] = BGRAtoARGB(TileP.color).color;
+		}
+	}
+}
+
+void DrawTile(Position &SourceRect, Position &RasterPos, const unsigned int* pSourceTextureArray, 
+	unsigned int* ArryScreen, unsigned int SourceWidth) {
+
+	for (int width = 0; width < RasterPos.width; width += SourceRect.width) {
+
+		for (int height = 0; height < RasterPos.height; height += SourceRect.height) {
+
+			BLIT(SourceRect, RasterPos, pSourceTextureArray, ArryScreen, SourceWidth);
+
+			RasterPos.x = width;
+			RasterPos.y = height;
 		}
 	}
 }

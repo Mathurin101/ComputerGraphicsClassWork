@@ -11,7 +11,6 @@ const unsigned int MaxPixels = PixelWidth * PixelHeight;
 
 unsigned int TotalPixels[MaxPixels];
 
-
 int main()
 {
     //Position scrRect[4] = { 149,44, 190, 95 };
@@ -38,16 +37,8 @@ int main()
         //BLIT(Position(0,0,100,100), RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
         //BLIT(GrassRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
 
-        for (int width = 0; width < PixelWidth; width+= 32) {
+        DrawTile(GrassRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
 
-            for (int height = 0; height < PixelWidth; height+= 32) {
-
-                BLIT(GrassRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
-
-				RasterPos.x = width;
-				RasterPos.y = height;
-            }
-        }
         
     } while (RS_Update(TotalPixels, MaxPixels));
 
@@ -55,3 +46,4 @@ int main()
 
     return 0;
 }
+
