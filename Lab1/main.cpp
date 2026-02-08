@@ -12,6 +12,7 @@ const unsigned int PixelHeight = 500;
 const unsigned int MaxPixels = PixelWidth * PixelHeight;
 
 unsigned int TotalPixels[MaxPixels];
+XTime Timer;
 
 int main()
 {
@@ -25,7 +26,10 @@ int main()
 
 	Position GrassHouse(208, 32, 96, 65);
 
-	Position Teleport(208, 32, 96, 65);//---------------------------
+	Position TeleportFile(1034, 1000, teleporter_hit_width, teleporter_hit_height); //teleporter_hit.h
+	Position TeleportEffect(515, 10, teleporter_hit_width, teleporter_hit_height);
+	Position SingleTeleportEffect(132, 155, 120, 120);
+
 
 	PColor ColorOG(0xFF8e6acc);//purple
 
@@ -38,20 +42,16 @@ int main()
 	int randomNumber3 = (rand() % PixelWidth);
 	int randomNumber4 = (rand() % PixelHeight);
 
+	int CurrentX = 0;//x = 130
+	int CurrentY = 0;//y = 155
+	int pointX = 130; //x = 130
+	int pointY = 117;// y = 140
+		
 	//will print on the screen
 	do {
-
-		//CCBuffer(ColorOG.color, TotalPixels, MaxPixels);
-		//CCBuffer(BGRAtoARGB(ColorCH.color).color, TotalPixels, MaxPixels);
-
-		//DrawPixel(72, ColorG.color, TotalPixels, MaxPixels);
-
-		//BLIT(Position(0,0,100,100), RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
-		//BLIT(GrassRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
-
-		//grass
-		//DrawTile(GrassRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
-
+		Timer.Signal();
+		Timer.Delta();
+		/**/ //background
 		for (int width = 0; width <= PixelWidth/GrassRect.width; width++) {
 
 			for (int height = 0; height <= PixelHeight/GrassRect.height; height++) {
@@ -63,6 +63,7 @@ int main()
 			}
 		}
 		
+
 		//BLIT(scrRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);//OG
 
 		Position RandomRasterPos(randomNumber, randomNumber2, PixelWidth, PixelHeight);
@@ -71,9 +72,37 @@ int main()
 		Position RandomRasterPos2(randomNumber3, randomNumber4, PixelWidth, PixelHeight);
 		BLIT(GrassHouse, RandomRasterPos2, tiles_12_pixels, TotalPixels, tiles_12_width);
 
-		
-		//BLIT(GrassHouse, RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
 
+		//BLIT(TeleportFile, RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
+		//BLIT(TeleportEffect, RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
+		//BLIT(SingleTeleportEffect, RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
+
+		/*
+		for (int i = 0; i < teleporter_hit_width; i++) {
+
+			//AlphaBlend(0x00000000, teleporter_hit_pixels[i]);
+			//BLIT(SingleTeleportEffect, RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
+		
+			CCBuffer(AlphaBlend(0x0000FF00, 0x00006700), TotalPixels, MaxPixels);
+		}
+		*/
+
+		//SingleTeleportEffect -- Animation Update 
+		BLIT(Position(CurrentX, CurrentY, pointX, pointY), RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
+
+		CurrentX += pointX;
+		if (CurrentX >= PixelWidth) //is off the edge of the page
+		{
+			CurrentX = 0;
+			
+			// perform additional check here to see if CurrentY has gone off the bottom of the page
+			if (CurrentY >= PixelHeight) {
+				CurrentY = 0;
+			}
+			else {
+				CurrentY += pointX; // += PixelHeight;
+			}
+		}
 
 	} while (RS_Update(TotalPixels, MaxPixels));
 
