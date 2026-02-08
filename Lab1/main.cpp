@@ -36,11 +36,19 @@ int main()
 
         //BLIT(scrRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
         //BLIT(Position(0,0,100,100), RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
+        //BLIT(GrassRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
 
-        BLIT(GrassRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
+        for (int width = 0; width < PixelWidth; width+= 32) {
 
+            for (int height = 0; height < PixelWidth; height+= 32) {
 
+                BLIT(GrassRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
 
+				RasterPos.x = width;
+				RasterPos.y = height;
+            }
+        }
+        
     } while (RS_Update(TotalPixels, MaxPixels));
 
     RS_Shutdown();
