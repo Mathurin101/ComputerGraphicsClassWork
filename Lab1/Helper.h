@@ -19,9 +19,9 @@ int Convert2Dto1D(int nX, int nY, int nWidth)
 
 
 // A function to draw a pixel (fill a certain pixel with a specific color)
-void DrawPixel(int ArrySpot, PColor color, unsigned int PixelArry[]) {
+void DrawPixel(int ArrySpot, PColor color, unsigned int* PixelArry, int ArrySize) {
 	//changing each slot in the array to one color value
-	for (int i = 0; i < *PixelArry; i++) {
+	for (int i = 0; i < ArrySize; i++) {
 		if (ArrySpot == i) {
 			PixelArry[i] = color.color;
 		}

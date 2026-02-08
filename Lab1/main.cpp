@@ -16,6 +16,8 @@ int WinMain()
 
     PColor Color(0xFF8e6acc);//purple
 
+    PColor ColorG(0xFF123542);//green
+
     RS_Initialize(Name, PixelWidth, PixelHeight);
 
     //will print on the screen
@@ -23,7 +25,7 @@ int WinMain()
         
         CCBuffer(Color.color, TotalPixels, MaxPixels);
 
-
+        DrawPixel(72, ColorG.color, TotalPixels, MaxPixels);
 
     } while (RS_Update(TotalPixels, MaxPixels));
 

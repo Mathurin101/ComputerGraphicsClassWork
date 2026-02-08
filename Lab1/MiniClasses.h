@@ -12,8 +12,6 @@ struct Position
 		x = _x; width = _width;
 		y = _y; height = _height;
 	}
-
-
 };
 
 struct PColor {
