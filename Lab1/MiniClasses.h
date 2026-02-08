@@ -17,28 +17,29 @@ struct Position
 };
 
 struct PColor {
-	unsigned color;	//0xAARRBBGG
-	unsigned A;//0xFF000000 = AA
-	unsigned R;//0x00FF0000 = RR
-	unsigned B;//0x0000FF00 = BB
-	unsigned G;//0x000000FF = GG	
+	unsigned int color;	//0xAARRBBGG
+	unsigned int A;//0xFF000000 = AA
+	unsigned int R;//0x00FF0000 = RR
+	unsigned int G;//0x000000FF = GG	
+	unsigned int B;//0x0000FF00 = BB
 
-	PColor();
+	PColor() {
+		color = 0;
+		A = 0;
+		R = 0;
+		G = 0;
+		B = 0;
+	}
 
-	PColor(unsigned _color) {
+	PColor(unsigned int _color) {
 		color = _color;
-		A = (color & 0xFF000000);//0xFF000000 = AA
-		R = (color & 0x00FF0000);//0x00FF0000 = RR
-		B = (color & 0x0000FF00);//0x0000FF00 = BB
+		A = (color >> 24) ;//0xFF000000 = AA
+		R = (color & 0x00FF0000) >> 16;//0x00FF0000 = RR
 		G = (color & 0x000000FF);//0x000000FF = GG
+		B = (color & 0x0000FF00) >> 8;//0x0000FF00 = BB
 	}
 
 	void CombineColor() {
-		color = (A | R | B | G);
-	}
-
-	SetColor(unsigned ) {
-
-	}
-	
+		color = (A | R | G | B );
+	}	
 };

@@ -2,10 +2,10 @@
 #include "MiniClasses.h"
 
 // A function to clear the color buffer to a solid color of your choice.
-void CCBuffer(PColor color, unsigned int PixelArry[]) {
+void CCBuffer(PColor color, unsigned int *PixelArry, int ArrySize) {
 
 	//changing each slot in the array to one color value
-	for (int i = 0; i < *PixelArry; i++) {
+	for (int i = 0; i < ArrySize; i++) {
 		PixelArry[i] = color.color;
 	}
 }
