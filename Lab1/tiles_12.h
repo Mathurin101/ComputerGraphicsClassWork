@@ -12,8 +12,10 @@ const unsigned int tiles_12_numlevels = 1;
 
 const unsigned int tiles_12_numpixels = 89600;
 
-// All Pixel Data within this file is UNCOMPRESSED 32BIT BGRA(Blue8,Green8,Red8,Alpha8) COLOR DATA STORED TOP TO BOTTOM IN A 1D ARRAY!
-// To correctly access a pixel you must use the following offset array in conjunction with 2D->1D array indexing. (y*width+x)
+// All Pixel Data within this file is UNCOMPRESSED 32BIT BGRA(Blue8,Green8,Red8,Alpha8) 
+// COLOR DATA STORED TOP TO BOTTOM IN A 1D ARRAY!
+// To correctly access a pixel you must use the following offset 
+// array in conjunction with 2D->1D array indexing. (y*width+x)
 
 const unsigned int tiles_12_leveloffsets[tiles_12_numlevels] = { 0 };
 

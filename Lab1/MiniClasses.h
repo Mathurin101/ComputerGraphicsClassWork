@@ -37,7 +37,7 @@ struct PColor {
 		B = (color & 0x0000FF00) >> 8;//0x0000FF00 = BB
 	}
 
-	void CombineColor() {
-		color = (A | R | G | B );
+	PColor CombineColor() {
+		return color = (A | R | G | B );
 	}	
 };

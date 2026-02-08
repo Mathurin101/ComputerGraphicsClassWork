@@ -36,37 +36,35 @@ void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTe
 		for (int x = 0; x < SourceRect.width; x++)
 		{
 			// copy a pixel from pSourceTextureArray to the Raster
-			ArryScreen[Convert2Dto1D(x,y, RasterPos.width)] = pSourceTextureArray[Convert2Dto1D(x, y, SourceRect.width)];
+			ArryScreen[Convert2Dto1D(x, y, RasterPos.width)] = pSourceTextureArray[Convert2Dto1D(x, y, SourceRect.width)];
 		}
 	}
 }
 
-
-// Color convertion BGRAtoARGB
-PColor BGRAtoARGB(unsigned C)
+// Color conversion BGRAtoARGB
+PColor BGRAtoARGB(unsigned int C)
 {
 	PColor ColorConverted;
 
 	//1) use the & operator (bitwise - and) with a bitmask to isolate each of the 4 color channels contained in C
 
 						   // BBGGRRAA
-						  //0x000000FF = AA
-	ColorConverted.A = (C & 0x000000FF);
+						  //0x000000FF = AA   //0xAARRGGBB
+	ColorConverted.A = (C & 0x000000FF) << 24;//0xFF000000 = AA
 	
 						  //0x0000FF00 = RR
-	ColorConverted.R = (C & 0x0000FF00);
+	ColorConverted.R = (C & 0x0000FF00) << 8; //0x00FF0000 = RR
 
 						  //0x00FF0000 = GG
-	ColorConverted.G = (C & 0x00FF0000);
+	ColorConverted.G = (C & 0x00FF0000) >> 8; //0x0000FF00 = GG
 
 						  //0xFF000000 = BB
-	ColorConverted.B = (C & 0xFF000000);
+	ColorConverted.B = (C & 0xFF000000) >> 24;//0x000000FF= BB
 
 
 	//2) use the << and >> operators(bitwise left - shift and right - shift) to shift each channel to its new position
 
 	//3) use the | operator (bitwise - or ) to re - combine the 4 color channels into a single unsigned int, and return it
-	ColorConverted.CombineColor();
 
-	return ColorConverted;
+	return ColorConverted.CombineColor();
 }

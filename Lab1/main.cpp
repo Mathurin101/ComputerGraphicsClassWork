@@ -18,11 +18,14 @@ int main()
     Position scrRect(0, 0, tiles_12_width, tiles_12_height);
 	Position RasterPos(0, 0, PixelWidth, PixelHeight);
 
+    Position GrassRect(288, 128, 32, 32);
 
-    PColor Color(0xFF8e6acc);//purple
+    PColor Color (0xFF8e6acc);//purple
 
-    PColor ColorG(0xFF123542);//green
+    PColor ColorG (0xFF123524);
 
+    PColor ColorGd(0xFF00FFFF); 
+                   
     RS_Initialize(Name, PixelWidth, PixelHeight);
 
     //will print on the screen
@@ -32,7 +35,12 @@ int main()
 
         //DrawPixel(72, ColorG.color, TotalPixels, MaxPixels);
 
-        BLIT(scrRect, RasterPos, tiles_12_pixels, TotalPixels);
+        CCBuffer(BGRAtoARGB(ColorGd.color).color, TotalPixels, MaxPixels);
+        //CCBuffer(ColorG.color, TotalPixels, MaxPixels);
+
+        //BLIT(scrRect, RasterPos, tiles_12_pixels, TotalPixels);
+
+        //BLIT(GrassRect, RasterPos, tiles_12_pixels, TotalPixels);
 
 
 
