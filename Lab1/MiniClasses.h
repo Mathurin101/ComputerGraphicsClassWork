@@ -8,7 +8,7 @@ struct Position
 	int width;
 	int height;
 
-	Position(int _x, int _y, int _width, int _height) {
+	Position(int _x, int _y, int _width = 0, int _height = 0) {
 		x = _x; width = _width;
 		y = _y; height = _height;
 	}

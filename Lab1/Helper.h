@@ -1,6 +1,7 @@
 #pragma once
 #include "MiniClasses.h"
 
+
 // A function to clear the color buffer to a solid color of your choice.
 void CCBuffer(PColor color, unsigned int *PixelArry, int ArrySize) {
 
@@ -14,9 +15,8 @@ void CCBuffer(PColor color, unsigned int *PixelArry, int ArrySize) {
 int Convert2Dto1D(int nX, int nY, int nWidth)
 {
 	//return a 1d coordinate using the 2D->1D formula
-	return ((nX * nWidth) + nY);
+	return ((nY * nWidth) + nX);
 }
-
 
 // A function to draw a pixel (fill a certain pixel with a specific color)
 void DrawPixel(int ArrySpot, PColor color, unsigned int* PixelArry, int ArrySize) {
@@ -28,20 +28,18 @@ void DrawPixel(int ArrySpot, PColor color, unsigned int* PixelArry, int ArrySize
 	}
 }
 
-
 // A function to BLIT (Block Image Transfer)
-/*
-void BLIT(4 ints for SourceRect, 2 ints for RasterPos, 1 int for SourceTextureWidth,
-	unsigned int* pSourceTextureArray)
+void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTextureArray, unsigned int* ArryScreen)
 {
-	for (int y = 0; y < SourceRectHeight; y++)
+	for (int y = 0; y < SourceRect.height; y++)
 	{
-		for (int x = 0; x < SourceRectWidth; x++)
+		for (int x = 0; x < SourceRect.width; x++)
 		{
 			// copy a pixel from pSourceTextureArray to the Raster
+			ArryScreen[Convert2Dto1D(x,y, RasterPos.width)] = pSourceTextureArray[Convert2Dto1D(x, y, SourceRect.width)];
 		}
 	}
-}*/
+}
 
 
 // Color convertion BGRAtoARGB
