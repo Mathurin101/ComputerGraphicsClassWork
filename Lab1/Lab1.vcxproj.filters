@@ -41,5 +41,8 @@
     <ClInclude Include="tiles_12.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="teleporter_hit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

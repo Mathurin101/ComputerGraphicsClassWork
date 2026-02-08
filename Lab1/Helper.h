@@ -83,3 +83,17 @@ void DrawTile(Position &SourceRect, Position &RasterPos, const unsigned int* pSo
 	}
 }
 */
+
+unsigned int AlphaBlend(unsigned int DestinationColor, unsigned int SourceColor) // Destination is the raster, source is the texture
+{
+	    //break DestinationColor and SourceColor down into 4 channels each, 
+	    //using bitwise operators to mask and right - shift into the lowest - order 8 bits
+		
+		//Calculate fAlphaRatio as SourceAlpha(texture alpha channel) / 255.0f
+		
+		//Interpolate all 4 channels based on fAlphaRatio to get FinalRed, 
+		//FinalGreen, FinalBlue, and FinalAlpha(1.0 alpha = fullSource, 0.0 alpha = full destination color)
+			
+		//use bitwise operators(left - shift and bitwise - or ) 
+		//to reassemble the 4 color channels into a single unsigned int, and return it
+}

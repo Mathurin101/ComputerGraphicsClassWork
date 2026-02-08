@@ -2,6 +2,7 @@
 #include "Helper.h"
 #include "XTime.h"
 #include "tiles_12.h"
+#include "teleporter_hit.h"
 #include <random> //random number class "std::rand()"
 
 const char* Name = "MathurinGenty_ProgrammingAssignment 1";
@@ -23,6 +24,8 @@ int main()
 	Position GrassWFlower(64, 192, 16, 16);
 
 	Position GrassHouse(208, 32, 96, 65);
+
+	Position Teleport(208, 32, 96, 65);//---------------------------
 
 	PColor ColorOG(0xFF8e6acc);//purple
 
@@ -67,6 +70,10 @@ int main()
 
 		Position RandomRasterPos2(randomNumber3, randomNumber4, PixelWidth, PixelHeight);
 		BLIT(GrassHouse, RandomRasterPos2, tiles_12_pixels, TotalPixels, tiles_12_width);
+
+		
+		BLIT(GrassHouse, RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
+
 
 	} while (RS_Update(TotalPixels, MaxPixels));
 

@@ -143,6 +143,7 @@
     <ClInclude Include="Helper.h" />
     <ClInclude Include="MiniClasses.h" />
     <ClInclude Include="RasterSurface.h" />
+    <ClInclude Include="teleporter_hit.h" />
     <ClInclude Include="tiles_12.h" />
     <ClInclude Include="XTime.h" />
   </ItemGroup>
