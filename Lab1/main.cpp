@@ -46,7 +46,6 @@ int main()
 
 		//DrawPixel(72, ColorG.color, TotalPixels, MaxPixels);
 
-		//BLIT(scrRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
 		//BLIT(Position(0,0,100,100), RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
 		//BLIT(GrassRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
 
@@ -64,6 +63,7 @@ int main()
 			}
 		}
 		
+		//BLIT(scrRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);//OG
 
 		Position RandomRasterPos(randomNumber, randomNumber2, PixelWidth, PixelHeight);
 		BLIT(GrassWFlower, RandomRasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
@@ -72,7 +72,7 @@ int main()
 		BLIT(GrassHouse, RandomRasterPos2, tiles_12_pixels, TotalPixels, tiles_12_width);
 
 		
-		BLIT(GrassHouse, RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
+		//BLIT(GrassHouse, RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
 
 
 	} while (RS_Update(TotalPixels, MaxPixels));
