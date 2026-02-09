@@ -8,10 +8,28 @@ struct Position
 	int width;
 	int height;
 
+
+
 	Position(int _x, int _y, int _width = 0, int _height = 0) {
-		x = _x; width = _width;
+		x = _x;  width = _width; 
 		y = _y; height = _height;
+	}							 
+};
+
+struct Points {
+	int x1;
+	int y1;
+	int x2;
+	int y2;
+	//int slope;
+
+	Points(int _x1, int _y1, int _x2, int _y2) {
+		x1 = _x1;	 x2 = _x2;
+		y1 = _y1;	 y2 = _y2;	
+		//slope = (y2 - y1) / (x2 - x1);
 	}
+
+	
 };
 
 struct PColor {

@@ -51,58 +51,28 @@ int main()
 	do {
 		Timer.Signal();
 		Timer.Delta();
-		/**/ //background
-		for (int width = 0; width <= PixelWidth/GrassRect.width; width++) {
-
-			for (int height = 0; height <= PixelHeight/GrassRect.height; height++) {
-
-				Position GrassPos(width * GrassRect.width, height * GrassRect.height, PixelWidth, PixelHeight);
-
-				BLIT(GrassRect, GrassPos, tiles_12_pixels, TotalPixels, tiles_12_width);
-
-			}
-		}
 		
-
-		//BLIT(scrRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);//OG
-
-		Position RandomRasterPos(randomNumber, randomNumber2, PixelWidth, PixelHeight);
-		BLIT(GrassWFlower, RandomRasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);
-
-		Position RandomRasterPos2(randomNumber3, randomNumber4, PixelWidth, PixelHeight);
-		BLIT(GrassHouse, RandomRasterPos2, tiles_12_pixels, TotalPixels, tiles_12_width);
-
-
-		//BLIT(TeleportFile, RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
-		//BLIT(TeleportEffect, RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
-		//BLIT(SingleTeleportEffect, RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
-
 		/*
-		for (int i = 0; i < teleporter_hit_width; i++) {
+		CurrY = StartY
+		Slope = SlopeY / SlopeX
 
-			//AlphaBlend(0x00000000, teleporter_hit_pixels[i]);
-			//BLIT(SingleTeleportEffect, RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
-		
-			CCBuffer(AlphaBlend(0x0000FF00, 0x00006700), TotalPixels, MaxPixels);
-		}
-		*/
+		Error = 0
 
-		//SingleTeleportEffect -- Animation Update 
-		BLIT(Position(CurrentX, CurrentY, pointX, pointY), RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
+		For StartX to EndX
+			PlotPixel(CurrX, CurrY)
+			Error += Slope 
+				If Error > 0.5
+					CurrY += 1, Error -= 1
 
-		CurrentX += pointX;
-		if (CurrentX >= PixelWidth) //is off the edge of the page
-		{
-			CurrentX = 0;
-			
-			// perform additional check here to see if CurrentY has gone off the bottom of the page
-			if (CurrentY >= PixelHeight) {
-				CurrentY = 0;
-			}
-			else {
-				CurrentY += pointX; // += PixelHeight;
-			}
-		}
+			*/
+
+
+
+
+
+
+
+
 
 	} while (RS_Update(TotalPixels, MaxPixels));
 

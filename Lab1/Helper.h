@@ -104,7 +104,7 @@ unsigned int AlphaBlend(unsigned int DestinationColor, unsigned int SourceColor)
 	SourceImage.A = (fAlphaRatio.A * SourceImage.A) + ((1.0f - fAlphaRatio.A) * BgDestination.A);
 	SourceImage.R = (fAlphaRatio.A * SourceImage.R) + ((1.0f - fAlphaRatio.A) * BgDestination.R);
 	SourceImage.G = (fAlphaRatio.A * SourceImage.G) + ((1.0f - fAlphaRatio.A) * BgDestination.G);
-	SourceImage.B = (fAlphaRatio.B * SourceImage.B) + ((1.0f - fAlphaRatio.A) * BgDestination.B);
+	SourceImage.B = (fAlphaRatio.A * SourceImage.B) + ((1.0f - fAlphaRatio.A) * BgDestination.B);
 
 	//use bitwise operators(left - shift and bitwise - or ) 
 	// to reassemble the 4 color channels into a single unsigned int, and return it
@@ -112,13 +112,30 @@ unsigned int AlphaBlend(unsigned int DestinationColor, unsigned int SourceColor)
 	return SourceImage.CombineColor().color;
 }
 
-void AnimationUpdate() {
-	/*
-	CurrentX += CellWidth;
-	if (CurrentX is off the edge of the page)
-	{
-		CurrentX = 0;
-		CurrentY += CellHeight;
-		// perform additional check here to see if CurrentY has gone off the bottom of the page
-	}*/
+void LineAlgor(Points Spots, PColor color, unsigned int* PixelArry) { //, int ArrySize
+	int CurrentX = Spots.x1;
+
+	/**/
+		//CurrY = StartY
+		
+		//Slope = SlopeY / SlopeX
+
+		//Error = 0
+
+		//For StartX to EndX
+			//PlotPixel(CurrX, CurrY)
+			//Error += Slope
+				//If Error > 0.5
+					//CurrY += 1, Error -= 1
+
+			
+
+
+	//changing each slot in the array to one color value
+	//for (int i = 0; i < ArrySize; i++) {
+	//	if (ArrySpot == i) {
+	//		PixelArry[i] = color.color;
+	//	}
+	//}
+
 }
