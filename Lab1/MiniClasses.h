@@ -49,13 +49,18 @@ struct PColor {
 
 	PColor(unsigned int _color) {
 		color = _color;
-		A = (color >> 24) ;//0xFF000000 = AA
+		A = (color >> 24);			   //0xFF000000 = AA
 		R = (color & 0x00FF0000) >> 16;//0x00FF0000 = RR
-		G = (color & 0x000000FF);//0x000000FF = GG
-		B = (color & 0x0000FF00) >> 8;//0x0000FF00 = BB
+		G = (color & 0x0000FF00) >> 8; //0x0000FF00 = GG
+		B = (color & 0x000000FF);	   //0x000000FF = BB
 	}
 
-	PColor CombineColor() {
-		return color = (A | R | G | B );
+	unsigned int CombineColor() {
+		color |= (A << 24);
+		color |= (R << 16);
+		color |= (G << 8);
+		color |= B;
+		
+		return color;
 	}	
 };

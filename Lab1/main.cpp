@@ -4,6 +4,7 @@
 #include "tiles_12.h"
 #include "teleporter_hit.h"
 #include <random> //random number class "std::rand()"
+#include <iostream>
 
 const char* Name = "MathurinGenty_ProgrammingAssignment 1";
 const unsigned int PixelWidth = 500;
@@ -12,10 +13,11 @@ const unsigned int PixelHeight = 500;
 const unsigned int MaxPixels = PixelWidth * PixelHeight;
 
 unsigned int TotalPixels[MaxPixels];
-XTime Timer;
+
 
 int main()
 {
+
 	//Position scrRect[4] = { 149,44, 190, 95 };
 	Position scrRect(0, 0, tiles_12_width, tiles_12_height);
 	const Position RasterPos(0, 0, PixelWidth, PixelHeight);
@@ -37,16 +39,25 @@ int main()
 
 	RS_Initialize(Name, PixelWidth, PixelHeight);
 	srand(time(0));
-	int randomNumber = (rand() % PixelWidth);
-	int randomNumber2 = (rand() % PixelHeight);
-	int randomNumber3 = (rand() % PixelWidth);
-	int randomNumber4 = (rand() % PixelHeight);
+
 
 	int CurrentX = 0;//x = 130
 	int CurrentY = 0;//y = 155
-	int pointX = 130; //x = 130
-	int pointY = 117;// y = 140
-		
+	int WidthX = 128; //x = 130
+	int HeightY = 128;// y = 117
+
+	double PersonTimer = 0;
+	XTime Timer;
+
+	int RandomNumberX[11];
+	int RandomNumberY[11];
+	for (int i = 0; i < 10; i++) {
+		RandomNumberX[i] = int((rand() % PixelWidth));
+	}
+	for (int i = 0; i < 10; i++) {
+		RandomNumberY[i] = int((rand() % PixelWidth));
+	}
+
 	//will print on the screen
 	do {
 		Timer.Signal();
@@ -65,6 +76,7 @@ int main()
 					CurrY += 1, Error -= 1
 
 			*/
+
 
 
 
