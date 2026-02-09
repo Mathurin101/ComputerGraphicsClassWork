@@ -44,14 +44,15 @@ int main()
 
 	int CurrentX = 0;//x = 130
 	int CurrentY = 0;//y = 155
-	int pointX = 130; //x = 130
-	int pointY = 117;// y = 140
+	int WidthX = 128; //x = 130
+	int HeightY = 128;// y = 117
 		
 	//will print on the screen
 	do {
 		Timer.Signal();
 		Timer.Delta();
-		/**/ //background
+		
+		//background
 		for (int width = 0; width <= PixelWidth/GrassRect.width; width++) {
 
 			for (int height = 0; height <= PixelHeight/GrassRect.height; height++) {
@@ -63,7 +64,6 @@ int main()
 			}
 		}
 		
-
 		//BLIT(scrRect, RasterPos, tiles_12_pixels, TotalPixels, tiles_12_width);//OG
 
 		Position RandomRasterPos(randomNumber, randomNumber2, PixelWidth, PixelHeight);
@@ -88,19 +88,19 @@ int main()
 		*/
 
 		//SingleTeleportEffect -- Animation Update 
-		BLIT(Position(CurrentX, CurrentY, pointX, pointY), RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
-
-		CurrentX += pointX;
-		if (CurrentX >= PixelWidth) //is off the edge of the page
+		BLIT(Position(CurrentX, CurrentY, WidthX, HeightY), RasterPos, teleporter_hit_pixels, TotalPixels, teleporter_hit_width);
+		
+		CurrentX += WidthX;
+		if (CurrentX >= teleporter_hit_width - WidthX) //is off the edge of the page
 		{
 			CurrentX = 0;
 			
 			// perform additional check here to see if CurrentY has gone off the bottom of the page
-			if (CurrentY >= PixelHeight) {
+			if (CurrentY >= teleporter_hit_height - HeightY) {
 				CurrentY = 0;
 			}
 			else {
-				CurrentY += pointX; // += PixelHeight;
+				CurrentY += HeightY; // += PixelHeight;
 			}
 		}
 
