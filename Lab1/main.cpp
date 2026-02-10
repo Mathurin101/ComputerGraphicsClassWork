@@ -6,7 +6,7 @@
 #include <random> //random number class "std::rand()"
 #include <iostream>
 
-const char* Name = "MathurinGenty_ProgrammingAssignment 1";
+const char* Name = "MathurinGenty_Line Drawing";
 const unsigned int PixelWidth = 500;
 const unsigned int PixelHeight = 500;
 
@@ -33,7 +33,6 @@ int main()
 	Position SingleTeleportEffect(132, 155, 120, 120);
 
 
-	PColor ColorOG(0xFF8e6acc);//purple
 
 	PColor ColorCH(0xFF123524);//green
 
@@ -49,39 +48,54 @@ int main()
 	double PersonTimer = 0;
 	XTime Timer;
 
-	int RandomNumberX[11];
-	int RandomNumberY[11];
-	for (int i = 0; i < 10; i++) {
-		RandomNumberX[i] = int((rand() % PixelWidth));
-	}
-	for (int i = 0; i < 10; i++) {
-		RandomNumberY[i] = int((rand() % PixelWidth));
-	}
+	Points Line( 32, 54, 63, 79);
 
+	PColor ColorOG(0xFF8e6acc);//purple
+
+	
+	PColor ColorRED(0xFFFF0000);//red
+				//		x,   y,   x,   y
+	//Points OuterLine1(132, 100, 133, 500);//   -
+	//Points OuterLine2(132, 154, 163, 179);// |
+	//Points OuterLine3(132, 154, 163, 179);//     |
+	//Points OuterLine4(132, 154, 163, 179);//   _
+	  Points OuterLine5(100, 160, 180, 100);// /
+	  Points OuterLine6(260, 100, 340, 160);//     \        //
+	  Points OuterLine7(100, 240, 180, 300);//  \           //
+	  Points OuterLine8(260, 300, 340, 240);//     /
+	//	  _______
+	//	 /	   	 \
+	//  /         \
+ // // |           |
+    // |           |
+	//  \         /
+	//	 \_______/
+	//
+	PColor ColorDioxazine(0xFF320960);//Dioxazine purple
+	//Points InnerLine1( 132, 154, 163, 179);
+	//
+	PColor ColorMarigold(0xFFEAA221);//Marigold
+	//Points InnerLine2( 132, 154, 163, 179);
+	//
+	PColor ColorLilac(0xFFE6DAF0);//Lilac
+	//Points InnerLine3( 132, 154, 163, 179);
+	//
+	PColor ColorPastelYellow(0xFFFDFD96);//Pastel Yellow
+	//Points InnerLine4( 132, 154, 163, 179);
+	
 	//will print on the screen
 	do {
 		Timer.Signal();
 		Timer.Delta();
 		
-		/*
-		CurrY = StartY
-		Slope = SlopeY / SlopeX
-
-		Error = 0
-
-		For StartX to EndX
-			PlotPixel(CurrX, CurrY)
-			Error += Slope 
-				If Error > 0.5
-					CurrY += 1, Error -= 1
-
-			*/
+		//ParametricLineFunction(Line, ColorOG, TotalPixels, MaxPixels, RasterPos.width);
 
 
-
-
-
-
+		//border
+		ParametricLineFunction(OuterLine5, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
+		ParametricLineFunction(OuterLine6, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
+		ParametricLineFunction(OuterLine7, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
+		ParametricLineFunction(OuterLine8, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
 
 
 

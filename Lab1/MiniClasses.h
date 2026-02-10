@@ -21,23 +21,28 @@ struct Points {
 	int y1;
 	int x2;
 	int y2;
-	//int slope;
+	int slope;
+	int slopeX;
+	int slopeY;
+
 
 	Points(int _x1, int _y1, int _x2, int _y2) {
 		x1 = _x1;	 x2 = _x2;
 		y1 = _y1;	 y2 = _y2;	
-		//slope = (y2 - y1) / (x2 - x1);
+		slopeY = (y2 - y1);
+		slopeX = (x2 - x1);
+		//slope = slopeY / slopeX;
 	}
 
 	
 };
 
 struct PColor {
-	unsigned int color;	//0xAARRBBGG
-	unsigned int A;//0xFF000000 = AA
-	unsigned int R;//0x00FF0000 = RR
-	unsigned int G;//0x000000FF = GG	
-	unsigned int B;//0x0000FF00 = BB
+	unsigned int color;//0xAARRBBGG
+	unsigned int A;    //0xFF000000 = AA
+	unsigned int R;    //0x00FF0000 = RR
+	unsigned int G;    //0x0000FF00 = GG	
+	unsigned int B;    //0x000000FF = BB
 
 	PColor() {
 		color = 0;

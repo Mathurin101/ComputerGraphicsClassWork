@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "MiniClasses.h"
 #include "tiles_12.h"
 #include <iostream>
@@ -101,49 +101,35 @@ void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTe
 	}
 }
 
-/*
-void DrawTile(Position &SourceRect, Position &RasterPos, const unsigned int* pSourceTextureArray,
-	unsigned int* ArryScreen, unsigned int SourceWidth) {
+void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry, int ArrySize, int RasterWidth) { //, int ArrySize
+	double CurrentX;
+	double CurrentY;
+	double StartX = CurrentX = Spots.x1; 
+	double StartY = CurrentY = Spots.y1;//A
+	double EndY = Spots.y2; //B
+	double EndX = Spots.x2;
+	double Ratio;
 
-	for (int width = 0; width < RasterPos.width; width += SourceRect.width) {
+	//Parametric Line Algorithm​
 
-		for (int height = 0; height < RasterPos.height; height += SourceRect.height) {
+	//FOR StartX to EndX​
+	for (int i = StartX; i < EndX; i++) {
+		CurrentX = i;
 
-			BLIT(SourceRect, RasterPos, pSourceTextureArray, ArryScreen, SourceWidth);
+		//Ratio = (CurrX – StartX) / ΔX ​
+		Ratio = (CurrentX - StartX) / Spots.slopeX;
 
-			RasterPos.x = width;
-			RasterPos.y = height;
-		}
+		//CurrY = Lerp(StartY, EndY, Ratio)​//CurrentY = lerp(StartY, EndY, Ratio);
+		            //(B - A)      *     R + A
+		CurrentY = (EndY - StartY) * Ratio + StartY;
+
+		//PlotPixel(CurrX, Floor(CurrY + 0.5))​
+		DrawPixel(Convert2Dto1D(CurrentX, CurrentY + 0.5, RasterWidth) , _color, PixelArry, ArrySize);
+
+		//std::cout << "Convert2Dto1D(CurrentX, CurrentY, RasterWidth) : " << Convert2Dto1D(CurrentX, CurrentY, RasterWidth) << std::endl;
+		//std::cout << "CurrentX: " << CurrentX << std::endl;
+		//std::cout << "CurrentY: " << CurrentY << std::endl;
+	
 	}
-}
-*/
-
-
-
-void LineAlgor(Points Spots, PColor color, unsigned int* PixelArry) { //, int ArrySize
-	int CurrentX = Spots.x1;
-
-	/**/
-		//CurrY = StartY
-		
-		//Slope = SlopeY / SlopeX
-
-		//Error = 0
-
-		//For StartX to EndX
-			//PlotPixel(CurrX, CurrY)
-			//Error += Slope
-				//If Error > 0.5
-					//CurrY += 1, Error -= 1
-
-			
-
-
-	//changing each slot in the array to one color value
-	//for (int i = 0; i < ArrySize; i++) {
-	//	if (ArrySpot == i) {
-	//		PixelArry[i] = color.color;
-	//	}
-	//}
 
 }
