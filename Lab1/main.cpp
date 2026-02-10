@@ -17,36 +17,14 @@ unsigned int TotalPixels[MaxPixels];
 
 int main()
 {
-
-	//Position scrRect[4] = { 149,44, 190, 95 };
 	Position scrRect(0, 0, tiles_12_width, tiles_12_height);
 	const Position RasterPos(0, 0, PixelWidth, PixelHeight);
-
-	Position GrassRect(288, 128, 32, 32);
-
-	Position GrassWFlower(64, 192, 16, 16);
-
-	Position GrassHouse(208, 32, 96, 65);
-
-	Position TeleportFile(1034, 1000, teleporter_hit_width, teleporter_hit_height); //teleporter_hit.h
-	Position TeleportEffect(515, 10, teleporter_hit_width, teleporter_hit_height);
-	Position SingleTeleportEffect(132, 155, 120, 120);
-
-
 
 	PColor ColorCH(0xFF123524);//green
 
 	RS_Initialize(Name, PixelWidth, PixelHeight);
 	srand(time(0));
 
-
-	int CurrentX = 0;//x = 130
-	int CurrentY = 0;//y = 155
-	int WidthX = 128; //x = 130
-	int HeightY = 128;// y = 117
-
-	double PersonTimer = 0;
-	XTime Timer;
 
 	Points Line( 32, 54, 63, 79);
 
@@ -55,10 +33,13 @@ int main()
 	
 	PColor ColorRED(0xFFFF0000);//red
 				//		x,   y,   x,   y
-	//Points OuterLine1(132, 100, 133, 500);//   -
-	//Points OuterLine2(132, 154, 163, 179);// |
-	//Points OuterLine3(132, 154, 163, 179);//     |
-	//Points OuterLine4(132, 154, 163, 179);//   _
+	 Points OuterLine1(180, 100, 260, 100);//   -
+	 
+	 Points OuterLine2(100, 160, 100, 240);// |
+	 
+	  Points OuterLine3( 345, 240,345, 160);//     |      //(340, 160, 340, 240)
+
+	  Points OuterLine4(180, 300, 260, 300);//   _
 	  Points OuterLine5(100, 160, 180, 100);// /
 	  Points OuterLine6(260, 100, 340, 160);//     \        //
 	  Points OuterLine7(100, 240, 180, 300);//  \           //
@@ -71,32 +52,44 @@ int main()
 	//  \         /
 	//	 \_______/
 	//
-	PColor ColorDioxazine(0xFF320960);//Dioxazine purple
-	//Points InnerLine1( 132, 154, 163, 179);
-	//
+	PColor ColorLightBlue(0xFFADD8E6);//LightBlue
+	Points InnerLine1(180, 100, 260, 300);
+	
 	PColor ColorMarigold(0xFFEAA221);//Marigold
-	//Points InnerLine2( 132, 154, 163, 179);
+	Points InnerLine2(180, 300, 260, 100);
 	//
 	PColor ColorLilac(0xFFE6DAF0);//Lilac
-	//Points InnerLine3( 132, 154, 163, 179);
+	Points InnerLine3(100, 160, 340, 240);
 	//
 	PColor ColorPastelYellow(0xFFFDFD96);//Pastel Yellow
-	//Points InnerLine4( 132, 154, 163, 179);
+	Points InnerLine4(100, 240, 340, 160);
 	
 	//will print on the screen
 	do {
-		Timer.Signal();
-		Timer.Delta();
 		
 		//ParametricLineFunction(Line, ColorOG, TotalPixels, MaxPixels, RasterPos.width);
 
 
-		//border
+		//border angles
 		ParametricLineFunction(OuterLine5, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
 		ParametricLineFunction(OuterLine6, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
 		ParametricLineFunction(OuterLine7, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
 		ParametricLineFunction(OuterLine8, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
 
+		//straight lines 
+		ParametricLineFunction(OuterLine1, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
+		ParametricLineFunction(OuterLine4, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
+		
+		ParametricLineFunction(OuterLine2, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
+		ParametricLineFunction(OuterLine3, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
+
+
+
+		//lines crossing
+		ParametricLineFunction(InnerLine1, ColorLightBlue, TotalPixels, MaxPixels, RasterPos.width);
+		ParametricLineFunction(InnerLine2, ColorMarigold, TotalPixels, MaxPixels, RasterPos.width);
+		ParametricLineFunction(InnerLine3, ColorLilac, TotalPixels, MaxPixels, RasterPos.width);
+		ParametricLineFunction(InnerLine4, ColorPastelYellow, TotalPixels, MaxPixels, RasterPos.width);
 
 
 

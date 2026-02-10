@@ -101,7 +101,7 @@ void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTe
 	}
 }
 
-void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry, int ArrySize, int RasterWidth) { //, int ArrySize
+void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry, int ArrySize, int RasterWidth) { 
 	double CurrentX;
 	double CurrentY;
 	double StartX = CurrentX = Spots.x1; 
@@ -124,12 +124,7 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 		CurrentY = (EndY - StartY) * Ratio + StartY;
 
 		//PlotPixel(CurrX, Floor(CurrY + 0.5))​
-		DrawPixel(Convert2Dto1D(CurrentX, CurrentY + 0.5, RasterWidth) , _color, PixelArry, ArrySize);
-
-		//std::cout << "Convert2Dto1D(CurrentX, CurrentY, RasterWidth) : " << Convert2Dto1D(CurrentX, CurrentY, RasterWidth) << std::endl;
-		//std::cout << "CurrentX: " << CurrentX << std::endl;
-		//std::cout << "CurrentY: " << CurrentY << std::endl;
-	
+		DrawPixel(Convert2Dto1D(CurrentX, CurrentY , RasterWidth) , _color, PixelArry, ArrySize);
 	}
 
 }
