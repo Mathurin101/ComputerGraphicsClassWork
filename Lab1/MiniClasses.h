@@ -25,8 +25,18 @@ struct Points {
 	int slopeX;
 	int slopeY;
 
+	Points() {
+		x1 = 0;
+		y1 = 0;
+		x2 = 0;
+		y2 = 0;
+		slope = 0;
+		slopeX = 0;
+		slopeY = 0;
+	}
 
-	Points(int _x1, int _y1, int _x2, int _y2) {
+
+	Points(int _x1, int _y1, int _x2 = 0, int _y2 = 0) {
 		x1 = _x1;	 x2 = _x2;
 		y1 = _y1;	 y2 = _y2;	
 		slopeY = (y2 - y1);

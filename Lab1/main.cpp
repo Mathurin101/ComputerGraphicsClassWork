@@ -25,25 +25,25 @@ int main()
 	RS_Initialize(Name, PixelWidth, PixelHeight);
 	srand(time(0));
 
-
+	//checking if this line print on the screen
 	Points Line( 32, 54, 63, 79);
-
 	PColor ColorOG(0xFF8e6acc);//purple
+
 
 	
 	PColor ColorRED(0xFFFF0000);//red
 				//		x,   y,   x,   y
-	 Points OuterLine1(180, 100, 260, 100);//   -
+	Points OuterLine1(180, 100, 260, 100);//   -
 	 
-	 Points OuterLine2(100, 160, 100, 240);// |
-	 
-	  Points OuterLine3( 345, 240,345, 160);//     |      //(340, 160, 340, 240)
+	Points OuterLine2(100, 160, 100, 240);// |
+	
+	Points OuterLine3(345, 240, 345, 160);//     |     
 
-	  Points OuterLine4(180, 300, 260, 300);//   _
-	  Points OuterLine5(100, 160, 180, 100);// /
-	  Points OuterLine6(260, 100, 340, 160);//     \        //
-	  Points OuterLine7(100, 240, 180, 300);//  \           //
-	  Points OuterLine8(260, 300, 340, 240);//     /
+	Points OuterLine4(180, 300, 260, 300);//   _
+	Points OuterLine5(100, 160, 180, 100);// /
+	Points OuterLine6(260, 100, 340, 160);//     \        //
+	Points OuterLine7(100, 240, 180, 300);//  \           //
+	Points OuterLine8(260, 300, 340, 240);//     /
 	//	  _______
 	//	 /	   	 \
 	//  /         \
@@ -75,16 +75,17 @@ int main()
 		ParametricLineFunction(OuterLine6, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
 		ParametricLineFunction(OuterLine7, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
 		ParametricLineFunction(OuterLine8, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
-
-		//straight lines 
+		
+		//straight lines - left to right
 		ParametricLineFunction(OuterLine1, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
 		ParametricLineFunction(OuterLine4, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
 		
 		ParametricLineFunction(OuterLine2, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
+		//up and down lines -- doesn't work  
 		ParametricLineFunction(OuterLine3, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
-
-
-
+		
+		
+		
 		//lines crossing
 		ParametricLineFunction(InnerLine1, ColorLightBlue, TotalPixels, MaxPixels, RasterPos.width);
 		ParametricLineFunction(InnerLine2, ColorMarigold, TotalPixels, MaxPixels, RasterPos.width);

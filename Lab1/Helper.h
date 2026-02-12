@@ -34,17 +34,17 @@ PColor BGRAtoARGB(unsigned int C)
 {
 	PColor ColorConverted;
 
-	                       // BBGGRRAA
-                          //0x000000FF = AA   //0xAARRGGBB
+	// BBGGRRAA
+   //0x000000FF = AA   //0xAARRGGBB
 	ColorConverted.A = (C & 0x000000FF) << 24;//0xFF000000 = AA
 
-	                      //0x0000FF00 = RR
+	//0x0000FF00 = RR
 	ColorConverted.R = (C & 0x0000FF00) << 8; //0x00FF0000 = RR
 
-	                      //0x00FF0000 = GG
+	//0x00FF0000 = GG
 	ColorConverted.G = (C & 0x00FF0000) >> 8; //0x0000FF00 = GG
 
-	                      //0xFF000000 = BB
+	//0xFF000000 = BB
 	ColorConverted.B = (C & 0xFF000000) >> 24;//0x000000FF = BB
 
 	//ColorConverted.color = (ColorConverted.A | ColorConverted.R | ColorConverted.G | ColorConverted.B);
@@ -92,7 +92,7 @@ void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTe
 				continue;
 			}
 			PColor TileP = pSourceTextureArray[Convert2Dto1D(x, y, SourceWidth)];
-			
+
 			TileP = AlphaBlend(ArryScreen[Convert2Dto1D(RasterPos.x + x - SourceRect.x, RasterPos.y + y - SourceRect.y, RasterPos.width)], TileP.color);
 
 			// copy a pixel from pSourceTextureArray to the Raster
@@ -101,17 +101,72 @@ void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTe
 	}
 }
 
-void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry, int ArrySize, int RasterWidth) { 
+
+void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry, int ArrySize, int RasterWidth) {
 	double CurrentX;
 	double CurrentY;
-	double StartX = CurrentX = Spots.x1; 
+	double StartX = CurrentX = Spots.x1;
 	double StartY = CurrentY = Spots.y1;//A
 	double EndY = Spots.y2; //B
 	double EndX = Spots.x2;
 	double Ratio;
+	Points LinePoints;
 
 	//Parametric Line Algorithm​
+	if (abs(EndX - StartX) > abs(EndY - StartY)) {
+		
+		//FOR StartX to EndX --OG​
+		for (int i = StartX; i < EndX; i++) {
+			CurrentX = i;
 
+			//Ratio = (CurrX – StartX) / ΔX ​
+			Ratio = (CurrentX - StartX) / Spots.slopeX;
+
+			//CurrY = Lerp(StartY, EndY, Ratio)​//CurrentY = lerp(StartY, EndY, Ratio);
+						//(B - A)      *     R + A
+			CurrentY = (EndY - StartY) * Ratio + StartY;
+
+			std::cout << "For loop of the OG" << std::endl;
+			std::cout << "CurrentX: " << CurrentX << " CurrentY: " << CurrentY << std::endl;
+			std::cout << "Convert2Dto1D(CurrentX, CurrentY, RasterWidth): " << Convert2Dto1D(CurrentX, CurrentY, RasterWidth) << std::endl;
+
+			//PlotPixel(CurrX, Floor(CurrY + 0.5))​
+			DrawPixel(Convert2Dto1D(CurrentX, CurrentY, RasterWidth), _color, PixelArry, ArrySize);
+		}
+	}
+	else {
+		/**/
+
+		//TODO: look at this later makes everything wonky
+
+		//FOR StartY to EndY​
+		for (int i = StartY; i < EndY; i++) {
+			CurrentY = i;
+
+			//Ratio = (CurrX – StartX) / ΔX ​//Ratio = (CurrentY - StartY) / Spots.slopeY;
+			Ratio = CurrentY / EndY;
+
+			//CurrY = Lerp(StartY, EndY, Ratio)
+						//(B - A)      *     R + A  //CurrentX = (EndX - StartX) * Ratio + StartX;
+
+			//          x =   P0_x + t * (P1_x - P0_x)
+			LinePoints.x1 = abs(StartX + Ratio * (EndX - StartX));
+			 
+			//y = P0_y + t * (P1_y - P0_y)
+			LinePoints.y1 = abs(StartX + Ratio * (EndY - StartY));
+
+			std::cout << "For loop of to fix straight" << std::endl;
+
+			//PlotPixel(CurrX, Floor(CurrY + 0.5))​ //Convert2Dto1D(CurrentX, CurrentY + 0.5, RasterWidth)
+			DrawPixel(Convert2Dto1D(LinePoints.x1, LinePoints.y1, RasterWidth) , _color, PixelArry, ArrySize); 
+		}
+
+	}
+
+
+
+	//OG copy
+	/*
 	//FOR StartX to EndX​
 	for (int i = StartX; i < EndX; i++) {
 		CurrentX = i;
@@ -120,11 +175,13 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 		Ratio = (CurrentX - StartX) / Spots.slopeX;
 
 		//CurrY = Lerp(StartY, EndY, Ratio)​//CurrentY = lerp(StartY, EndY, Ratio);
-		            //(B - A)      *     R + A
+					//(B - A)      *     R + A
 		CurrentY = (EndY - StartY) * Ratio + StartY;
 
+
 		//PlotPixel(CurrX, Floor(CurrY + 0.5))​
-		DrawPixel(Convert2Dto1D(CurrentX, CurrentY , RasterWidth) , _color, PixelArry, ArrySize);
+		DrawPixel(Convert2Dto1D(CurrentX, CurrentY, RasterWidth) , _color, PixelArry, ArrySize);
 	}
+	*/
 
 }
