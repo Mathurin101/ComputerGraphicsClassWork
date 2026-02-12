@@ -109,58 +109,36 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 	double StartY = CurrentY = Spots.y1;//A
 	double EndY = Spots.y2; //B
 	double EndX = Spots.x2;
-	double Ratio;
-	Points LinePoints;
+	double Steps;//bottom half of ratio
+	float IncrementX;
+	float IncrementY;
 
 	//Parametric Line Algorithm​
-	if (abs(EndX - StartX) > abs(EndY - StartY)) {
-		
-		//FOR StartX to EndX --OG​
-		for (int i = StartX; i < EndX; i++) {
-			CurrentX = i;
 
-			//Ratio = (CurrX – StartX) / ΔX ​
-			Ratio = (CurrentX - StartX) / Spots.slopeX;
-
-			//CurrY = Lerp(StartY, EndY, Ratio)​//CurrentY = lerp(StartY, EndY, Ratio);
-						//(B - A)      *     R + A
-			CurrentY = (EndY - StartY) * Ratio + StartY;
-
-			std::cout << "For loop of the OG" << std::endl;
-			std::cout << "CurrentX: " << CurrentX << " CurrentY: " << CurrentY << std::endl;
-			std::cout << "Convert2Dto1D(CurrentX, CurrentY, RasterWidth): " << Convert2Dto1D(CurrentX, CurrentY, RasterWidth) << std::endl;
-
-			//PlotPixel(CurrX, Floor(CurrY + 0.5))​
-			DrawPixel(Convert2Dto1D(CurrentX, CurrentY, RasterWidth), _color, PixelArry, ArrySize);
-		}
+	//Take the largest differnece
+	if (abs(Spots.deltaX) > abs(Spots.deltaY)) {
+		Steps = abs(Spots.deltaX);
 	}
 	else {
-		/**/
+		Steps = abs(Spots.deltaY);
+	}
 
-		//TODO: look at this later makes everything wonky
+	//get change of x and change of y per step​
+	IncrementX = Spots.deltaX / Steps;
+	IncrementY = Spots.deltaY / Steps;
 
-		//FOR StartY to EndY​
-		for (int i = StartY; i < EndY; i++) {
-			CurrentY = i;
 
-			//Ratio = (CurrX – StartX) / ΔX ​//Ratio = (CurrentY - StartY) / Spots.slopeY;
-			Ratio = CurrentY / EndY;
+	//FOR i to steps​
+	for (int i = 0; i < Steps; i++) {
 
-			//CurrY = Lerp(StartY, EndY, Ratio)
-						//(B - A)      *     R + A  //CurrentX = (EndX - StartX) * Ratio + StartX;
+		//PlotPixel(CurrX, Floor(CurrY + 0.5))​ //Convert2Dto1D(CurrentX, CurrentY + 0.5, RasterWidth)
+		DrawPixel(Convert2Dto1D(CurrentX, CurrentY, RasterWidth), _color, PixelArry, ArrySize);
 
-			//          x =   P0_x + t * (P1_x - P0_x)
-			LinePoints.x1 = abs(StartX + Ratio * (EndX - StartX));
-			 
-			//y = P0_y + t * (P1_y - P0_y)
-			LinePoints.y1 = abs(StartX + Ratio * (EndY - StartY));
+		// Increment the current x  
+		CurrentX = CurrentX + IncrementX;
 
-			std::cout << "For loop of to fix straight" << std::endl;
-
-			//PlotPixel(CurrX, Floor(CurrY + 0.5))​ //Convert2Dto1D(CurrentX, CurrentY + 0.5, RasterWidth)
-			DrawPixel(Convert2Dto1D(LinePoints.x1, LinePoints.y1, RasterWidth) , _color, PixelArry, ArrySize); 
-		}
-
+		// Increment the current y 
+		CurrentY = CurrentY + IncrementY;
 	}
 
 
@@ -172,7 +150,7 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 		CurrentX = i;
 
 		//Ratio = (CurrX – StartX) / ΔX ​
-		Ratio = (CurrentX - StartX) / Spots.slopeX;
+		Ratio = (CurrentX - StartX) / Spots.deltaX;
 
 		//CurrY = Lerp(StartY, EndY, Ratio)​//CurrentY = lerp(StartY, EndY, Ratio);
 					//(B - A)      *     R + A

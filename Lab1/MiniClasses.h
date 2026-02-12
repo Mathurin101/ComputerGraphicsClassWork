@@ -22,8 +22,8 @@ struct Points {
 	int x2;
 	int y2;
 	int slope;
-	int slopeX;
-	int slopeY;
+	int deltaX;
+	int deltaY;
 
 	Points() {
 		x1 = 0;
@@ -31,17 +31,17 @@ struct Points {
 		x2 = 0;
 		y2 = 0;
 		slope = 0;
-		slopeX = 0;
-		slopeY = 0;
+		deltaX = 0;
+		deltaY = 0;
 	}
 
-
+	//TOD: change slope to deltaX and deltaY
 	Points(int _x1, int _y1, int _x2 = 0, int _y2 = 0) {
 		x1 = _x1;	 x2 = _x2;
 		y1 = _y1;	 y2 = _y2;	
-		slopeY = (y2 - y1);
-		slopeX = (x2 - x1);
-		//slope = slopeY / slopeX;
+		deltaY = (y2 - y1);
+		deltaX = (x2 - x1);
+		//slope = deltaY / deltaX;
 	}
 
 	

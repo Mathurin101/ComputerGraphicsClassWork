@@ -37,7 +37,7 @@ int main()
 	 
 	Points OuterLine2(100, 160, 100, 240);// |
 	
-	Points OuterLine3(345, 240, 345, 160);//     |     
+	Points OuterLine3(340, 240, 340, 160);//     |     
 
 	Points OuterLine4(180, 300, 260, 300);//   _
 	Points OuterLine5(100, 160, 180, 100);// /
@@ -80,8 +80,8 @@ int main()
 		ParametricLineFunction(OuterLine1, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
 		ParametricLineFunction(OuterLine4, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
 		
-		ParametricLineFunction(OuterLine2, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
 		//up and down lines -- doesn't work  
+		ParametricLineFunction(OuterLine2, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
 		ParametricLineFunction(OuterLine3, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
 		
 		
