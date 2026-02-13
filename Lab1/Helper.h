@@ -115,7 +115,7 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 
 	//Parametric Line Algorithm​
 
-	//Take the largest differnece
+	//Take the largest difference
 	if (abs(Spots.deltaX) > abs(Spots.deltaY)) {
 		Steps = abs(Spots.deltaX);
 	}
@@ -162,4 +162,31 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 	}
 	*/
 
+}
+
+Matrix4x4 MultiplyMatrixByMatrix(Vertex& matrix1, Vertex& matrix2)
+{
+	Matrix4x4 mOutput;
+
+	mOutput.xx = matrix1.x * matrix2.x;
+	mOutput.xy = matrix1.x * matrix2.y;
+	mOutput.xz = matrix1.x * matrix2.z;
+	mOutput.xw = matrix1.x * matrix2.w;
+	
+	mOutput.yx = matrix1.y * matrix2.x;
+	mOutput.yy = matrix1.y * matrix2.y;
+	mOutput.yz = matrix1.y * matrix2.z;
+	mOutput.yw = matrix1.y * matrix2.w;
+	
+	mOutput.zx = matrix1.z * matrix2.x;
+	mOutput.zy = matrix1.z * matrix2.y;
+	mOutput.zz = matrix1.z * matrix2.z;
+	mOutput.zw = matrix1.z * matrix2.w;
+	
+	mOutput.wx = matrix1.w * matrix2.x;
+	mOutput.wy = matrix1.w * matrix2.y;
+	mOutput.wz = matrix1.w * matrix2.z;
+	mOutput.ww = matrix1.w * matrix2.w;
+	
+	return mOutput;
 }

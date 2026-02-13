@@ -1,6 +1,6 @@
 #pragma once
 
-struct Position 
+struct Position
 {
 	int x;
 	int y;
@@ -11,9 +11,9 @@ struct Position
 
 
 	Position(int _x, int _y, int _width = 0, int _height = 0) {
-		x = _x;  width = _width; 
+		x = _x;  width = _width;
 		y = _y; height = _height;
-	}							 
+	}
 };
 
 struct Points {
@@ -38,13 +38,13 @@ struct Points {
 	//TOD: change slope to deltaX and deltaY
 	Points(int _x1, int _y1, int _x2 = 0, int _y2 = 0) {
 		x1 = _x1;	 x2 = _x2;
-		y1 = _y1;	 y2 = _y2;	
+		y1 = _y1;	 y2 = _y2;
 		deltaY = (y2 - y1);
 		deltaX = (x2 - x1);
 		//slope = deltaY / deltaX;
 	}
 
-	
+
 };
 
 struct PColor {
@@ -75,7 +75,70 @@ struct PColor {
 		color |= (R << 16);
 		color |= (G << 8);
 		color |= B;
-		
+
 		return color;
-	}	
+	}
 };
+
+
+struct Vertex
+{
+	Vertex() {
+	}
+	PColor color;
+    union
+    {
+        struct
+        {
+			float xyzw[4];
+        };
+        struct
+        {
+            float x;
+            float y;
+            float z;
+            float w;
+        };
+    };
+};
+
+
+struct Matrix4x4
+{
+	Matrix4x4() {
+	}
+	union
+	{
+		struct
+		{
+			float Varray[16]{0};
+		};
+		struct
+		{
+			float  xx;
+			float  xy;
+			float  xz;
+			float  xw;
+			float  yx;
+			float  yy;
+			float  yz;
+			float  yw;
+			float  zx;
+			float  zy;
+			float  zz;
+			float  zw;
+			float  wx;
+			float  wy;
+			float  wz;
+			float  ww;
+		};
+		struct
+		{
+			Vertex AxisX;
+			Vertex AxisY;
+			Vertex AxisZ;
+			Vertex AxisW;
+		};
+
+		
+	};
