@@ -57,6 +57,9 @@ int main()
 
 	};
 
+	Points LineLine;
+	Points OnePoint;
+
 	//will print on the screen
 	do {
 		
@@ -77,7 +80,7 @@ int main()
 		
 		//DrawPixel(int ArrySpot, PColor color, unsigned int* PixelArry, int ArrySize)
 
-		//NDCtoScreen(float x, float y, float Width, float Height)
+		//NDCtoScreen(float x, float y, float Width, float Height) or (Vertex NDC, float Width, float Height)
 
 		for (int i = 0; i < 4; i++) {
 
@@ -86,7 +89,18 @@ int main()
 
 			// make a line() using NDC for start and end
 			// aka Line(NDCTToScreen(start), NDCToScreen(end)) or aka Line(NDCTToScreen(A), NDCToScreen(B))
+			//Points(NDCtoScreen(FrontCube[0], PixelWidth, PixelHeight).x1, NDCtoScreen(FrontCube[0], PixelWidth, PixelHeight).y1,
+				//NDCtoScreen(FrontCube[1], PixelWidth, PixelHeight).x1, NDCtoScreen(FrontCube[1], PixelWidth, PixelHeight).y1);
+			
 			// then use that line in drawline
+			//ParametricLineFunction(Points(NDCtoScreen(FrontCube[0], PixelWidth, PixelHeight).x1, NDCtoScreen(FrontCube[0], PixelWidth, PixelHeight).y1,
+			//	NDCtoScreen(FrontCube[1], PixelWidth, PixelHeight).x1, NDCtoScreen(FrontCube[1], PixelWidth, PixelHeight).y1),
+			//	ColorGreen, TotalPixels, MaxPixels, PixelWidth);
+
+			ParametricLineFunction(Points(NDCtoScreen(FrontCube[i], PixelWidth, PixelHeight).x1, NDCtoScreen(FrontCube[i], PixelWidth, PixelHeight).y1,
+				NDCtoScreen(FrontCube[i+1], PixelWidth, PixelHeight).x1, NDCtoScreen(FrontCube[i+1], PixelWidth, PixelHeight).y1),
+				ColorGreen, TotalPixels, MaxPixels, PixelWidth);
+
 
 
 			//ParametricLineFunction(NDCtoScreen(CubeLines[i], PixelWidth, PixelHeight), ColorGreen, TotalPixels, MaxPixels, PixelWidth);

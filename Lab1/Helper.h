@@ -179,5 +179,5 @@ Points NDCtoScreen(Vertex NDC, float Width, float Height) {
 	float SceenX1 = ((NDC.x + 1) / 2) * Width;	
 	float SceenY1 = ((1 - NDC.y) / 2) * Height;	
 
-	return Points(SceenX1, SceenY1, SceenX2, SceenY2);
+	return Points(SceenX1, SceenY1);
 }
