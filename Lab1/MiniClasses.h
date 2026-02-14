@@ -83,35 +83,43 @@ struct PColor {
 
 struct Vertex
 {
-	Vertex() {
-	}
+
 	PColor color;
-    union
-    {
-        struct
-        {
+	union
+	{
+		struct
+		{
 			float xyzw[4];
-        };
-        struct
-        {
-            float x;
-            float y;
-            float z;
-            float w;
-        };
-    };
+		};
+		struct
+		{
+			float x;
+			float y;
+			float z;
+			float w;
+		};
+	};
+
+	Vertex() {
+		for (int i = 0; i < 4; i++) {
+			xyzw[i] = 0;
+		}
+	}
+	Vertex(float _x, float _y, float _z, float _w = 1.0f) {
+		x = _x; y = _y; z = _z; w = _w;
+	}
+
+
 };
 
 
 struct Matrix4x4
 {
-	Matrix4x4() {
-	}
 	union
 	{
 		struct
 		{
-			float Varray[16]{0};
+			float Varray[16]{ 0 };
 		};
 		struct
 		{
@@ -140,5 +148,12 @@ struct Matrix4x4
 			Vertex AxisW;
 		};
 
-		
 	};
+	Matrix4x4() {
+		for (int i = 0; i < 16; i++) {
+			Varray[i] = 0;
+		}
+
+	};
+
+};

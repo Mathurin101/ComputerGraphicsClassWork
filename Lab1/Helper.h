@@ -3,6 +3,11 @@
 #include "tiles_12.h"
 #include <iostream>
 
+static const unsigned int Red   = 0xFFFF0000;
+static const unsigned int Green = 0xFF00FF00;
+static const unsigned int Blue  = 0xFF0000FF;
+
+
 // A function to clear the color buffer to a solid color of your choice.
 void CCBuffer(PColor color, unsigned int* PixelArry, int ArrySize) {
 
@@ -101,7 +106,6 @@ void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTe
 	}
 }
 
-
 void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry, int ArrySize, int RasterWidth) {
 	double CurrentX;
 	double CurrentY;
@@ -190,3 +194,4 @@ Matrix4x4 MultiplyMatrixByMatrix(Vertex& matrix1, Vertex& matrix2)
 	
 	return mOutput;
 }
+

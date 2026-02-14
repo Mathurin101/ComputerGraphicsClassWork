@@ -29,69 +29,38 @@ int main()
 	Points Line( 32, 54, 63, 79);
 	PColor ColorOG(0xFF8e6acc);//purple
 
+	//1) Before your while-loop, initialize the verts of the cube and store them in an array.
+	// -x = left, +x = right
+	// -y = down, +y = up
+	// -z = near, +z = far
 
-	
-	PColor ColorRED(0xFFFF0000);//red
-				//		x,   y,   x,   y
-	Points OuterLine1(180, 100, 260, 100);//   -
-	 
-	Points OuterLine2(100, 160, 100, 240);// |
-	
-	Points OuterLine3(340, 240, 340, 160);//     |     
+	Vertex FrontCube[8] = {
+		//front square
+			    //  x,      y,     z 
+		Vertex(-0.25f,  0.25f, -0.25f),//   top left
+		Vertex( 0.25f,  0.25f, -0.25f),//   top right
+		Vertex(-0.25f, -0.25f, -0.25f),//bottom left
+		Vertex( 0.25f, -0.25f, -0.25f),//bottom right
 
-	Points OuterLine4(180, 300, 260, 300);//   _
-	Points OuterLine5(100, 160, 180, 100);// /
-	Points OuterLine6(260, 100, 340, 160);//     \        //
-	Points OuterLine7(100, 240, 180, 300);//  \           //
-	Points OuterLine8(260, 300, 340, 240);//     /
-	//	  _______
-	//	 /	   	 \
-	//  /         \
- // // |           |
-    // |           |
-	//  \         /
-	//	 \_______/
-	//
-	PColor ColorLightBlue(0xFFADD8E6);//LightBlue
-	Points InnerLine1(180, 100, 260, 300);
-	
-	PColor ColorMarigold(0xFFEAA221);//Marigold
-	Points InnerLine2(180, 300, 260, 100);
-	//
-	PColor ColorLilac(0xFFE6DAF0);//Lilac
-	Points InnerLine3(100, 160, 340, 240);
-	//
-	PColor ColorPastelYellow(0xFFFDFD96);//Pastel Yellow
-	Points InnerLine4(100, 240, 340, 160);
-	
+		//back square
+		Vertex(-0.25f,  0.25f, 0.25f),//   top left
+		Vertex( 0.25f,  0.25f, 0.25f),//   top right
+		Vertex(-0.25f, -0.25f, 0.25f),//bottom left
+		Vertex( 0.25f, -0.25f, 0.25f),//bottom right
+	};
+
+
+
+
+	//2) Inside your while-loop, convert all the verts of the cube .....
+	//.....from NDC coordinates to pixel-coordinate, using a function you write (NDCtoScreen()).
+
+	//3) Also inside the while-loop, pass the converted screen-space pixel coordinates to.....
+	//.....your DrawLine() function to connect them.
+
 	//will print on the screen
 	do {
 		
-		//ParametricLineFunction(Line, ColorOG, TotalPixels, MaxPixels, RasterPos.width);
-
-
-		//border angles
-		ParametricLineFunction(OuterLine5, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
-		ParametricLineFunction(OuterLine6, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
-		ParametricLineFunction(OuterLine7, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
-		ParametricLineFunction(OuterLine8, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
-		
-		//straight lines - left to right
-		ParametricLineFunction(OuterLine1, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
-		ParametricLineFunction(OuterLine4, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
-		
-		//up and down lines -- doesn't work  
-		ParametricLineFunction(OuterLine2, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
-		ParametricLineFunction(OuterLine3, ColorRED, TotalPixels, MaxPixels, RasterPos.width);
-		
-		
-		
-		//lines crossing
-		ParametricLineFunction(InnerLine1, ColorLightBlue, TotalPixels, MaxPixels, RasterPos.width);
-		ParametricLineFunction(InnerLine2, ColorMarigold, TotalPixels, MaxPixels, RasterPos.width);
-		ParametricLineFunction(InnerLine3, ColorLilac, TotalPixels, MaxPixels, RasterPos.width);
-		ParametricLineFunction(InnerLine4, ColorPastelYellow, TotalPixels, MaxPixels, RasterPos.width);
-
 
 
 	} while (RS_Update(TotalPixels, MaxPixels));
