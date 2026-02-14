@@ -3,9 +3,9 @@
 #include "tiles_12.h"
 #include <iostream>
 
-static const unsigned int Red   = 0xFFFF0000;
-static const unsigned int Green = 0xFF00FF00;
-static const unsigned int Blue  = 0xFF0000FF;
+static const unsigned int _Red   = 0xFFFF0000;
+static const unsigned int _Green = 0xFF00FF00;
+static const unsigned int _Blue  = 0xFF0000FF;
 
 
 // A function to clear the color buffer to a solid color of your choice.
@@ -143,29 +143,9 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 
 		// Increment the current y 
 		CurrentY = CurrentY + IncrementY;
+
+		std::cout << "CurrentX: " << CurrentX << "\nCurrentY: " << CurrentY << std::endl;
 	}
-
-
-
-	//OG copy
-	/*
-	//FOR StartX to EndX​
-	for (int i = StartX; i < EndX; i++) {
-		CurrentX = i;
-
-		//Ratio = (CurrX – StartX) / ΔX ​
-		Ratio = (CurrentX - StartX) / Spots.deltaX;
-
-		//CurrY = Lerp(StartY, EndY, Ratio)​//CurrentY = lerp(StartY, EndY, Ratio);
-					//(B - A)      *     R + A
-		CurrentY = (EndY - StartY) * Ratio + StartY;
-
-
-		//PlotPixel(CurrX, Floor(CurrY + 0.5))​
-		DrawPixel(Convert2Dto1D(CurrentX, CurrentY, RasterWidth) , _color, PixelArry, ArrySize);
-	}
-	*/
-
 }
 
 Matrix4x4 MultiplyMatrixByMatrix(Vertex& matrix1, Vertex& matrix2)
@@ -195,3 +175,9 @@ Matrix4x4 MultiplyMatrixByMatrix(Vertex& matrix1, Vertex& matrix2)
 	return mOutput;
 }
 
+Points NDCtoScreen(Vertex NDC, float Width, float Height) {
+	float SceenX1 = ((NDC.x + 1) / 2) * Width;	
+	float SceenY1 = ((1 - NDC.y) / 2) * Height;	
+
+	return Points(SceenX1, SceenY1, SceenX2, SceenY2);
+}

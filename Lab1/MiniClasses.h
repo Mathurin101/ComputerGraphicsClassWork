@@ -44,7 +44,6 @@ struct Points {
 		//slope = deltaY / deltaX;
 	}
 
-
 };
 
 struct PColor {
@@ -119,7 +118,7 @@ struct Matrix4x4
 	{
 		struct
 		{
-			float Varray[16]{ 0 };
+			float Varray[16];
 		};
 		struct
 		{
