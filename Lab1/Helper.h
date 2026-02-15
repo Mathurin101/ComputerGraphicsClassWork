@@ -157,7 +157,7 @@ Points NDCtoScreen(Vertex NDC, float Width, float Height) {
 Matrix4x4 IdentityMatrix() {
 
 	Matrix4x4 Ident
-	(1, 0, 0, 0,
+	   (1, 0, 0, 0,
 		0, 1, 0, 0,
 		0, 0, 1, 0,
 		0, 0, 0, 1);
@@ -168,10 +168,10 @@ Matrix4x4 IdentityMatrix() {
 Matrix4x4 TranslationMatrix(float x, float y, float z) {
 
 	Matrix4x4 Translation
-	(1, 0, 0, 0,
-		0, 1, 0, 0,
-		0, 0, 1, 0,
-		x, y, z, 1);
+	      (1, 0, 0, x,   // (1, 0, 0, 0,     //1, 0, 0, x,
+		   0, 1, 0, y,	  //0, 1, 0, 0,		 //0, 1, 0, y,
+		   0, 0, 1, z,	  //0, 0, 1, 0,		 //0, 0, 1, z,
+		   0, 0, 0, 1 );  //x, y, z, 1 );	 //0, 0, 0, 1 
 
 	return Translation;
 }

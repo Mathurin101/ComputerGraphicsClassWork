@@ -24,14 +24,14 @@ Vertex FrontCube[8] = {
 	//front square
 			//  x,      y,     z 
 	Vertex(-0.25f,  0.25f, -0.25f),//   top left  = 0
-	Vertex(0.25f,  0.25f, -0.25f),//   top right = 1
-	Vertex(0.25f, -0.25f, -0.25f),//bottom right = 2
+	Vertex( 0.25f,  0.25f, -0.25f),//   top right = 1
+	Vertex( 0.25f, -0.25f, -0.25f),//bottom right = 2
 	Vertex(-0.25f, -0.25f, -0.25f),//bottom left  = 3
 
 	//back square
 	Vertex(-0.25f,  0.25f, 0.25f),//   top left  = 4
-	Vertex(0.25f,  0.25f, 0.25f),//   top right = 5
-	Vertex(0.25f, -0.25f, 0.25f),//bottom right = 6
+	Vertex( 0.25f,  0.25f, 0.25f),//   top right = 5
+	Vertex( 0.25f, -0.25f, 0.25f),//bottom right = 6
 	Vertex(-0.25f, -0.25f, 0.25f),//bottom left  = 7
 };
 
@@ -133,7 +133,7 @@ int main()
 	VertexShader = VS_WVP;
 
 	Matrix4x4 GridWorld = IdentityMatrix();
-	Matrix4x4 CubeWorld = TranslationMatrix(0, 0, 0);
+	Matrix4x4 CubeWorld = TranslationMatrix(0, 0.25f, 0);
 
 	//will print on the screen
 	do {
@@ -164,7 +164,8 @@ void DrawCube() {
 
 		VS_WVP(*FrontCube);
 
-		ParametricLineFunction(Points(NDCtoScreen(FrontCube[i], PixelWidth, PixelHeight).x1,
+		ParametricLineFunction(
+	 Points(NDCtoScreen(FrontCube[i], PixelWidth, PixelHeight).x1,
 			NDCtoScreen(FrontCube[i], PixelWidth, PixelHeight).y1,
 			NDCtoScreen(FrontCube[i + 1], PixelWidth, PixelHeight).x1,
 			NDCtoScreen(FrontCube[i + 1], PixelWidth, PixelHeight).y1),
