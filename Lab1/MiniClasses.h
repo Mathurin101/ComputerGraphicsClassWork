@@ -155,4 +155,18 @@ struct Matrix4x4
 
 	};
 
+	Matrix4x4(float _xx, float _xy, float _xz, float _xw, 
+		      float _yx, float _yy, float _yz, float _yw, 
+			  float _zx, float _zy, float _zz, float _zw, 
+			  float _wx, float _wy, float _wz, float _ww) {
+		
+		xx = _xx; xy = _xy; xz = _xz; xw = _xw;
+		yx = _yx; yy = _yy; yz = _yz; yw = _yw;
+		zx = _zx; zy = _zy; zz = _zz; zw = _zw;
+		wx = _wx; wy = _wy; wz = _wz; ww = _ww;
+
+	};
+
+
+
 };

@@ -146,36 +146,32 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 	}
 }
 
-Matrix4x4 MultiplyMatrixByMatrix(Vertex& matrix1, Vertex& matrix2)
-{
-	Matrix4x4 mOutput;
-
-	mOutput.xx = matrix1.x * matrix2.x;
-	mOutput.xy = matrix1.x * matrix2.y;
-	mOutput.xz = matrix1.x * matrix2.z;
-	mOutput.xw = matrix1.x * matrix2.w;
-	
-	mOutput.yx = matrix1.y * matrix2.x;
-	mOutput.yy = matrix1.y * matrix2.y;
-	mOutput.yz = matrix1.y * matrix2.z;
-	mOutput.yw = matrix1.y * matrix2.w;
-	
-	mOutput.zx = matrix1.z * matrix2.x;
-	mOutput.zy = matrix1.z * matrix2.y;
-	mOutput.zz = matrix1.z * matrix2.z;
-	mOutput.zw = matrix1.z * matrix2.w;
-	
-	mOutput.wx = matrix1.w * matrix2.x;
-	mOutput.wy = matrix1.w * matrix2.y;
-	mOutput.wz = matrix1.w * matrix2.z;
-	mOutput.ww = matrix1.w * matrix2.w;
-	
-	return mOutput;
-}
 
 Points NDCtoScreen(Vertex NDC, float Width, float Height) {
 	float SceenX1 = ((NDC.x + 1) / 2) * Width;	
 	float SceenY1 = ((1 - NDC.y) / 2) * Height;	
 
 	return Points(SceenX1, SceenY1);
+}
+
+Matrix4x4 IdentityMatrix() {
+
+	Matrix4x4 Ident
+	(1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1);
+
+	return Ident;
+}
+
+Matrix4x4 TranslationMatrix(float x, float y, float z) {
+
+	Matrix4x4 Translation
+	(1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		x, y, z, 1);
+
+	return Translation;
 }
