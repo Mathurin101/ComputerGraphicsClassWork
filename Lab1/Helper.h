@@ -143,8 +143,6 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 
 		// Increment the current y 
 		CurrentY = CurrentY + IncrementY;
-
-		std::cout << "CurrentX: " << CurrentX << "\nCurrentY: " << CurrentY << std::endl;
 	}
 }
 
