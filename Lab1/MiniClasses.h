@@ -82,8 +82,6 @@ struct PColor {
 
 struct Vertex
 {
-
-	PColor color;
 	union
 	{
 		struct
@@ -98,7 +96,6 @@ struct Vertex
 			float w;
 		};
 	};
-
 	Vertex() {
 		for (int i = 0; i < 4; i++) {
 			xyzw[i] = 0;
@@ -126,14 +123,17 @@ struct Matrix4x4
 			float  xy;
 			float  xz;
 			float  xw;
+
 			float  yx;
 			float  yy;
 			float  yz;
 			float  yw;
+			
 			float  zx;
 			float  zy;
 			float  zz;
 			float  zw;
+			
 			float  wx;
 			float  wy;
 			float  wz;

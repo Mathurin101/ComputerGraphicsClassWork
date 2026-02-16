@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "MiniClasses.h"
 #include "tiles_12.h"
+#include "Shaders.h"
 #include <iostream>
 
 static const unsigned int _Red   = 0xFFFF0000;
@@ -107,13 +108,13 @@ void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTe
 }
 
 void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry, int ArrySize, int RasterWidth) {
-	double CurrentX;
-	double CurrentY;
-	double StartX = CurrentX = Spots.x1;
-	double StartY = CurrentY = Spots.y1;//A
-	double EndY = Spots.y2; //B
-	double EndX = Spots.x2;
-	double Steps;//bottom half of ratio
+	float CurrentX;
+	float CurrentY;
+	float StartX = CurrentX = Spots.x1;
+	float StartY = CurrentY = Spots.y1;//A
+	float EndY = Spots.y2; //B
+	float EndX = Spots.x2;
+	float Steps;//bottom half of ratio
 	float IncrementX;
 	float IncrementY;
 
@@ -148,8 +149,8 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 
 
 Points NDCtoScreen(Vertex NDC, float Width, float Height) {
-	float SceenX1 = ((NDC.x + 1) / 2) * Width;	
-	float SceenY1 = ((1 - NDC.y) / 2) * Height;	
+	float SceenX1 = ((NDC.x + 1) * (Width / 2));
+	float SceenY1 = ((1 - NDC.y) * (Height / 2));
 
 	return Points(SceenX1, SceenY1);
 }
@@ -167,11 +168,97 @@ Matrix4x4 IdentityMatrix() {
 
 Matrix4x4 TranslationMatrix(float x, float y, float z) {
 
-	Matrix4x4 Translation
-	      (1, 0, 0, x,   // (1, 0, 0, 0,     //1, 0, 0, x,
-		   0, 1, 0, y,	  //0, 1, 0, 0,		 //0, 1, 0, y,
-		   0, 0, 1, z,	  //0, 0, 1, 0,		 //0, 0, 1, z,
-		   0, 0, 0, 1 );  //x, y, z, 1 );	 //0, 0, 0, 1 
+	Matrix4x4 Translation 
+	(1, 0, 0, 0,            
+	 0, 1, 0, 0,	        
+	 0, 0, 1, 0,	        
+	 x, y, z, 1 );   
 
 	return Translation;
+}
+
+float DegreesToRadians(float Degrees) {
+	return   (Degrees * (3.14f / 180.0f));
+}
+
+Matrix4x4 RotateY(float x) {
+	float y = DegreesToRadians(x);
+
+
+	Matrix4x4 Rotate
+  (cosf(y),  0, sinf(y), 0,
+		0,   1,       0, 0,
+  -sinf(y),  0, cosf(y), 0,
+		0,   0,       0, 1);
+			  
+	return Rotate;
+}
+
+Matrix4x4 RotateX(float x) {
+	float y = DegreesToRadians(x);
+
+
+	Matrix4x4 Rotate
+	   (1, 0, 0, 0,
+		0, cosf(y), -sinf(y), 0,
+		0, sinf(y), cosf(y), 0,
+		0, 0, 0, 1);
+
+	return Rotate;
+}
+
+Matrix4x4 RotateZ(float x) {
+	float y = DegreesToRadians(x);
+
+
+	Matrix4x4 Rotate
+		(cosf(y), -sinf(y), 0, 0,
+		 sinf(y),  cosf(y), 0, 0,
+		      0,       0, 1, 0,
+		      0,       0, 0, 1);
+
+	return Rotate;
+}
+
+Matrix4x4 Transpose(const Matrix4x4& mIn) {
+	Matrix4x4 Trans;
+	Trans.xx = mIn.xx; Trans.xy = mIn.yx; Trans.xz = mIn.zx; Trans.xw = mIn.wx;
+	Trans.yx = mIn.xy; Trans.yy = mIn.yy; Trans.yz = mIn.zy; Trans.yw = mIn.wy;
+	Trans.zx = mIn.xz; Trans.zy = mIn.yz; Trans.zz = mIn.zz; Trans.zw = mIn.wz;
+	Trans.wx = mIn.xw; Trans.wy = mIn.yw; Trans.wz = mIn.zw; Trans.ww = mIn.ww;
+	return Trans;
+}
+
+Matrix4x4 OrthonormalInverse(const Matrix4x4& mIn)
+{
+	Matrix4x4 Inverse;
+
+	Inverse = Transpose(mIn);
+	//set default 0.0s and 1.0s for the.w components of m;
+	
+	// calculate new position:
+	Inverse.AxisW.x = -DotProduct(mIn.AxisX, mIn.AxisW);
+	Inverse.AxisW.y = -DotProduct(mIn.AxisY, mIn.AxisW);
+	Inverse.AxisW.z = -DotProduct(mIn.AxisZ, mIn.AxisW);
+
+	return Inverse;
+}
+
+Matrix4x4 PerspectiveProjection(float FOV, float Ratio, float Near, float Far) {
+	float FOVRad = DegreesToRadians(FOV);
+	float Yscale = 1 / tanf(FOVRad / 2);
+	float Xscale = Yscale * Ratio;
+	float Zdifference = -(Far * Near) / (Far - Near);
+	float Zdif = Far / (Far - Near);
+
+
+
+	Matrix4x4 DoubleP(
+   Xscale,      0,           0, 0,
+		0, Yscale,           0, 0,
+		0,      0,        Zdif, 1,
+		0,      0, Zdifference, 0
+	);
+
+	return DoubleP;
 }
