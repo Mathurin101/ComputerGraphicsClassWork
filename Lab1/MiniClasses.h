@@ -79,7 +79,6 @@ struct PColor {
 	}
 };
 
-
 struct Vertex
 {
 	union
@@ -107,7 +106,6 @@ struct Vertex
 
 
 };
-
 
 struct Matrix4x4
 {
@@ -170,3 +168,4 @@ struct Matrix4x4
 
 
 };
+

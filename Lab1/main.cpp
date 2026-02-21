@@ -9,13 +9,23 @@
 #include <iostream>
 
 const char* Name = "MathurinGenty_Line Drawing";
-const unsigned int PixelWidth = 500;
+const unsigned int PixelWidth = 600;
 const unsigned int PixelHeight = 500;
 
 const unsigned int MaxPixels = PixelWidth * PixelHeight;
 
 unsigned int TotalPixels[MaxPixels];
 
+enum FrontCubeE {
+	topLeftF,
+	topRightF,
+	bottomRightF,
+	bottomLeftF,
+	topLeftB,
+	topRightB,
+	bottomRightB,
+	bottomLeftB,
+};
 
 
 Vertex FrontCube[8] = {
@@ -123,6 +133,8 @@ void DrawGrid();
 PColor ColorGreen(0xFF123524);//green
 PColor ColorWhite(0xFFFFFFFF);//white
 
+
+
 int main()
 {
 	XTime Time;
@@ -143,15 +155,15 @@ int main()
 
 	Matrix4x4 CubeWorld = TranslationMatrix(0, 0.25f, 0);
 	Matrix4x4 view = MultiplyMatrixByMatrix(TranslationMatrix(0, 0, -1), RotateX(-18));
-	Matrix4x4 Projection = PerspectiveProjection(90, PixelWidth/ PixelHeight, 0.1f, 10);
+	Matrix4x4 Projection = PerspectiveProjection(90, (float)PixelHeight  / PixelWidth, 0.1f, 10);
 	view = OrthonormalInverse(view);
 	VS_View = view;
 	VS_Projection = Projection;
 	//will print on the screen
 	do {
-	/**/
+		/**/
 		CCBuffer(0xFF000000, TotalPixels, MaxPixels);
-		
+
 		VS_World = GridWorld;
 		DrawGrid();
 
@@ -179,6 +191,7 @@ void DrawCube() {
 		VS_WVP(NewVert[i]);
 	}
 
+	/**/
 	Points ArrayPoints[12] = {
 
 		//front top                   left     to         right
@@ -216,22 +229,23 @@ void DrawCube() {
 										NDCtoScreen(NewVert[6], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[6], PixelWidth, PixelWidth).y1),
 
 
-										//connecting top left cornners 
+										//connecting top left cornners
 										Points(NDCtoScreen(NewVert[0], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[0], PixelWidth, PixelWidth).y1,
 											NDCtoScreen(NewVert[4], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[4], PixelWidth, PixelWidth).y1),
 
-											//connecting top right cornners 
+											//connecting top right cornners
 											Points(NDCtoScreen(NewVert[1], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[1], PixelWidth, PixelWidth).y1,
 												NDCtoScreen(NewVert[5], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[5], PixelWidth, PixelWidth).y1),
 
-												//connecting bottom left cornners 
+												//connecting bottom left cornners
 												Points(NDCtoScreen(NewVert[3], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[3], PixelWidth, PixelWidth).y1,
 													NDCtoScreen(NewVert[7], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[7], PixelWidth, PixelWidth).y1),
 
-													//connecting bottom right cornners 
+													//connecting bottom right cornners
 													Points(NDCtoScreen(NewVert[2], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[2], PixelWidth, PixelWidth).y1,
 														NDCtoScreen(NewVert[6], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[6], PixelWidth, PixelWidth).y1),
 	};
+
 
 	for (int i = 0; i < 12; i++) {
 		ParametricLineFunction(ArrayPoints[i], ColorGreen, TotalPixels, MaxPixels, PixelWidth);
@@ -242,13 +256,13 @@ void DrawGrid() {
 	//made a copy
 	Vertex NewVertGrid[44];
 
-
 	for (int i = 0; i < 44; i++) {
 		NewVertGrid[i] = Grid[i];
 		VS_WVP(NewVertGrid[i]);
 	}
 
 
+	//43 all together
 	Points ArrayPointGrids[22] = {
 		Points(NDCtoScreen(NewVertGrid[0], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[0], PixelWidth, PixelWidth).y1,
 			NDCtoScreen(NewVertGrid[1], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[1], PixelWidth, PixelWidth).y1),
@@ -331,11 +345,12 @@ void DrawGrid() {
 			//40 41
 			Points(NDCtoScreen(NewVertGrid[40], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[40], PixelWidth, PixelWidth).y1,
 			NDCtoScreen(NewVertGrid[41], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[41], PixelWidth, PixelWidth).y1),
-			
+
 			//42 43
 			Points(NDCtoScreen(NewVertGrid[42], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[42], PixelWidth, PixelWidth).y1,
 			NDCtoScreen(NewVertGrid[43], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[43], PixelWidth, PixelWidth).y1)
 	};
+
 
 	for (int i = 0; i < 22; i++) {
 
