@@ -1,4 +1,5 @@
-#pragma once
+﻿#pragma once
+#include "Helper.h"
 
 struct Position
 {
@@ -126,12 +127,12 @@ struct Matrix4x4
 			float  yy;
 			float  yz;
 			float  yw;
-			
+
 			float  zx;
 			float  zy;
 			float  zz;
 			float  zw;
-			
+
 			float  wx;
 			float  wy;
 			float  wz;
@@ -153,11 +154,11 @@ struct Matrix4x4
 
 	};
 
-	Matrix4x4(float _xx, float _xy, float _xz, float _xw, 
-		      float _yx, float _yy, float _yz, float _yw, 
-			  float _zx, float _zy, float _zz, float _zw, 
-			  float _wx, float _wy, float _wz, float _ww) {
-		
+	Matrix4x4(float _xx, float _xy, float _xz, float _xw,
+		float _yx, float _yy, float _yz, float _yw,
+		float _zx, float _zy, float _zz, float _zw,
+		float _wx, float _wy, float _wz, float _ww) {
+
 		xx = _xx; xy = _xy; xz = _xz; xw = _xw;
 		yx = _yx; yy = _yy; yz = _yz; yw = _yw;
 		zx = _zx; zy = _zy; zz = _zz; zw = _zw;
@@ -172,16 +173,33 @@ struct Matrix4x4
 struct BarycentricCoord {
 	union {
 		struct {
-			float ABY[3];
+			float bya[3];
 		};
 		struct {
-			float Alpha;
 			float Beta;
 			float Gamma;//y
+			float Alpha;
 		};
 	};
+	
 	BarycentricCoord(float _Alpha = 0, float _Beta = 0, float _Gamma = 0) {
 		Alpha = _Alpha; Beta = _Beta; Gamma = _Gamma;
 	}
 
+	BarycentricCoord FindBarycentric(float pointX, float pointY) {
+
+		BarycentricCoord Three;
+
+		Three.Beta = ImplicitLineEquation(pointB, Points(pointA.x, pointA.y, pointC.x, pointC.y));
+		Three.Gamma = ImplicitLineEquation(pointC, Points(pointB.x, pointB.y, pointA.x, pointA.y));
+		Three.Alpha = ImplicitLineEquation(pointA, Points(pointC.x, pointC.y, pointB.x, pointB.y));
+
+		float b = ImplicitLineEquation(pointP, Points(pointA.x, pointA.y, pointC.x, pointC.y));
+		float y = ImplicitLineEquation(pointP, Points(pointB.x, pointB.y, pointA.x, pointA.y));
+		float a = ImplicitLineEquation(pointP, Points(pointC.x, pointC.y, pointB.x, pointB.y));
+
+		//TODO: Could cut some frames by not doing the last division and by seeing if the rest gives zero then making (a / Alpha) = 1
+			//Pβγα = ( b / β ,   y / γ   ,  a / α )   ​
+		return BarycentricCoord(b / Three.Beta, y / Three.Gamma, a / Three.Alpha);
+	}
 };

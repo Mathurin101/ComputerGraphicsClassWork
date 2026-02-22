@@ -161,7 +161,7 @@ int main()
 	VS_Projection = Projection;
 	//will print on the screen
 	do {
-		/**/
+		/*
 		CCBuffer(0xFF000000, TotalPixels, MaxPixels);
 
 		VS_World = GridWorld;
@@ -172,6 +172,9 @@ int main()
 
 		VS_World = CubeWorld;
 		DrawCube();
+*/
+
+
 
 
 	} while (RS_Update(TotalPixels, MaxPixels));

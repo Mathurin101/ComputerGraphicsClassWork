@@ -4,9 +4,9 @@
 #include "Shaders.h"
 #include <iostream>
 
-static const unsigned int _Red   = 0xFFFF0000;
+static const unsigned int _Red = 0xFFFF0000;
 static const unsigned int _Green = 0xFF00FF00;
-static const unsigned int _Blue  = 0xFF0000FF;
+static const unsigned int _Blue = 0xFF0000FF;
 
 
 // A function to clear the color buffer to a solid color of your choice.
@@ -165,7 +165,7 @@ Points NDCtoScreen(Vertex NDC, float Width, float Height) {
 Matrix4x4 IdentityMatrix() {
 
 	Matrix4x4 Ident
-	   (1, 0, 0, 0,
+	(1, 0, 0, 0,
 		0, 1, 0, 0,
 		0, 0, 1, 0,
 		0, 0, 0, 1);
@@ -175,11 +175,11 @@ Matrix4x4 IdentityMatrix() {
 
 Matrix4x4 TranslationMatrix(float x, float y, float z) {
 
-	Matrix4x4 Translation 
-	(1, 0, 0, 0,            
-	 0, 1, 0, 0,	        
-	 0, 0, 1, 0,	        
-	 x, y, z, 1 );   
+	Matrix4x4 Translation
+	(1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		x, y, z, 1);
 
 	return Translation;
 }
@@ -193,11 +193,11 @@ Matrix4x4 RotateY(float x) {
 
 
 	Matrix4x4 Rotate
-  (cosf(y),  0, sinf(y), 0,
-		0,   1,       0, 0,
-  -sinf(y),  0, cosf(y), 0,
-		0,   0,       0, 1);
-			  
+	(cosf(y), 0, sinf(y), 0,
+		0, 1, 0, 0,
+		-sinf(y), 0, cosf(y), 0,
+		0, 0, 0, 1);
+
 	return Rotate;
 }
 
@@ -206,7 +206,7 @@ Matrix4x4 RotateX(float x) {
 
 
 	Matrix4x4 Rotate
-	   (1, 0, 0, 0,
+	(1, 0, 0, 0,
 		0, cosf(y), -sinf(y), 0,
 		0, sinf(y), cosf(y), 0,
 		0, 0, 0, 1);
@@ -219,10 +219,10 @@ Matrix4x4 RotateZ(float x) {
 
 
 	Matrix4x4 Rotate
-		(cosf(y), -sinf(y), 0, 0,
-		 sinf(y),  cosf(y), 0, 0,
-		      0,       0, 1, 0,
-		      0,       0, 0, 1);
+	(cosf(y), -sinf(y), 0, 0,
+		sinf(y), cosf(y), 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1);
 
 	return Rotate;
 }
@@ -242,7 +242,7 @@ Matrix4x4 OrthonormalInverse(const Matrix4x4& mIn)
 
 	Inverse = Transpose(mIn);
 	//set default 0.0s and 1.0s for the.w components of m;
-	
+
 	// calculate new position:
 	Inverse.AxisW.x = -DotProduct(mIn.AxisX, mIn.AxisW);
 	Inverse.AxisW.y = -DotProduct(mIn.AxisY, mIn.AxisW);
@@ -261,11 +261,132 @@ Matrix4x4 PerspectiveProjection(float FOV, float Ratio, float Near, float Far) {
 
 
 	Matrix4x4 DoubleP(
-   Xscale,      0,           0, 0,
-		0, Yscale,           0, 0,
-		0,      0,        Zdif, 1,
-		0,      0, Zdifference, 0
+		Xscale, 0, 0, 0,
+		0, Yscale, 0, 0,
+		0, 0, Zdif, 1,
+		0, 0, Zdifference, 0
 	);
 
 	return DoubleP;
 }
+
+float MinOut3(Vertex threepoints) {
+	float A = threepoints.x;
+	float B = threepoints.y;
+	float C = threepoints.z;
+
+	float MinFloat;
+
+	if (A <= C && B >= A) {
+		MinFloat = A;
+	}
+	else if (B <= C && A >= B) {
+		MinFloat = B;
+	}
+	else {
+		MinFloat = C;
+	}
+
+	return MinFloat;
+}
+
+float MaxOut3(Vertex threepoints) {
+	float A = threepoints.x;
+	float B = threepoints.y;
+	float C = threepoints.z;
+
+	float MaxFloat;
+
+	if (A >= C && B <= A) {
+		MaxFloat = A;
+	}
+	else if (B >= C && A <= B) {
+		MaxFloat = B;
+	}
+	else {
+		MaxFloat = C;
+	}
+
+	return MaxFloat;
+}
+
+BarycentricCoord Barycentric(Position pointA, Position pointB, Position pointC, Position pointP) {
+
+	BarycentricCoord Three;
+	float b;
+	float y;
+	float a;
+
+	Three.Beta = ImplicitLineEquation(pointB, Points(pointA.x, pointA.y, pointC.x, pointC.y));
+	Three.Gamma = ImplicitLineEquation(pointC, Points(pointB.x, pointB.y, pointA.x, pointA.y));
+	Three.Alpha = ImplicitLineEquation(pointA, Points(pointC.x, pointC.y, pointB.x, pointB.y));
+	b = ImplicitLineEquation(pointP, Points(pointA.x, pointA.y, pointC.x, pointC.y));
+	y = ImplicitLineEquation(pointP, Points(pointB.x, pointB.y, pointA.x, pointA.y));
+	a = ImplicitLineEquation(pointP, Points(pointC.x, pointC.y, pointB.x, pointB.y));
+
+	//TODO: Could cut some frames by not doing the last division and by seeing if the rest gives zero then making (a / Alpha) = 1
+		//Pβγα = ( b / β ,   y / γ   ,  a / α )   ​
+	return BarycentricCoord(b / Three.Beta, y / Three.Gamma, a / Three.Alpha);
+}
+/**/
+
+
+void BruteTriangle(int Width, unsigned int* PixelArry, int ArrySize, int _Width, int Height) {
+	BarycentricCoord bya;
+	float StartX = 0;
+	float StartY = 0;
+	float EndX = Width;
+	float EndY = Height;
+
+
+
+	for (int CurrY = StartY; CurrY < EndY; CurrY++) {
+
+		for (int CurrX = StartX; CurrX < EndX; CurrX++) {
+
+			//bya = FindBarycentric (CurrX, CurrY )​
+			bya;
+			//IF b >=0 && b <= 1 && ​y >= 0 && y <= 1 &&​ a >= 0 && a <= 1​
+			if (bya.Beta >= 0 && bya.Beta <= 1 && bya.Gamma >= 0 && bya.Gamma <= 1 && ​ bya.Alpha >= 0 && bya.Alpha <= 1​) {
+
+			}
+			else {
+
+				//THEN - ​PlotPixel ( CurrX, CurrY )​
+				DrawPixel(Convert2Dto1D(CurrX, CurrY, Width), PColor(0xFF00FF00), PixelArry, ArrySize);
+			}
+
+		}
+	}
+}
+
+/*
+void BetterBruteTriangle(int Width, unsigned int* PixelArry, int ArrySize, Position point1, Position point2, Position point3) {
+	BarycentricCoord bya;
+	float StartX = MinOut3(Vertex(point1.x, point2.x, point3.x));
+	float StartY = MinOut3(Vertex(point1.y, point2.y, point3.y));
+	float EndX   = MaxOut3(Vertex(point1.x, point2.x, point3.x));
+	float EndY   = MaxOut3(Vertex(point1.y, point2.y, point3.y));
+
+
+
+	for (int CurrY = StartY; CurrY < EndY; CurrY++) {
+
+		for (int CurrX = StartX; CurrX < EndX; CurrX++) {
+
+			//bya = FindBarycentric (CurrX, CurrY )​
+			bya;
+				//IF b >=0 && b <= 1 && ​y >=0 && y <= 1 &&​ a >=0 && a <= 1​
+				if (bya.Beta >= 0 && bya.Beta <= 1 && bya.Gamma >= 0 && bya.Gamma <= 1 && ​ bya.Alpha >= 0 && bya.Alpha <= 1​) {
+
+				}
+				else {
+
+					//THEN - ​PlotPixel ( CurrX, CurrY )​
+					DrawPixel(Convert2Dto1D(CurrX, CurrY, Width), PColor(0xFF00FF00), PixelArry, ArrySize);		
+				}
+
+		}
+	}
+}
+*/
