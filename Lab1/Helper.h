@@ -314,7 +314,7 @@ BarycentricCoord Barycentric(Position pointA, Position pointB, Position pointC, 
 
 	BarycentricCoord Three;
 
-	Three.Beta  = ImplicitLineEquation(pointB, Points(pointA.x, pointA.y, pointC.x, pointC.y));
+	Three.Beta = ImplicitLineEquation(pointB, Points(pointA.x, pointA.y, pointC.x, pointC.y));
 	Three.Gamma = ImplicitLineEquation(pointC, Points(pointB.x, pointB.y, pointA.x, pointA.y));
 	Three.Alpha = ImplicitLineEquation(pointA, Points(pointC.x, pointC.y, pointB.x, pointB.y));
 
@@ -324,25 +324,9 @@ BarycentricCoord Barycentric(Position pointA, Position pointB, Position pointC, 
 
 	//TODO: Could cut some frames by not doing the last division and by seeing if the rest gives zero then making (a / Alpha) = 1
 		//Pβγα = ( b / β ,   y / γ   ,  a / α )   ​
-	return BarycentricCoord( a / Three.Alpha, b / Three.Beta, y / Three.Gamma);
+	return BarycentricCoord(a / Three.Alpha, b / Three.Beta, y / Three.Gamma);
 }
-/**/
-BarycentricCoord FindBarycentric(Triangle Tri, Position NewPoint) {
 
-	BarycentricCoord Three;
-
-	Three.Beta  = ImplicitLineEquation(Position(Tri.B.x1, Tri.B.y1), Points(Tri.A.x1, Tri.A.y1, Tri.C.x1, Tri.C.y1));
-	Three.Gamma = ImplicitLineEquation(Position(Tri.C.x1, Tri.C.y1), Points(Tri.B.x1, Tri.B.y1, Tri.A.x1, Tri.A.y1));
-	Three.Alpha = ImplicitLineEquation(Position(Tri.A.x1, Tri.A.y1), Points(Tri.C.x1, Tri.C.y1, Tri.B.x1, Tri.B.y1));
-
-	float b = ImplicitLineEquation(NewPoint, Points(Tri.A.x1, Tri.A.y1, Tri.C.x1, Tri.C.y1));
-	float y = ImplicitLineEquation(NewPoint, Points(Tri.B.x1, Tri.B.y1, Tri.A.x1, Tri.A.y1));
-	float a = ImplicitLineEquation(NewPoint, Points(Tri.C.x1, Tri.C.y1, Tri.B.x1, Tri.B.y1));
-
-	//TODO: Could cut some frames by not doing the last division and by seeing if the rest gives zero then making (a / Alpha) = 1
-		//Pβγα = ( b / β ,   y / γ   ,  a / α )   ​
-	return BarycentricCoord(b / Three.Beta, y / Three.Gamma, a / Three.Alpha);
-}
 
 void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Width, int _Height) {
 	BarycentricCoord byA;
@@ -361,7 +345,7 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Wi
 
 			/*if (byA.Beta >= 0 && byA.Beta <= 1) {
 
-			} 
+			}
 			if (byA.Gamma >= 0 && byA.Gamma <= 1) {
 
 			}
@@ -369,8 +353,8 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Wi
 
 			}*/
 			//IF b >=0 && b <= 1 && ​y >= 0 && y <= 1 &&​ a >= 0 && a <= 1​
-			if ((byA.Beta >= 0 && byA.Beta <= 1) && (byA.Gamma >= 0 && byA.Gamma <= 1) && (byA.Alpha >= 0 && 1 >= byA.Alpha) ){
-				
+			if ((byA.Beta >= 0 && byA.Beta <= 1) && (byA.Gamma >= 0 && byA.Gamma <= 1) && (byA.Alpha >= 0 && 1 >= byA.Alpha)) {
+
 				//THEN - ​PlotPixel ( CurrX, CurrY )​
 				DrawPixel(Convert2Dto1D(CurrX, CurrY, _Width), PColor(0xFFADD8E6), PixelArry, ArrySize);
 			}
@@ -379,13 +363,13 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Wi
 	}
 }
 
-/*
-void BetterBruteTriangle(int Width, unsigned int* PixelArry, int ArrySize, Position point1, Position point2, Position point3) {
-	BarycentricCoord bya;
-	float StartX = MinOut3(Vertex(point1.x, point2.x, point3.x));
-	float StartY = MinOut3(Vertex(point1.y, point2.y, point3.y));
-	float EndX   = MaxOut3(Vertex(point1.x, point2.x, point3.x));
-	float EndY   = MaxOut3(Vertex(point1.y, point2.y, point3.y));
+
+void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Width) { //Position point1, Position point2, Position point3) {
+	BarycentricCoord byA;
+	float StartX = MinOut3(Vertex(_Tri.A.x1, _Tri.B.x1, _Tri.C.x1));
+	float StartY = MinOut3(Vertex(_Tri.A.y1, _Tri.B.y1, _Tri.C.y1));
+	float EndX   = MaxOut3(Vertex(_Tri.A.x1, _Tri.B.x1, _Tri.C.x1));
+	float EndY   = MaxOut3(Vertex(_Tri.A.y1, _Tri.B.y1, _Tri.C.y1));
 
 
 
@@ -393,19 +377,17 @@ void BetterBruteTriangle(int Width, unsigned int* PixelArry, int ArrySize, Posit
 
 		for (int CurrX = StartX; CurrX < EndX; CurrX++) {
 
-			//bya = FindBarycentric (CurrX, CurrY )​
-			bya;
-				//IF b >=0 && b <= 1 && ​y >=0 && y <= 1 &&​ a >=0 && a <= 1​
-				if (bya.Beta >= 0 && bya.Beta <= 1 && bya.Gamma >= 0 && bya.Gamma <= 1 && ​ bya.Alpha >= 0 && bya.Alpha <= 1​) {
+			//byA = FindBarycentric (CurrX, CurrY )​
+			byA = Barycentric(Position(_Tri.A.x1, _Tri.A.y1), Position(_Tri.B.x1, _Tri.B.y1), Position(_Tri.C.x1, _Tri.C.y1), Position(CurrX, CurrY)); //FindBarycentric(_Tri, Position(CurrX, CurrY))​;
 
-				}
-				else {
+			//IF b >=0 && b <= 1 && ​y >= 0 && y <= 1 &&​ a >= 0 && a <= 1​
+			if ((byA.Beta >= 0 && byA.Beta <= 1) && (byA.Gamma >= 0 && byA.Gamma <= 1) && (byA.Alpha >= 0 && 1 >= byA.Alpha)) {
 
-					//THEN - ​PlotPixel ( CurrX, CurrY )​
-					DrawPixel(Convert2Dto1D(CurrX, CurrY, Width), PColor(0xFF00FF00), PixelArry, ArrySize);		
-				}
+				//THEN - ​PlotPixel ( CurrX, CurrY )​
+				DrawPixel(Convert2Dto1D(CurrX, CurrY, _Width), PColor(0xFFADD8E6), PixelArry, ArrySize);
+			}
 
 		}
 	}
 }
-*/
+

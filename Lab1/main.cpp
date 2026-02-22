@@ -190,7 +190,8 @@ int main()
 		ParametricLineFunction(Green.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
 		ParametricLineFunction(Green.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
 
-		BruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth, PixelHeight);
+		//BruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth, PixelHeight);
+		BetterBruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth);
 
 
 	} while (RS_Update(TotalPixels, MaxPixels));
