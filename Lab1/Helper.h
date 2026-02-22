@@ -252,21 +252,19 @@ Matrix4x4 OrthonormalInverse(const Matrix4x4& mIn)
 }
 
 Matrix4x4 PerspectiveProjection(float FOV, float Ratio, float Near, float Far) {
-	float FOVRad = DegreesToRadians(FOV);
-	float Yscale = 1 / tanf(FOVRad / 2);
-	float Xscale = Yscale * Ratio;
+	float FOVRad      = DegreesToRadians(FOV);
+	float Yscale      = 1 / tanf((FOVRad / 2));
+	float Xscale      = Yscale * Ratio;
 	float Zdifference = -(Far * Near) / (Far - Near);
-	float Zdif = Far / (Far - Near);
-
+	float Zdif        = Far / (Far - Near);
 
 
 	Matrix4x4 DoubleP(
-		Xscale, 0, 0, 0,
-		0, Yscale, 0, 0,
-		0, 0, Zdif, 1,
-		0, 0, Zdifference, 0
-	);
-
+   Xscale,      0,           0, 0,
+		0, Yscale,           0, 0,
+		0,      0,        Zdif, 1,
+		0,      0, Zdifference, 0 );
+	
 	return DoubleP;
 }
 

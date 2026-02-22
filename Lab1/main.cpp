@@ -9,7 +9,7 @@
 #include <iostream>
 
 const char* Name = "MathurinGenty_Line Drawing";
-const unsigned int PixelWidth = 600;
+const unsigned int PixelWidth = 500;
 const unsigned int PixelHeight = 500;
 
 const unsigned int MaxPixels = PixelWidth * PixelHeight;
@@ -21,12 +21,32 @@ enum FrontCubeE {
 	topRightF,
 	bottomRightF,
 	bottomLeftF,
+
 	topLeftB,
 	topRightB,
 	bottomRightB,
 	bottomLeftB
 };
 
+enum CubeE {
+	//front
+	TopL2TopRFront,
+	TopR2BottomRFront,
+	TopL2BottomLFront,
+	BottomL2BottomRFront,
+
+	//back
+	TopL2TopRBack,
+	TopR2BottomRBack,
+	TopL2BottomLBack,
+	BottomL2BottomRBack,
+
+	//Connecting Cornners
+	TopLeftCornners,
+	TopRightCornners,
+	BottomLeftCornners,
+	BottomRightCornners
+};
 
 Vertex FrontCube[8] = {
 	// -x = left, +x = right
@@ -36,14 +56,14 @@ Vertex FrontCube[8] = {
 	//front square
 			//  x,      y,     z 
 	Vertex(-0.25f,  0.25f, -0.25f),//   top left  = 0
-	Vertex(0.25f,  0.25f, -0.25f),//   top right = 1
-	Vertex(0.25f, -0.25f, -0.25f),//bottom right = 2
+	Vertex(0.25f,  0.25f, -0.25f),//   top right  = 1
+	Vertex(0.25f, -0.25f, -0.25f),//bottom right  = 2
 	Vertex(-0.25f, -0.25f, -0.25f),//bottom left  = 3
 
 	//back square
 	Vertex(-0.25f,  0.25f, 0.25f),//   top left  = 4
-	Vertex(0.25f,  0.25f, 0.25f),//   top right = 5
-	Vertex(0.25f, -0.25f, 0.25f),//bottom right = 6
+	Vertex(0.25f,  0.25f, 0.25f),//   top right  = 5
+	Vertex(0.25f, -0.25f, 0.25f),//bottom right  = 6
 	Vertex(-0.25f, -0.25f, 0.25f),//bottom left  = 7
 };
 
@@ -172,7 +192,7 @@ int main()
 	
 	
 	do {
-		/*
+		
 		CCBuffer(0xFF000000, TotalPixels, MaxPixels);
 
 		VS_World = GridWorld;
@@ -183,15 +203,16 @@ int main()
 
 		VS_World = CubeWorld;
 		DrawCube();
-*/
+
 		
 
-		ParametricLineFunction(Green.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-		ParametricLineFunction(Green.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-		ParametricLineFunction(Green.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+		//ParametricLineFunction(Green.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+		//ParametricLineFunction(Green.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+		//ParametricLineFunction(Green.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
 
 		//BruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth, PixelHeight);
-		BetterBruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth);
+		
+		//BetterBruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth);
 
 
 	} while (RS_Update(TotalPixels, MaxPixels));
@@ -217,7 +238,7 @@ void DrawCube() {
 		//front top                   left     to         right
 
 		Points(NDCtoScreen(NewVert[0], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[0], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVert[1], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[1], PixelWidth, PixelWidth).y1),
+			NDCtoScreen(NewVert[1], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[1], PixelWidth, PixelWidth).y1), 
 
 			//top                   right    to         bottom right
 			Points(NDCtoScreen(NewVert[1], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[1], PixelWidth, PixelWidth).y1,
@@ -265,6 +286,21 @@ void DrawCube() {
 													Points(NDCtoScreen(NewVert[2], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[2], PixelWidth, PixelWidth).y1,
 														NDCtoScreen(NewVert[6], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[6], PixelWidth, PixelWidth).y1),
 	};
+	
+	Points A(ArrayPoints[TopL2BottomLFront]);//top left to bottom Left
+	Points B(ArrayPoints[BottomL2BottomRFront]);//bottom left to bottom right
+	 
+	//bottom right to top left
+	Points C(B.x2, B.y2, A.x1, A.y1);
+		
+
+	Triangle OneTri(A, B, C);
+
+	ParametricLineFunction(OneTri.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	ParametricLineFunction(OneTri.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	ParametricLineFunction(OneTri.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+
+	BetterBruteTriangle(OneTri, TotalPixels, MaxPixels, PixelWidth);
 
 
 	for (int i = 0; i < 12; i++) {
