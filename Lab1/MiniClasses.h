@@ -204,7 +204,4 @@ struct BarycentricCoord {
 		Alpha = _Alpha; Beta = _Beta; Gamma = _Gamma;
 	}
 
-
-	
-
 };

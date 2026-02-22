@@ -135,7 +135,7 @@ PColor ColorWhite(0xFFFFFFFF);//white
 
 
 
-	PColor LightBlue(0xFFADD8E6);
+PColor LightBlue(0xFFADD8E6);
 
 int main()
 {
@@ -189,6 +189,9 @@ int main()
 		ParametricLineFunction(Green.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
 		ParametricLineFunction(Green.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
 		ParametricLineFunction(Green.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+
+		BruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth, PixelHeight);
+
 
 	} while (RS_Update(TotalPixels, MaxPixels));
 
