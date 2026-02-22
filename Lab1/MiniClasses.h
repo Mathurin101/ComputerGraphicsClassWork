@@ -170,6 +170,24 @@ struct Matrix4x4
 
 };
 
+struct Triangle {
+	union {
+		struct {
+			Points LineABC[3];
+		};
+		struct {
+			Points A;
+			Points B;
+			Points C;
+		};
+	};
+
+	Triangle(Points _A, Points _B, Points _C) {
+		A = _A; B = _B; C = _C;
+	}
+
+};
+
 struct BarycentricCoord {
 	union {
 		struct {
@@ -186,20 +204,7 @@ struct BarycentricCoord {
 		Alpha = _Alpha; Beta = _Beta; Gamma = _Gamma;
 	}
 
-	BarycentricCoord FindBarycentric(float pointX, float pointY) {
 
-		BarycentricCoord Three;
+	
 
-		Three.Beta = ImplicitLineEquation(pointB, Points(pointA.x, pointA.y, pointC.x, pointC.y));
-		Three.Gamma = ImplicitLineEquation(pointC, Points(pointB.x, pointB.y, pointA.x, pointA.y));
-		Three.Alpha = ImplicitLineEquation(pointA, Points(pointC.x, pointC.y, pointB.x, pointB.y));
-
-		float b = ImplicitLineEquation(pointP, Points(pointA.x, pointA.y, pointC.x, pointC.y));
-		float y = ImplicitLineEquation(pointP, Points(pointB.x, pointB.y, pointA.x, pointA.y));
-		float a = ImplicitLineEquation(pointP, Points(pointC.x, pointC.y, pointB.x, pointB.y));
-
-		//TODO: Could cut some frames by not doing the last division and by seeing if the rest gives zero then making (a / Alpha) = 1
-			//Pβγα = ( b / β ,   y / γ   ,  a / α )   ​
-		return BarycentricCoord(b / Three.Beta, y / Three.Gamma, a / Three.Alpha);
-	}
 };

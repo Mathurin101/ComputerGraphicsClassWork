@@ -135,6 +135,8 @@ PColor ColorWhite(0xFFFFFFFF);//white
 
 
 
+	PColor LightBlue(0xFFADD8E6);
+
 int main()
 {
 	XTime Time;
@@ -160,6 +162,15 @@ int main()
 	VS_View = view;
 	VS_Projection = Projection;
 	//will print on the screen
+	
+	Points A(100, 300, 100, 450);
+	Points B(100, 450, 300, 200);
+	Points C(300, 200, 100, 300);
+
+
+	Triangle Green(A,B,C);
+	
+	
 	do {
 		/*
 		CCBuffer(0xFF000000, TotalPixels, MaxPixels);
@@ -173,9 +184,11 @@ int main()
 		VS_World = CubeWorld;
 		DrawCube();
 */
+		
 
-
-
+		ParametricLineFunction(Green.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+		ParametricLineFunction(Green.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+		ParametricLineFunction(Green.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
 
 	} while (RS_Update(TotalPixels, MaxPixels));
 
@@ -251,7 +264,7 @@ void DrawCube() {
 
 
 	for (int i = 0; i < 12; i++) {
-		ParametricLineFunction(ArrayPoints[i], ColorGreen, TotalPixels, MaxPixels, PixelWidth);
+		ParametricLineFunction(ArrayPoints[i], LightBlue, TotalPixels, MaxPixels, PixelWidth);
 	}
 
 }

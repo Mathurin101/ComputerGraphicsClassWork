@@ -313,30 +313,43 @@ float MaxOut3(Vertex threepoints) {
 BarycentricCoord Barycentric(Position pointA, Position pointB, Position pointC, Position pointP) {
 
 	BarycentricCoord Three;
-	float b;
-	float y;
-	float a;
 
 	Three.Beta = ImplicitLineEquation(pointB, Points(pointA.x, pointA.y, pointC.x, pointC.y));
 	Three.Gamma = ImplicitLineEquation(pointC, Points(pointB.x, pointB.y, pointA.x, pointA.y));
 	Three.Alpha = ImplicitLineEquation(pointA, Points(pointC.x, pointC.y, pointB.x, pointB.y));
-	b = ImplicitLineEquation(pointP, Points(pointA.x, pointA.y, pointC.x, pointC.y));
-	y = ImplicitLineEquation(pointP, Points(pointB.x, pointB.y, pointA.x, pointA.y));
-	a = ImplicitLineEquation(pointP, Points(pointC.x, pointC.y, pointB.x, pointB.y));
+
+	float b = ImplicitLineEquation(pointP, Points(pointA.x, pointA.y, pointC.x, pointC.y));
+	float y = ImplicitLineEquation(pointP, Points(pointB.x, pointB.y, pointA.x, pointA.y));
+	float a = ImplicitLineEquation(pointP, Points(pointC.x, pointC.y, pointB.x, pointB.y));
 
 	//TODO: Could cut some frames by not doing the last division and by seeing if the rest gives zero then making (a / Alpha) = 1
 		//Pβγα = ( b / β ,   y / γ   ,  a / α )   ​
 	return BarycentricCoord(b / Three.Beta, y / Three.Gamma, a / Three.Alpha);
 }
 /**/
+BarycentricCoord FindBarycentric(Triangle Tri, Position NewPoint) {
 
+	BarycentricCoord Three;
 
-void BruteTriangle(int Width, unsigned int* PixelArry, int ArrySize, int _Width, int Height) {
+	Three.Beta = ImplicitLineEquation(Position(Tri.B.x1, Tri.B.y1), Points(Tri.A.x1, Tri.A.y1, Tri.C.x1, Tri.C.y1));
+	Three.Gamma = ImplicitLineEquation(Position(Tri.C.x1, Tri.C.y1), Points(Tri.B.x1, Tri.B.y1, Tri.A.x1, Tri.A.y1));
+	Three.Alpha = ImplicitLineEquation(Position(Tri.A.x1, Tri.A.y1), Points(Tri.C.x1, Tri.C.y1, Tri.B.x1, Tri.B.y1));
+
+	float b = ImplicitLineEquation(NewPoint, Points(Tri.A.x1, Tri.A.y1, Tri.C.x1, Tri.C.y1));
+	float y = ImplicitLineEquation(NewPoint, Points(Tri.B.x1, Tri.B.y1, Tri.A.x1, Tri.A.y1));
+	float a = ImplicitLineEquation(NewPoint, Points(Tri.C.x1, Tri.C.y1, Tri.B.x1, Tri.B.y1));
+
+	//TODO: Could cut some frames by not doing the last division and by seeing if the rest gives zero then making (a / Alpha) = 1
+		//Pβγα = ( b / β ,   y / γ   ,  a / α )   ​
+	return BarycentricCoord(b / Three.Beta, y / Three.Gamma, a / Three.Alpha);
+}
+
+void BruteTriangle(Triangle Tri, unsigned int* PixelArry, int ArrySize, int _Width, int _Height) {
 	BarycentricCoord bya;
 	float StartX = 0;
 	float StartY = 0;
-	float EndX = Width;
-	float EndY = Height;
+	float EndX = _Width;
+	float EndY = _Height;
 
 
 
@@ -345,15 +358,22 @@ void BruteTriangle(int Width, unsigned int* PixelArry, int ArrySize, int _Width,
 		for (int CurrX = StartX; CurrX < EndX; CurrX++) {
 
 			//bya = FindBarycentric (CurrX, CurrY )​
-			bya;
+			bya = FindBarycentric(Tri, Position(CurrX, CurrY))​);
+
 			//IF b >=0 && b <= 1 && ​y >= 0 && y <= 1 &&​ a >= 0 && a <= 1​
-			if (bya.Beta >= 0 && bya.Beta <= 1 && bya.Gamma >= 0 && bya.Gamma <= 1 && ​ bya.Alpha >= 0 && bya.Alpha <= 1​) {
+			if (bya.Beta >= 0 && bya.Beta <= 1) {
+
+			} 
+			if (bya.Gamma >= 0 && bya.Gamma <= 1) {
+
+			}
+			if ((bya.Alpha >= 0 && 1 >= bya.Alpha​)) {
 
 			}
 			else {
 
 				//THEN - ​PlotPixel ( CurrX, CurrY )​
-				DrawPixel(Convert2Dto1D(CurrX, CurrY, Width), PColor(0xFF00FF00), PixelArry, ArrySize);
+				DrawPixel(Convert2Dto1D(CurrX, CurrY, _Width), PColor(0xFF00FF00), PixelArry, ArrySize);
 			}
 
 		}
