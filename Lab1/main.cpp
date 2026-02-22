@@ -24,7 +24,7 @@ enum FrontCubeE {
 	topLeftB,
 	topRightB,
 	bottomRightB,
-	bottomLeftB,
+	bottomLeftB
 };
 
 

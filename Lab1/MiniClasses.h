@@ -169,3 +169,19 @@ struct Matrix4x4
 
 };
 
+struct BarycentricCoord {
+	union {
+		struct {
+			float ABY[3];
+		};
+		struct {
+			float Alpha;
+			float Beta;
+			float Gamma;//y
+		};
+	};
+	BarycentricCoord(float _Alpha = 0, float _Beta = 0, float _Gamma = 0) {
+		Alpha = _Alpha; Beta = _Beta; Gamma = _Gamma;
+	}
+
+};

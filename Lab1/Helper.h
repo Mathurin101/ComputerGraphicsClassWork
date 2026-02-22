@@ -147,6 +147,13 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 	}
 }
 
+float ImplicitLineEquation(Position point, Points Line) {
+	float Answer;
+
+	Answer = (((Line.y1 - Line.y2) * (point.x)) + ((Line.x2 - Line.x1) * (point.y)) + ((Line.x1 * Line.y2) - (Line.y1 * Line.x2)));
+
+	return Answer;
+}
 
 Points NDCtoScreen(Vertex NDC, float Width, float Height) {
 	float SceenX1 = ((NDC.x + 1) * (Width / 2));
