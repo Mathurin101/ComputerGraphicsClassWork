@@ -9,7 +9,7 @@
 #include <iostream>
 
 const char* Name = "MathurinGenty_Line Drawing";
-const unsigned int PixelWidth = 400;
+const unsigned int PixelWidth = 500;
 const unsigned int PixelHeight = 500;
 
 const unsigned int MaxPixels = PixelWidth * PixelHeight;
@@ -17,15 +17,15 @@ const unsigned int MaxPixels = PixelWidth * PixelHeight;
 unsigned int TotalPixels[MaxPixels];
 
 enum FrontCubeE {
-	topLeftF,
-	topRightF,
-	bottomRightF,
-	bottomLeftF,
+	topLeftF,	 //0
+	topRightF,   //1
+	bottomRightF,//2
+	bottomLeftF, //3
 
-	topLeftB,
-	topRightB,
-	bottomRightB,
-	bottomLeftB
+	topLeftB,    //4
+	topRightB,   //5
+	bottomRightB,//6 
+	bottomLeftB  //7
 };
 
 enum CubeE {
@@ -234,71 +234,82 @@ void DrawCube() {
 	Points ArrayPoints[12] = {
 
 		//front top                   left     to         right
+		Points(NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).y1,
+			NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).y1),
 
-		Points(NDCtoScreen(NewVert[0], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[0], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVert[1], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[1], PixelWidth, PixelWidth).y1), 
+		//top                   right    to         bottom right
+		Points(NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).y1,
+			NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).y1),
 
-			//top                   right    to         bottom right
-			Points(NDCtoScreen(NewVert[1], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[1], PixelWidth, PixelWidth).y1,
-				NDCtoScreen(NewVert[2], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[2], PixelWidth, PixelWidth).y1),
+		//top                   left    to         bottom left
+		Points(NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).y1,
+			NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).y1),
 
-				//top                   left    to         bottom left
-				Points(NDCtoScreen(NewVert[0], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[0], PixelWidth, PixelWidth).y1,
-					NDCtoScreen(NewVert[3], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[3], PixelWidth, PixelWidth).y1),
-
-					//bottom                   left    to         right
-					Points(NDCtoScreen(NewVert[3], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[3], PixelWidth, PixelWidth).y1,
-						NDCtoScreen(NewVert[2], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[2], PixelWidth, PixelWidth).y1),
-
-
-						//back top                   left     to         right
-						Points(NDCtoScreen(NewVert[4], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[4], PixelWidth, PixelWidth).y1,
-							NDCtoScreen(NewVert[5], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[5], PixelWidth, PixelWidth).y1),
-
-							//top                   right    to         bottom right
-							Points(NDCtoScreen(NewVert[5], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[5], PixelWidth, PixelWidth).y1,
-								NDCtoScreen(NewVert[6], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[6], PixelWidth, PixelWidth).y1),
-
-								//top                   left    to         bottom left
-								Points(NDCtoScreen(NewVert[4], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[4], PixelWidth, PixelWidth).y1,
-									NDCtoScreen(NewVert[7], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[7], PixelWidth, PixelWidth).y1),
-
-									//bottom                   left    to         right
-									Points(NDCtoScreen(NewVert[7], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[7], PixelWidth, PixelWidth).y1,
-										NDCtoScreen(NewVert[6], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[6], PixelWidth, PixelWidth).y1),
+		//bottom                   left    to         right
+		Points(NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).y1,
+			NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).y1),
 
 
-										//connecting top left cornners
-										Points(NDCtoScreen(NewVert[0], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[0], PixelWidth, PixelWidth).y1,
-											NDCtoScreen(NewVert[4], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[4], PixelWidth, PixelWidth).y1),
+		//back top                   left     to         right
+		Points(NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).y1,
+			NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).y1),
 
-											//connecting top right cornners
-											Points(NDCtoScreen(NewVert[1], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[1], PixelWidth, PixelWidth).y1,
-												NDCtoScreen(NewVert[5], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[5], PixelWidth, PixelWidth).y1),
+		//top                   right    to         bottom right
+		Points(NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).y1,
+			NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).y1),
 
-												//connecting bottom left cornners
-												Points(NDCtoScreen(NewVert[3], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[3], PixelWidth, PixelWidth).y1,
-													NDCtoScreen(NewVert[7], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[7], PixelWidth, PixelWidth).y1),
+		//top                   left    to         bottom left
+		Points(NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).y1,
+			NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).y1),
 
-													//connecting bottom right cornners
-													Points(NDCtoScreen(NewVert[2], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[2], PixelWidth, PixelWidth).y1,
-														NDCtoScreen(NewVert[6], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[6], PixelWidth, PixelWidth).y1),
+		//bottom                   left    to         right
+		Points(NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).y1,
+			NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).y1),
+
+
+		//connecting top left cornners
+		Points(NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).y1,
+			NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).y1),
+
+		//connecting top right cornners
+		Points(NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).y1,
+			NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).y1),
+
+		//connecting bottom left cornners
+		Points(NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).y1,
+			NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).y1),
+
+		//connecting bottom right cornners
+		Points(NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).y1,
+			NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).y1),
 	};
 	
 	Points A(ArrayPoints[TopL2BottomLFront]);//top left to bottom Left
 	Points B(ArrayPoints[BottomL2BottomRFront]);//bottom left to bottom right
-	 
-	//bottom right to top left
-	Points C(B.x2, B.y2, A.x1, A.y1);
+	Points C(B.x2, B.y2, A.x1, A.y1);//bottom right to top left
 		
 
-	Triangle OneTri(A, B, C);
+	Triangle TriOnFront(A, B, C);
 
-	ParametricLineFunction(OneTri.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	ParametricLineFunction(OneTri.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	ParametricLineFunction(OneTri.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	ParametricLineFunction(TriOnFront.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	ParametricLineFunction(TriOnFront.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	ParametricLineFunction(TriOnFront.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
 
-	BetterBruteTriangle(OneTri, TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
+	BetterBruteTriangle(TriOnFront, TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
+
+
+	Points A2(ArrayPoints[TopL2TopRFront]);//top left to Top right
+	Points B2(ArrayPoints[TopR2BottomRFront]);//Top right to bottom right
+	Points C2(C);//bottom right to top left
+
+
+	Triangle TriOnFront2(A2, B2, C2);
+
+	ParametricLineFunction(TriOnFront2.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	ParametricLineFunction(TriOnFront2.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	ParametricLineFunction(TriOnFront2.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+
+	BetterBruteTriangle(TriOnFront2, TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
 
 
 	for (int i = 0; i < 12; i++) {
