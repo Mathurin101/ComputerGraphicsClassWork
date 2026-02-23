@@ -9,7 +9,7 @@
 #include <iostream>
 
 const char* Name = "MathurinGenty_Line Drawing";
-const unsigned int PixelWidth = 500;
+const unsigned int PixelWidth = 400;
 const unsigned int PixelHeight = 500;
 
 const unsigned int MaxPixels = PixelWidth * PixelHeight;
@@ -177,7 +177,7 @@ int main()
 
 	Matrix4x4 CubeWorld = TranslationMatrix(0, 0.25f, 0);
 	Matrix4x4 view = MultiplyMatrixByMatrix(TranslationMatrix(0, 0, -1), RotateX(-18));
-	Matrix4x4 Projection = PerspectiveProjection(90, (float)PixelHeight  / PixelWidth, 0.1f, 10);
+	Matrix4x4 Projection = PerspectiveProjection(90, (float)PixelHeight / PixelWidth, 0.1f, 10);
 	view = OrthonormalInverse(view);
 	VS_View = view;
 	VS_Projection = Projection;
@@ -190,7 +190,13 @@ int main()
 
 	Triangle Green(A,B,C);
 	
-	
+		//put in do while loop to see a triangle
+		//ParametricLineFunction(Green.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+		//ParametricLineFunction(Green.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+		//ParametricLineFunction(Green.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+		//BruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth, PixelHeight);
+		//BetterBruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth);
+
 	do {
 		
 		CCBuffer(0xFF000000, TotalPixels, MaxPixels);
@@ -204,15 +210,7 @@ int main()
 		VS_World = CubeWorld;
 		DrawCube();
 
-		
-
-		//ParametricLineFunction(Green.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-		//ParametricLineFunction(Green.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-		//ParametricLineFunction(Green.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-
-		//BruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth, PixelHeight);
-		
-		//BetterBruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth);
+	
 
 
 	} while (RS_Update(TotalPixels, MaxPixels));
@@ -300,7 +298,7 @@ void DrawCube() {
 	ParametricLineFunction(OneTri.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
 	ParametricLineFunction(OneTri.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
 
-	BetterBruteTriangle(OneTri, TotalPixels, MaxPixels, PixelWidth);
+	BetterBruteTriangle(OneTri, TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
 
 
 	for (int i = 0; i < 12; i++) {

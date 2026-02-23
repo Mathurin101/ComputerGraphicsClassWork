@@ -255,9 +255,15 @@ Matrix4x4 PerspectiveProjection(float FOV, float Ratio, float Near, float Far) {
 	float FOVRad      = DegreesToRadians(FOV);
 	float Yscale      = 1 / tanf((FOVRad / 2));
 	float Xscale      = Yscale * Ratio;
-	float Zdifference = -(Far * Near) / (Far - Near);
-	float Zdif        = Far / (Far - Near);
+	float Zdifference = -((Far * Near) / (Far - Near));
+	float Zdif        = (Far / (Far - Near));
 
+	//std::cout << "Ratio: " << Ratio << std::endl;
+	//std::cout << "FOVRad: " << FOVRad << std::endl;
+	//std::cout << "Yscale: " << Yscale << std::endl;
+	//std::cout << "Xscale: " << Xscale << std::endl;
+	//std::cout << "Zdifference: " << Zdifference << std::endl;
+	//std::cout << "Zdif: " << Zdif << std::endl;
 
 	Matrix4x4 DoubleP(
    Xscale,      0,           0, 0,
@@ -362,7 +368,7 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Wi
 }
 
 
-void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Width) { //Position point1, Position point2, Position point3) {
+void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Width, PColor _Color) { //Position point1, Position point2, Position point3) {
 	BarycentricCoord byA;
 	float StartX = MinOut3(Vertex(_Tri.A.x1, _Tri.B.x1, _Tri.C.x1));
 	float StartY = MinOut3(Vertex(_Tri.A.y1, _Tri.B.y1, _Tri.C.y1));
@@ -382,7 +388,7 @@ void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, i
 			if ((byA.Beta >= 0 && byA.Beta <= 1) && (byA.Gamma >= 0 && byA.Gamma <= 1) && (byA.Alpha >= 0 && 1 >= byA.Alpha)) {
 
 				//THEN - ​PlotPixel ( CurrX, CurrY )​
-				DrawPixel(Convert2Dto1D(CurrX, CurrY, _Width), PColor(0xFFADD8E6), PixelArry, ArrySize);
+				DrawPixel(Convert2Dto1D(CurrX, CurrY, _Width), _Color, PixelArry, ArrySize);
 			}
 
 		}
