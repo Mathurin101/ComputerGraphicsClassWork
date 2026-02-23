@@ -36,8 +36,8 @@ struct Points {
 		deltaY = 0;
 	}
 
-	//TOD: change slope to deltaX and deltaY
-	Points(int _x1, int _y1, int _x2 = 0, int _y2 = 0) {
+
+	Points(int _x1 = 0, int _y1 = 0, int _x2 = 0, int _y2 = 0) {
 		x1 = _x1;	 x2 = _x2;
 		y1 = _y1;	 y2 = _y2;
 		deltaY = (y2 - y1);

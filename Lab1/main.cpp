@@ -42,10 +42,10 @@ enum CubeE {
 	BottomL2BottomRBack,
 
 	//Connecting Cornners
-	TopLeftCornners,
-	TopRightCornners,
-	BottomLeftCornners,
-	BottomRightCornners
+	TopLeftCornners,    //Lside top    --- TopL Front to TopL back
+	TopRightCornners,   //Rside top    --- TopR Front to TopR back
+	BottomLeftCornners, //Lside bottom --- BottomL Front to bottomL back
+	BottomRightCornners //Rside bottom --- BottomR Front to bottomR back
 };
 
 Vertex FrontCube[8] = {
@@ -182,23 +182,23 @@ int main()
 	VS_View = view;
 	VS_Projection = Projection;
 	//will print on the screen
-	
+
 	Points A(100, 300, 100, 450);
 	Points B(100, 450, 300, 200);
 	Points C(300, 200, 100, 300);
 
 
-	Triangle Green(A,B,C);
-	
-		//put in do while loop to see a triangle
-		//ParametricLineFunction(Green.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-		//ParametricLineFunction(Green.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-		//ParametricLineFunction(Green.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-		//BruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth, PixelHeight);
-		//BetterBruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth);
+	Triangle Green(A, B, C);
+
+	//put in do while loop to see a triangle
+	//ParametricLineFunction(Green.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	//ParametricLineFunction(Green.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	//ParametricLineFunction(Green.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	//BruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth, PixelHeight);
+	//BetterBruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth);
 
 	do {
-		
+
 		CCBuffer(0xFF000000, TotalPixels, MaxPixels);
 
 		VS_World = GridWorld;
@@ -210,7 +210,7 @@ int main()
 		VS_World = CubeWorld;
 		DrawCube();
 
-	
+
 
 
 	} while (RS_Update(TotalPixels, MaxPixels));
@@ -230,7 +230,6 @@ void DrawCube() {
 		VS_WVP(NewVert[i]);
 	}
 
-	/**/
 	Points ArrayPoints[12] = {
 
 		//front top                   left     to         right
@@ -260,57 +259,150 @@ void DrawCube() {
 
 		//top                   left    to         bottom left
 		Points(NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).y1),
+				NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).y1),
 
 		//bottom                   left    to         right
-		Points(NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).y1,
+				NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).y1),
 
 
-		//connecting top left cornners
-		Points(NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).y1),
+					//connecting top left cornners
+					Points(NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).y1,
+						NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).y1),
 
-		//connecting top right cornners
-		Points(NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).y1),
+					//connecting top right cornners
+					Points(NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).y1,
+						NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).y1),
 
-		//connecting bottom left cornners
-		Points(NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).y1),
+					//connecting bottom left cornners
+					Points(NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).y1,
+						NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).y1),
 
-		//connecting bottom right cornners
-		Points(NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).y1),
+					//connecting bottom right cornners
+							Points(NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).y1,
+											NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).y1),
 	};
-	
-	Points A(ArrayPoints[TopL2BottomLFront]);//top left to bottom Left
+
+	//bottom left triangle F
+	Points A(ArrayPoints[TopL2BottomLFront]);   //top left to bottom Left
 	Points B(ArrayPoints[BottomL2BottomRFront]);//bottom left to bottom right
-	Points C(B.x2, B.y2, A.x1, A.y1);//bottom right to top left
-		
+	Points C(B.x2, B.y2, A.x1, A.y1);           //bottom right to top left
 
 	Triangle TriOnFront(A, B, C);
 
-	ParametricLineFunction(TriOnFront.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	ParametricLineFunction(TriOnFront.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	ParametricLineFunction(TriOnFront.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-
-	BetterBruteTriangle(TriOnFront, TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
-
-
-	Points A2(ArrayPoints[TopL2TopRFront]);//top left to Top right
+	//Top Right triangle F
+	Points A2(ArrayPoints[TopL2TopRFront]);   //top left to Top right
 	Points B2(ArrayPoints[TopR2BottomRFront]);//Top right to bottom right
-	Points C2(C);//bottom right to top left
-
+	Points C2(C);                             //bottom right to top left
 
 	Triangle TriOnFront2(A2, B2, C2);
 
-	ParametricLineFunction(TriOnFront2.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	ParametricLineFunction(TriOnFront2.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	ParametricLineFunction(TriOnFront2.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
 
-	BetterBruteTriangle(TriOnFront2, TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
 
+	//bottom left triangle B  
+	Points A3(ArrayPoints[TopL2BottomLBack]);   //top left to bottom Left     B
+	Points B3(ArrayPoints[BottomL2BottomRBack]);//bottom left to bottom right B
+	Points C3(B3.x1, B3.y1, A3.x1, A3.y1);      //bottom right to top left    B
+
+	Triangle TriOnBack3(A3, B3, C3);
+
+	//Top Right triangle B
+	Points A4(ArrayPoints[TopL2TopRBack]);//top left to Top right B
+	Points B4(ArrayPoints[TopR2BottomRBack]);//Top right to bottom right B
+	Points C4(A4.x1, A4.y1, B4.x1, B4.y1);//bottom right to top left   B
+
+	Triangle TriOnBack4(A4, B4, C4);
+
+
+
+
+	//bottom left triangle Lside
+	Points A5(ArrayPoints[TopL2BottomLBack]);   //top leftB to bottom LeftB         back cube
+	Points B5(ArrayPoints[BottomLeftCornners]); //bottom leftB to bottom LeftF      Back cube to front 
+	Points C5(B5.x2, B5.y2, A5.x1, A5.y1);      //bottom LeftF to top leftB   
+
+	Triangle TriOnBack5(A5, B5, C5);
+
+
+	//Top Right triangle Lside
+	Points A6(ArrayPoints[TopL2BottomLFront]);  //TopL to BottomL front
+	Points B6(ArrayPoints[TopLeftCornners]);    //TopLeftF to TopLeftB 
+	Points C6(B6.x2, B6.y2, A6.x2, A6.y2);      //TopLeftB to BottomLeftF
+
+	Triangle TriOnBack6(A6, B6, C6);
+
+
+	//bottom left triangle Rside
+	Points A7(ArrayPoints[TopR2BottomRFront]);    //TopRightF to BottomRightF 
+	Points B7(ArrayPoints[BottomRightCornners]);  //BottomRightF to BottomRightB
+	Points C7(B7.x2, B7.y2, A7.x2, A7.y2);        //BottomRightB to TopRightF
+
+	Triangle TriOnBack7(A7, B7, C7);
+
+	//Top Right triangle Rside
+	Points A8(ArrayPoints[TopRightCornners]);   //TopRightF to TopRightB 
+	Points B8(ArrayPoints[TopR2BottomRBack]);   //TopRightB to BottomRightB
+	Points C8(B8.x2, B8.y2, A8.x1, A8.y1);      //BottomRightB to TopRightF
+
+	Triangle TriOnBack8(A8, B8, C8);
+
+
+
+	//bottom left triangle Topside
+	Points A9(ArrayPoints[TopL2TopRFront]);   //TopLeftF to TopRightF
+	Points B9(ArrayPoints[TopRightCornners]); //TopRightF to TopRightB
+	Points C9(B9.x2, B9.y2, B9.x1, B9.y1);	  //TopRightB to TopRightF
+
+	Triangle TriOnBack9(A9, B9, C9);
+
+	//Top Right triangle Topside
+	Points A10(A9.x1, A9.y1, B9.x2, B9.y2);     //TopLeftF to TopRightB
+	Points B10(ArrayPoints[TopL2TopRBack]);     //TopLeftB to TopRightB 
+	Points C10(A10.x2, A10.y2, A10.x1, A10.y1);	//TopRightB to TopLeftF
+
+	Triangle TriOnBack10(A10, B10, C10);
+
+
+
+	//bottom left triangle Bottomside
+	Points A11(ArrayPoints[BottomL2BottomRFront]);	 //BottomLeftF to BottomRightF
+	Points B11(ArrayPoints[BottomRightCornners]);	 //BottomRightF to BottomRightB
+	Points C11(B11.x2, B11.y2, A11.x1, A11.y1);	     //BottomRightB to BottomLeftF
+
+	Triangle TriOnBack11(A11, B11, C11);
+
+	//---------------------------------------------------------------------------------------------------
+	//Top Right triangle bottomside
+	Points A12(ArrayPoints[BottomLeftCornners]);     //BottomLeftF to BottomLeftB
+	Points B12(ArrayPoints[BottomL2BottomRBack]);	 //BottomLeftB to BottomRightB
+	Points C12(B12.x2, B12.y2, A12.x1, A12.y1);	     //BottomRightB to BottomLeftF
+
+	Triangle TriOnBack12(A12, B12, C12);
+
+
+
+	Triangle AllTriangles[12] = {
+	TriOnFront,
+	TriOnFront2,
+	TriOnBack3,
+	TriOnBack4,
+	TriOnBack5,
+	TriOnBack6,
+	TriOnBack7,
+	TriOnBack8,
+	TriOnBack9,
+	TriOnBack10,
+	TriOnBack11,
+	TriOnBack12
+	};
+
+	for (int i = 0; i < 12; i++) {
+		for (int j = 0; j < 3; j++) {
+			ParametricLineFunction(AllTriangles[i].LineABC[j], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+		}
+
+		BetterBruteTriangle(AllTriangles[i], TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
+	}
 
 	for (int i = 0; i < 12; i++) {
 		ParametricLineFunction(ArrayPoints[i], LightBlue, TotalPixels, MaxPixels, PixelWidth);
