@@ -176,7 +176,7 @@ int main()
 	Matrix4x4 GridWorld = IdentityMatrix();
 
 	Matrix4x4 CubeWorld = TranslationMatrix(0, 0.25f, 0);
-	Matrix4x4 view = MultiplyMatrixByMatrix(TranslationMatrix(0, 0, -1), RotateX(-18));
+	Matrix4x4 view = MultiplyMatrixByMatrix(TranslationMatrix(0, 0, -1), RotateX(-18));//
 	Matrix4x4 Projection = PerspectiveProjection(90, (float)PixelHeight / PixelWidth, 0.1f, 10);
 	view = OrthonormalInverse(view);
 	VS_View = view;
@@ -304,14 +304,14 @@ void DrawCube() {
 	Points B3(ArrayPoints[BottomL2BottomRBack]);//bottom left to bottom right B
 	Points C3(B3.x1, B3.y1, A3.x1, A3.y1);      //bottom right to top left    B
 
-	Triangle TriOnBack3(A3, B3, C3);
+	Triangle TriOnBack3(A3, B3, C3);//----------------------------------- nothing there
 
 	//Top Right triangle B
 	Points A4(ArrayPoints[TopL2TopRBack]);//top left to Top right B
 	Points B4(ArrayPoints[TopR2BottomRBack]);//Top right to bottom right B
 	Points C4(A4.x1, A4.y1, B4.x1, B4.y1);//bottom right to top left   B
 
-	Triangle TriOnBack4(A4, B4, C4);
+	Triangle TriOnBack4(A4, B4, C4);//------------------------------------ nothing there
 
 
 
@@ -326,10 +326,10 @@ void DrawCube() {
 
 	//Top Right triangle Lside
 	Points A6(ArrayPoints[TopL2BottomLFront]);  //TopL to BottomL front
-	Points B6(ArrayPoints[TopLeftCornners]);    //TopLeftF to TopLeftB 
-	Points C6(B6.x2, B6.y2, A6.x2, A6.y2);      //TopLeftB to BottomLeftF
+	Points B6(A6.x2, A6.y2, A5.x1, A5.y1);      //BottomLeftF to TopLeftB 
+	Points C6(A5.x1, A5.y1, A6.x1, A6.y1);    //TopLeftB to TopLeftF
 
-	Triangle TriOnBack6(A6, B6, C6);
+	Triangle TriOnBack6(A6, B6, C6);//
 
 
 	//bottom left triangle Rside
@@ -345,6 +345,7 @@ void DrawCube() {
 	Points C8(B8.x2, B8.y2, A8.x1, A8.y1);      //BottomRightB to TopRightF
 
 	Triangle TriOnBack8(A8, B8, C8);
+
 
 
 
@@ -371,7 +372,7 @@ void DrawCube() {
 
 	Triangle TriOnBack11(A11, B11, C11);
 
-	//---------------------------------------------------------------------------------------------------
+	
 	//Top Right triangle bottomside
 	Points A12(ArrayPoints[BottomLeftCornners]);     //BottomLeftF to BottomLeftB
 	Points B12(ArrayPoints[BottomL2BottomRBack]);	 //BottomLeftB to BottomRightB
@@ -382,27 +383,40 @@ void DrawCube() {
 
 
 	Triangle AllTriangles[12] = {
-	TriOnFront,
-	TriOnFront2,
-	TriOnBack3,
-	TriOnBack4,
-	TriOnBack5,
-	TriOnBack6,
-	TriOnBack7,
-	TriOnBack8,
-	TriOnBack9,
-	TriOnBack10,
-	TriOnBack11,
-	TriOnBack12
+	TriOnFront, //0
+	TriOnFront2,//1
+
+	TriOnBack3, //2 -------------------- nothing there
+	TriOnBack4, //3 -------------------- nothing there
+	
+	TriOnBack5, //4
+	TriOnBack6, //5 
+	
+	TriOnBack7, //6
+	TriOnBack8, //7
+	
+	TriOnBack9, //8
+	TriOnBack10,//9
+	
+	TriOnBack11,//10
+	TriOnBack12 //11
 	};
 
-	for (int i = 0; i < 12; i++) {
-		for (int j = 0; j < 3; j++) {
-			ParametricLineFunction(AllTriangles[i].LineABC[j], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-		}
+	ParametricLineFunction(AllTriangles[5].LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	ParametricLineFunction(AllTriangles[5].LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	ParametricLineFunction(AllTriangles[5].LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	   BetterBruteTriangle(AllTriangles[5], TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
 
-		BetterBruteTriangle(AllTriangles[i], TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
-	}
+	ParametricLineFunction(AllTriangles[4].LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	ParametricLineFunction(AllTriangles[4].LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	ParametricLineFunction(AllTriangles[4].LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	   BetterBruteTriangle(AllTriangles[4], TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
+	//for (int i = 0; i < 12; i++) {
+	//	for (int j = 0; j < 3; j++) {
+	//		ParametricLineFunction(AllTriangles[i].LineABC[j], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	//	}
+	//	BetterBruteTriangle(AllTriangles[i], TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
+	//}
 
 	for (int i = 0; i < 12; i++) {
 		ParametricLineFunction(ArrayPoints[i], LightBlue, TotalPixels, MaxPixels, PixelWidth);
