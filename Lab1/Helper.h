@@ -33,7 +33,7 @@ void DrawPixel(int ArrySpot, PColor color, unsigned int* PixelArry, int ArrySize
 	for (int i = 0; i < ArrySize; i++) {
 
 		//If the new value is lower (nearer to the camera)
-		if (ZBuffer[i] > Depth) {
+		if (ZBuffer[i] >= Depth) {
 
 			//you draw the pixel and write that new depth into the buffer.
 			if (ArrySpot == i) {
@@ -348,6 +348,7 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Wi
 	float StartY = 0;
 	float EndX = _Width;
 	float EndY = _Height;
+	float BaryInterpo = 0;
 
 
 	for (int CurrY = StartY; CurrY < EndY; CurrY++) {
@@ -355,13 +356,16 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Wi
 		for (int CurrX = StartX; CurrX < EndX; CurrX++) {
 
 			//byA = FindBarycentric (CurrX, CurrY )​
-			byA = Barycentric(Position(_Tri.A.x1, _Tri.A.y1), Position(_Tri.B.x1, _Tri.B.y1), Position(_Tri.C.x1, _Tri.C.y1), Position(CurrX, CurrY)); //FindBarycentric(_Tri, Position(CurrX, CurrY))​;
+			byA = Barycentric(Position(_Tri.A.x1, _Tri.A.y1), Position(_Tri.B.x1, _Tri.B.y1), Position(_Tri.C.x1, _Tri.C.y1), Position(CurrX, CurrY)); 
 
 			//IF b >=0 && b <= 1 && ​y >= 0 && y <= 1 &&​ a >= 0 && a <= 1​
 			if ((byA.Beta >= 0 && byA.Beta <= 1) && (byA.Gamma >= 0 && byA.Gamma <= 1) && (byA.Alpha >= 0 && 1 >= byA.Alpha)) {
 
+				//Barycentric Interpolation: X = A * α + B * β + C * γ 
+				BaryInterpo = (_Tri.ZA * byA.Alpha) + (_Tri.ZB * byA.Beta) + (_Tri.ZC * byA.Gamma);
+
 				//THEN - ​PlotPixel ( CurrX, CurrY )​
-				DrawPixel(Convert2Dto1D(CurrX, CurrY, _Width), PColor(0xFFADD8E6), PixelArry, ArrySize, ZBuffer);
+				DrawPixel(Convert2Dto1D(CurrX, CurrY, _Width), PColor(0xFFADD8E6), PixelArry, ArrySize, ZBuffer, BaryInterpo);
 			}
 
 		}
@@ -369,13 +373,13 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Wi
 }
 
 
-void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Width, PColor _Color, float* ZBuffer) { //Position point1, Position point2, Position point3) {
+void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Width, PColor _Color, float* ZBuffer) { 
 	BarycentricCoord byA;
 	float StartX = MinOut3(Vertex(_Tri.A.x1, _Tri.B.x1, _Tri.C.x1));
 	float StartY = MinOut3(Vertex(_Tri.A.y1, _Tri.B.y1, _Tri.C.y1));
 	float EndX = MaxOut3(Vertex(_Tri.A.x1, _Tri.B.x1, _Tri.C.x1));
 	float EndY = MaxOut3(Vertex(_Tri.A.y1, _Tri.B.y1, _Tri.C.y1));
-
+	float BaryInterpo = 0;
 
 
 	for (int CurrY = StartY; CurrY < EndY; CurrY++) {
@@ -388,8 +392,12 @@ void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, i
 			//IF b >=0 && b <= 1 && ​y >= 0 && y <= 1 &&​ a >= 0 && a <= 1​
 			if ((byA.Beta >= 0 && byA.Beta <= 1) && (byA.Gamma >= 0 && byA.Gamma <= 1) && (byA.Alpha >= 0 && 1 >= byA.Alpha)) {
 
+				//Barycentric Interpolation: X = A * α + B * β + C * γ 
+				//get A, B, and C's z value and multiply it with alpha, beta, and gamma
+				BaryInterpo = (_Tri.ZA * byA.Alpha) + (_Tri.ZB * byA.Beta) + (_Tri.ZC * byA.Gamma);
+
 				//THEN - ​PlotPixel ( CurrX, CurrY )​
-				DrawPixel(Convert2Dto1D(CurrX, CurrY, _Width), _Color, PixelArry, ArrySize, ZBuffer);
+				DrawPixel(Convert2Dto1D(CurrX, CurrY, _Width), _Color, PixelArry, ArrySize, ZBuffer, BaryInterpo);
 			}
 
 		}

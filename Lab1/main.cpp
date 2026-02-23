@@ -42,11 +42,11 @@ enum CubeE {
 	TopL2BottomLBack,
 	BottomL2BottomRBack,
 
-	//Connecting Cornners
-	TopLeftCornners,    //Lside top    --- TopL Front to TopL back
-	TopRightCornners,   //Rside top    --- TopR Front to TopR back
-	BottomLeftCornners, //Lside bottom --- BottomL Front to bottomL back
-	BottomRightCornners //Rside bottom --- BottomR Front to bottomR back
+	//Connecting Corners
+	TopLeftcorner,    //Lside top    --- TopL Front to TopL back
+	TopRightcorner,   //Rside top    --- TopR Front to TopR back
+	BottomLeftcorner, //Lside bottom --- BottomL Front to bottomL back
+	BottomRightcorner //Rside bottom --- BottomR Front to bottomR back
 };
 
 Vertex FrontCube[8] = {
@@ -256,19 +256,19 @@ void DrawCube() {
 				NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).y1),
 
 
-					//connecting top left cornners
+					//connecting top left corner
 					Points(NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).y1,
 						NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).y1),
 
-					//connecting top right cornners
+					//connecting top right corner
 					Points(NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).y1,
 						NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).y1),
 
-					//connecting bottom left cornners
+					//connecting bottom left corner
 					Points(NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).y1,
 						NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).y1),
 
-					//connecting bottom right cornners
+					//connecting bottom right corner
 							Points(NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).y1,
 											NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).y1),
 	};
@@ -278,14 +278,14 @@ void DrawCube() {
 	Points B(ArrayPoints[BottomL2BottomRFront]);//bottom left to bottom right
 	Points C(B.x2, B.y2, A.x1, A.y1);           //bottom right to top left
 
-	Triangle TriOnFront(A, B, C);
+	Triangle TriOnFront(A, NewVert[topLeftF].z, B, NewVert[bottomLeftF].z, C, NewVert[bottomRightF].z);
 
 	//Top Right triangle F
 	Points A2(ArrayPoints[TopL2TopRFront]);   //top left to Top right
 	Points B2(ArrayPoints[TopR2BottomRFront]);//Top right to bottom right
 	Points C2(C);                             //bottom right to top left
 
-	Triangle TriOnFront2(A2, B2, C2);
+	Triangle TriOnFront2(A2, NewVert[topLeftF].z, B2, NewVert[topRightF].z, C2, NewVert[bottomRightF].z);//NewVert[].z
 
 
 
@@ -294,24 +294,24 @@ void DrawCube() {
 	Points B3(ArrayPoints[BottomL2BottomRBack]);//bottom left to bottom right B
 	Points C3(B3.x2, B3.y2, A3.x1, A3.y1);      //bottom right to top left    B
 
-	Triangle TriOnBack3(A3, B3, C3);
+	Triangle TriOnBack3(A3, NewVert[topLeftB].z, B3, NewVert[bottomLeftB].z, C3, NewVert[bottomRightB].z);
 
 	//Top Right triangle B
 	Points A4(ArrayPoints[TopL2TopRBack]);   //top left to Top right     B
 	Points B4(ArrayPoints[TopR2BottomRBack]);//Top right to bottom right B
 	Points C4(B4.x2, B4.y2, A4.x1, A4.y1);   //bottom right to top left  B
 
-	Triangle TriOnBack4(A4, B4, C4);
+	Triangle TriOnBack4(A4, NewVert[topLeftB].z, B4, NewVert[topRightB].z, C4, NewVert[bottomRightB].z);
 
 
 
 
 	//bottom left triangle Lside
 	Points A5(ArrayPoints[TopL2BottomLBack]);   //top leftB to bottom LeftB         back cube
-	Points B5(ArrayPoints[BottomLeftCornners]); //bottom leftB to bottom LeftF      Back cube to front 
+	Points B5(ArrayPoints[BottomLeftcorner]); //bottom leftB to bottom LeftF      Back cube to front 
 	Points C5(B5.x2, B5.y2, A5.x1, A5.y1);      //bottom LeftF to top leftB   
 
-	Triangle TriOnBack5(A5, B5, C5);
+	Triangle TriOnBack5(A5, NewVert[topLeftB].z, B5, NewVert[bottomLeftB].z, C5, NewVert[bottomLeftF].z);
 
 
 	//Top Right triangle Lside
@@ -319,56 +319,56 @@ void DrawCube() {
 	Points B6(A6.x2, A6.y2, A5.x1, A5.y1);      //BottomLeftF to TopLeftB 
 	Points C6(A5.x1, A5.y1, A6.x1, A6.y1);    //TopLeftB to TopLeftF
 
-	Triangle TriOnBack6(A6, B6, C6);//
+	Triangle TriOnBack6(A6, NewVert[topLeftF].z, B6, NewVert[bottomLeftF].z, C6, NewVert[topLeftB].z);
 
 
 	//bottom left triangle Rside
 	Points A7(ArrayPoints[TopR2BottomRFront]);    //TopRightF to BottomRightF 
-	Points B7(ArrayPoints[BottomRightCornners]);  //BottomRightF to BottomRightB
+	Points B7(ArrayPoints[BottomRightcorner]);  //BottomRightF to BottomRightB
 	Points C7(B7.x2, B7.y2, A7.x2, A7.y2);        //BottomRightB to TopRightF
 
-	Triangle TriOnBack7(A7, B7, C7);
+	Triangle TriOnBack7(A7, NewVert[topRightF].z, B7, NewVert[bottomRightF].z, C7, NewVert[bottomRightB].z);
 
 	//Top Right triangle Rside
-	Points A8(ArrayPoints[TopRightCornners]);   //TopRightF to TopRightB 
+	Points A8(ArrayPoints[TopRightcorner]);   //TopRightF to TopRightB 
 	Points B8(ArrayPoints[TopR2BottomRBack]);   //TopRightB to BottomRightB
 	Points C8(B8.x2, B8.y2, A8.x1, A8.y1);      //BottomRightB to TopRightF
 
-	Triangle TriOnBack8(A8, B8, C8);
+	Triangle TriOnBack8(A8, NewVert[topRightF].z, B8, NewVert[topRightB].z, C8, NewVert[bottomRightB].z);
 
 
 
 
 	//bottom left triangle Topside
 	Points A9(ArrayPoints[TopL2TopRFront]);   //TopLeftF to TopRightF
-	Points B9(ArrayPoints[TopRightCornners]); //TopRightF to TopRightB
+	Points B9(ArrayPoints[TopRightcorner]);   //TopRightF to TopRightB
 	Points C9(B9.x2, B9.y2, B9.x1, B9.y1);	  //TopRightB to TopRightF
 
-	Triangle TriOnBack9(A9, B9, C9);
+	Triangle TriOnBack9(A9, NewVert[topLeftF].z, B9, NewVert[topRightF].z, C9, NewVert[topRightB].z);
 
 	//Top Right triangle Topside
 	Points A10(A9.x1, A9.y1, B9.x2, B9.y2);     //TopLeftF to TopRightB
 	Points B10(ArrayPoints[TopL2TopRBack]);     //TopLeftB to TopRightB 
 	Points C10(A10.x2, A10.y2, A10.x1, A10.y1);	//TopRightB to TopLeftF
 
-	Triangle TriOnBack10(A10, B10, C10);
+	Triangle TriOnBack10(A10, NewVert[topLeftF].z, B10, NewVert[topLeftB].z, C10, NewVert[topRightB].z);
 
 
 
-	//bottom left triangle Bottomside
+	//bottom left triangle BottomSide
 	Points A11(ArrayPoints[BottomL2BottomRFront]);	 //BottomLeftF to BottomRightF
-	Points B11(ArrayPoints[BottomRightCornners]);	 //BottomRightF to BottomRightB
+	Points B11(ArrayPoints[BottomRightcorner]);	     //BottomRightF to BottomRightB
 	Points C11(B11.x2, B11.y2, A11.x1, A11.y1);	     //BottomRightB to BottomLeftF
 
-	Triangle TriOnBack11(A11, B11, C11);
+	Triangle TriOnBack11(A11, NewVert[bottomLeftF].z, B11, NewVert[bottomRightF].z, C11, NewVert[bottomRightB].z);
 
 	
-	//Top Right triangle bottomside
-	Points A12(ArrayPoints[BottomLeftCornners]);     //BottomLeftF to BottomLeftB
+	//Top Right triangle bottomSide
+	Points A12(ArrayPoints[BottomLeftcorner]);       //BottomLeftF to BottomLeftB
 	Points B12(ArrayPoints[BottomL2BottomRBack]);	 //BottomLeftB to BottomRightB
 	Points C12(B12.x2, B12.y2, A12.x1, A12.y1);	     //BottomRightB to BottomLeftF
 
-	Triangle TriOnBack12(A12, B12, C12);
+	Triangle TriOnBack12(A12, NewVert[bottomLeftF].z, B12, NewVert[bottomLeftB].z, C12, NewVert[bottomRightB].z);
 
 
 
@@ -536,7 +536,7 @@ void DrawGrid() {
 
 	for (int i = 0; i < 22; i++) {
 
-		ParametricLineFunction(ArrayPointGrids[i], ColorWhite, TotalPixels, MaxPixels, PixelWidth);
+		ParametricLineFunction(ArrayPointGrids[i], ColorWhite, TotalPixels, MaxPixels, PixelWidth, DepthBuffer);
 	}
 }
 

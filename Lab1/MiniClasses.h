@@ -182,8 +182,19 @@ struct Triangle {
 		};
 	};
 
+	struct {
+		float ZA;
+		float ZB;
+		float ZC;
+	};
+
 	Triangle(Points _A, Points _B, Points _C) {
 		A = _A; B = _B; C = _C;
+	}
+
+	Triangle(Points _A, float _ZA, Points _B, float _ZB, Points _C, float _ZC) {
+		A = _A; B = _B; C = _C;
+		ZA = _ZA; ZB = _ZB; ZC = _ZC;
 	}
 
 };
