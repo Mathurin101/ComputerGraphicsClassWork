@@ -27,22 +27,21 @@ int Convert2Dto1D(int nX, int nY, int nWidth)
 }
 
 // A function to draw a pixel (fill a certain pixel with a specific color)
-void DrawPixel(int ArrySpot, PColor color, unsigned int* PixelArry, int ArrySize, float* ZBuffer, float depth) {
+void DrawPixel(int ArrySpot, PColor color, unsigned int* PixelArry, int ArrySize, float* ZBuffer, float Depth = 1.0f) {
+	
 	//changing each slot in the array to one color value
 	for (int i = 0; i < ArrySize; i++) {
-		
-		/*
-		When you draw pixels, you check their normalized (perspective-divided) z-depth 
-		against what's already in the buffer. If the new value is lower (nearer to the camera), 
-		you draw the pixel and write that new depth into the buffer. 
-		If the new value is farther than what's already in the buffer, you just don't draw it.
-		*/
-		
-		
-		
-		if (ArrySpot == i) {
-			PixelArry[i] = color.color;
+
+		//If the new value is lower (nearer to the camera)
+		if (ZBuffer[i] > Depth) {
+
+			//you draw the pixel and write that new depth into the buffer.
+			if (ArrySpot == i) {
+				PixelArry[i] = color.color;
+				ZBuffer[i] = Depth;
+			}
 		}
+		//If the new value is farther than what's already in the buffer, you just don't draw it.
 	}
 }
 
@@ -118,7 +117,7 @@ void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTe
 	}
 }
 
-void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry, int ArrySize, int RasterWidth, float* ZBuffer, float Depth) {
+void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry, int ArrySize, int RasterWidth, float* ZBuffer) {
 	float CurrentX;
 	float CurrentY;
 	float StartX = CurrentX = Spots.x1;
@@ -148,7 +147,7 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 	for (int i = 0; i < Steps; i++) {
 
 		//PlotPixel(CurrX, Floor(CurrY + 0.5))​ //Convert2Dto1D(CurrentX, CurrentY + 0.5, RasterWidth)
-		DrawPixel(Convert2Dto1D(CurrentX, CurrentY, RasterWidth), _color, PixelArry, ArrySize, ZBuffer, Depth);
+		DrawPixel(Convert2Dto1D(CurrentX, CurrentY, RasterWidth), _color, PixelArry, ArrySize, ZBuffer);
 
 		// Increment the current x  
 		CurrentX = CurrentX + IncrementX;
@@ -263,11 +262,11 @@ Matrix4x4 OrthonormalInverse(const Matrix4x4& mIn)
 }
 
 Matrix4x4 PerspectiveProjection(float FOV, float Ratio, float Near, float Far) {
-	float FOVRad      = DegreesToRadians(FOV);
-	float Yscale      = 1 / tanf((FOVRad / 2));
-	float Xscale      = Yscale * Ratio;
+	float FOVRad = DegreesToRadians(FOV);
+	float Yscale = 1 / tanf((FOVRad / 2));
+	float Xscale = Yscale * Ratio;
 	float Zdifference = -((Far * Near) / (Far - Near));
-	float Zdif        = (Far / (Far - Near));
+	float Zdif = (Far / (Far - Near));
 
 	//std::cout << "Ratio: " << Ratio << std::endl;
 	//std::cout << "FOVRad: " << FOVRad << std::endl;
@@ -277,11 +276,11 @@ Matrix4x4 PerspectiveProjection(float FOV, float Ratio, float Near, float Far) {
 	//std::cout << "Zdif: " << Zdif << std::endl;
 
 	Matrix4x4 DoubleP(
-   Xscale,      0,           0, 0,
-		0, Yscale,           0, 0,
-		0,      0,        Zdif, 1,
-		0,      0, Zdifference, 0 );
-	
+		Xscale, 0, 0, 0,
+		0, Yscale, 0, 0,
+		0, 0, Zdif, 1,
+		0, 0, Zdifference, 0);
+
 	return DoubleP;
 }
 
@@ -343,7 +342,7 @@ BarycentricCoord Barycentric(Position pointA, Position pointB, Position pointC, 
 }
 
 
-void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Width, int _Height, float* ZBuffer, float Depth) {
+void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Width, int _Height, float* ZBuffer) {
 	BarycentricCoord byA;
 	float StartX = 0;
 	float StartY = 0;
@@ -358,20 +357,11 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Wi
 			//byA = FindBarycentric (CurrX, CurrY )​
 			byA = Barycentric(Position(_Tri.A.x1, _Tri.A.y1), Position(_Tri.B.x1, _Tri.B.y1), Position(_Tri.C.x1, _Tri.C.y1), Position(CurrX, CurrY)); //FindBarycentric(_Tri, Position(CurrX, CurrY))​;
 
-			/*if (byA.Beta >= 0 && byA.Beta <= 1) {
-
-			}
-			if (byA.Gamma >= 0 && byA.Gamma <= 1) {
-
-			}
-			if ((byA.Alpha >= 0 && 1 >= byA.Alpha)) {
-
-			}*/
 			//IF b >=0 && b <= 1 && ​y >= 0 && y <= 1 &&​ a >= 0 && a <= 1​
 			if ((byA.Beta >= 0 && byA.Beta <= 1) && (byA.Gamma >= 0 && byA.Gamma <= 1) && (byA.Alpha >= 0 && 1 >= byA.Alpha)) {
 
 				//THEN - ​PlotPixel ( CurrX, CurrY )​
-				DrawPixel(Convert2Dto1D(CurrX, CurrY, _Width), PColor(0xFFADD8E6), PixelArry, ArrySize, ZBuffer, Depth);
+				DrawPixel(Convert2Dto1D(CurrX, CurrY, _Width), PColor(0xFFADD8E6), PixelArry, ArrySize, ZBuffer);
 			}
 
 		}
@@ -383,8 +373,8 @@ void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, i
 	BarycentricCoord byA;
 	float StartX = MinOut3(Vertex(_Tri.A.x1, _Tri.B.x1, _Tri.C.x1));
 	float StartY = MinOut3(Vertex(_Tri.A.y1, _Tri.B.y1, _Tri.C.y1));
-	float EndX   = MaxOut3(Vertex(_Tri.A.x1, _Tri.B.x1, _Tri.C.x1));
-	float EndY   = MaxOut3(Vertex(_Tri.A.y1, _Tri.B.y1, _Tri.C.y1));
+	float EndX = MaxOut3(Vertex(_Tri.A.x1, _Tri.B.x1, _Tri.C.x1));
+	float EndY = MaxOut3(Vertex(_Tri.A.y1, _Tri.B.y1, _Tri.C.y1));
 
 
 
