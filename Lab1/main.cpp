@@ -302,16 +302,16 @@ void DrawCube() {
 	//bottom left triangle B  
 	Points A3(ArrayPoints[TopL2BottomLBack]);   //top left to bottom Left     B
 	Points B3(ArrayPoints[BottomL2BottomRBack]);//bottom left to bottom right B
-	Points C3(B3.x1, B3.y1, A3.x1, A3.y1);      //bottom right to top left    B
+	Points C3(B3.x2, B3.y2, A3.x1, A3.y1);      //bottom right to top left    B
 
-	Triangle TriOnBack3(A3, B3, C3);//----------------------------------- nothing there
+	Triangle TriOnBack3(A3, B3, C3);
 
 	//Top Right triangle B
-	Points A4(ArrayPoints[TopL2TopRBack]);//top left to Top right B
+	Points A4(ArrayPoints[TopL2TopRBack]);   //top left to Top right     B
 	Points B4(ArrayPoints[TopR2BottomRBack]);//Top right to bottom right B
-	Points C4(A4.x1, A4.y1, B4.x1, B4.y1);//bottom right to top left   B
+	Points C4(B4.x2, B4.y2, A4.x1, A4.y1);   //bottom right to top left  B
 
-	Triangle TriOnBack4(A4, B4, C4);//------------------------------------ nothing there
+	Triangle TriOnBack4(A4, B4, C4);
 
 
 
@@ -386,7 +386,7 @@ void DrawCube() {
 	TriOnFront, //0
 	TriOnFront2,//1
 
-	TriOnBack3, //2 -------------------- nothing there
+	TriOnBack3, //2 
 	TriOnBack4, //3 -------------------- nothing there
 	
 	TriOnBack5, //4
@@ -402,26 +402,47 @@ void DrawCube() {
 	TriOnBack12 //11
 	};
 
-	ParametricLineFunction(AllTriangles[5].LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	ParametricLineFunction(AllTriangles[5].LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	ParametricLineFunction(AllTriangles[5].LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	   BetterBruteTriangle(AllTriangles[5], TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
-
-	ParametricLineFunction(AllTriangles[4].LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	ParametricLineFunction(AllTriangles[4].LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	ParametricLineFunction(AllTriangles[4].LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	   BetterBruteTriangle(AllTriangles[4], TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
-	//for (int i = 0; i < 12; i++) {
-	//	for (int j = 0; j < 3; j++) {
-	//		ParametricLineFunction(AllTriangles[i].LineABC[j], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	//	}
-	//	BetterBruteTriangle(AllTriangles[i], TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
-	//}
+	PColor Color;
 
 	for (int i = 0; i < 12; i++) {
-		ParametricLineFunction(ArrayPoints[i], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+		
+		if (i == 0 || i == 1) {//
+			Color = 0xFF5b3a80; //purple dizanezodifnawe
+		}
+		else if (i == 2 || i == 3) {
+			Color = 0xFFADD8E6; //Light Blue
+		}
+		else if (i == 4 || i == 5) {
+			Color = 0xFFFFD3D6; //light pink
+		}
+		else if (i == 6 || i == 7) {
+			Color = 0xFF88E788; //light green
+		}
+		else if (i == 8 || i == 9) {
+			Color = 0xFFEAA221; //Marigold
+		}
+		else if (i == 10 || i == 11) {
+			Color = 0xFF123524; //Phthalo
+		}
+
+		BetterBruteTriangle(AllTriangles[i], TotalPixels, MaxPixels, PixelWidth, Color);
 	}
 
+	//outline
+	//for (int i = 0; i < 12; i++) {
+	//	ParametricLineFunction(ArrayPoints[i], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	//}
+
+	//used to debug the triangles
+	//ParametricLineFunction(AllTriangles[2].LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	//ParametricLineFunction(AllTriangles[2].LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	//ParametricLineFunction(AllTriangles[2].LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	//   BetterBruteTriangle(AllTriangles[2], TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
+	//
+	//ParametricLineFunction(AllTriangles[3].LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	//ParametricLineFunction(AllTriangles[3].LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	//ParametricLineFunction(AllTriangles[3].LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
+	//   BetterBruteTriangle(AllTriangles[3], TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
 }
 void DrawGrid() {
 	//made a copy
