@@ -15,6 +15,7 @@ const unsigned int PixelHeight = 500;
 const unsigned int MaxPixels = PixelWidth * PixelHeight;
 
 unsigned int TotalPixels[MaxPixels];
+float DepthBuffer[MaxPixels];
 
 enum FrontCubeE {
 	topLeftF,	 //0
@@ -181,25 +182,14 @@ int main()
 	view = OrthonormalInverse(view);
 	VS_View = view;
 	VS_Projection = Projection;
+	
+
+	
+	
 	//will print on the screen
-
-	Points A(100, 300, 100, 450);
-	Points B(100, 450, 300, 200);
-	Points C(300, 200, 100, 300);
-
-
-	Triangle Green(A, B, C);
-
-	//put in do while loop to see a triangle
-	//ParametricLineFunction(Green.LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	//ParametricLineFunction(Green.LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	//ParametricLineFunction(Green.LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	//BruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth, PixelHeight);
-	//BetterBruteTriangle(Green, TotalPixels, MaxPixels, PixelWidth);
-
 	do {
 
-		CCBuffer(0xFF000000, TotalPixels, MaxPixels);
+		CCBuffer(0xFF000000, TotalPixels, MaxPixels, DepthBuffer);
 
 		VS_World = GridWorld;
 		DrawGrid();
@@ -425,7 +415,7 @@ void DrawCube() {
 			Color = 0xFF123524; //Phthalo
 		}
 
-		BetterBruteTriangle(AllTriangles[i], TotalPixels, MaxPixels, PixelWidth, Color);
+		BetterBruteTriangle(AllTriangles[i], TotalPixels, MaxPixels, PixelWidth, Color, DepthBuffer);
 	}
 
 	//outline
