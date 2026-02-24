@@ -44,6 +44,13 @@ struct Points {
 		deltaX = (x2 - x1);
 		//slope = deltaY / deltaX;
 	}
+	Points(Position start, Position end) {
+		x1 = start.x;
+		y1 = start.y;
+
+		x2 = end.x;
+		y2 = end.y;
+	}
 
 };
 
@@ -97,10 +104,9 @@ struct Vertex
 		};
 		
 	};
-	struct {
-			float u;
-			float v;
-		};
+
+
+
 	Vertex() {
 		for (int i = 0; i < 4; i++) {
 			xyzw[i] = 0;
@@ -178,33 +184,19 @@ struct Matrix4x4
 struct Triangle {
 	union {
 		struct {
-			Points LineABC[3];
+			Vertex LineABC[3];
 		};
 		struct {
-			Points A;
-			Points B;
-			Points C;
+			Vertex A;
+			Vertex B;
+			Vertex C;
 		};
 	};
 
-	struct {
-		float ZA;
-		float ZB;
-		float ZC;
-	};
 
-
-
-
-	Triangle(Points _A, Points _B, Points _C) {
+	Triangle(Vertex _A, Vertex _B, Vertex _C) {
 		A = _A; B = _B; C = _C;
 	}
-
-	Triangle(Points _A, float _ZA, Points _B, float _ZB, Points _C, float _ZC) {
-		A = _A; B = _B; C = _C;
-		ZA = _ZA; ZB = _ZB; ZC = _ZC;
-	}
-
 };
 
 struct BarycentricCoord {

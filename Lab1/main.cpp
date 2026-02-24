@@ -9,13 +9,13 @@
 #include <iostream>
 
 const char* Name = "MathurinGenty_Line Drawing";
-const unsigned int PixelWidth = 500;
-const unsigned int PixelHeight = 500;
 
-const unsigned int MaxPixels = PixelWidth * PixelHeight;
 
-unsigned int TotalPixels[MaxPixels];
-float DepthBuffer[MaxPixels];
+
+
+
+
+
 
 enum FrontCubeE {
 	topLeftF,	 //0
@@ -220,156 +220,102 @@ void DrawCube() {
 		VS_WVP(NewVert[i]);
 	}
 
-	Points ArrayPoints[12] = {
-
-		//front top                   left     to         right
-		Points(NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).y1),
-
-		//top                   right    to         bottom right
-		Points(NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).y1),
-
-		//top                   left    to         bottom left
-		Points(NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).y1),
-
-		//bottom                   left    to         right
-		Points(NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).y1),
-
-
-		//back top                   left     to         right
-		Points(NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).y1),
-
-		//top                   right    to         bottom right
-		Points(NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).y1),
-
-		//top                   left    to         bottom left
-		Points(NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).y1,
-				NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).y1),
-
-		//bottom                   left    to         right
-			Points(NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).y1,
-				NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).y1),
-
-
-					//connecting top left corner
-					Points(NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftF], PixelWidth, PixelWidth).y1,
-						NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topLeftB], PixelWidth, PixelWidth).y1),
-
-					//connecting top right corner
-					Points(NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightF], PixelWidth, PixelWidth).y1,
-						NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[topRightB], PixelWidth, PixelWidth).y1),
-
-					//connecting bottom left corner
-					Points(NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftF], PixelWidth, PixelWidth).y1,
-						NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomLeftB], PixelWidth, PixelWidth).y1),
-
-					//connecting bottom right corner
-							Points(NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightF], PixelWidth, PixelWidth).y1,
-											NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVert[bottomRightB], PixelWidth, PixelWidth).y1),
-	};
-
 	//bottom left triangle F
-	Points A(ArrayPoints[TopL2BottomLFront]);   //top left to bottom Left
-	Points B(ArrayPoints[BottomL2BottomRFront]);//bottom left to bottom right
-	Points C(B.x2, B.y2, A.x1, A.y1);           //bottom right to top left
+	Vertex A(NewVert[topLeftF]);      //top left to bottom Left
+	Vertex B(NewVert[bottomLeftF]);   //bottom left to bottom right
+	Vertex C(NewVert[bottomRightF]);  //bottom right to top left
 
-	Triangle TriOnFront(A, NewVert[topLeftF].z, B, NewVert[bottomLeftF].z, C, NewVert[bottomRightF].z);
+	Triangle TriOnFront(A, B, C);
 
 	//Top Right triangle F
-	Points A2(ArrayPoints[TopL2TopRFront]);   //top left to Top right
-	Points B2(ArrayPoints[TopR2BottomRFront]);//Top right to bottom right
-	Points C2(C);                             //bottom right to top left
+	//Vertex A2(NewVert[]);   //top left to Top right
+	Vertex B2(NewVert[topRightF]);   //Top right to bottom right
+	//Vertex C2(NewVert[]);   //bottom right to top left
 
-	Triangle TriOnFront2(A2, NewVert[topLeftF].z, B2, NewVert[topRightF].z, C2, NewVert[bottomRightF].z);//NewVert[].z
+	Triangle TriOnFront2(A, B2, C);//NewVert[].z
 
 
 
 	//bottom left triangle B  
-	Points A3(ArrayPoints[TopL2BottomLBack]);   //top left to bottom Left     B
-	Points B3(ArrayPoints[BottomL2BottomRBack]);//bottom left to bottom right B
-	Points C3(B3.x2, B3.y2, A3.x1, A3.y1);      //bottom right to top left    B
+	Vertex A3(NewVert[topLeftB]);      //top left to bottom Left     B
+	Vertex B3(NewVert[bottomLeftB]);   //bottom left to bottom right B
+	Vertex C3(NewVert[bottomRightB]);  //bottom right to top left    B
 
-	Triangle TriOnBack3(A3, NewVert[topLeftB].z, B3, NewVert[bottomLeftB].z, C3, NewVert[bottomRightB].z);
+	Triangle TriOnBack3(A3, B3, C3);
 
 	//Top Right triangle B
-	Points A4(ArrayPoints[TopL2TopRBack]);   //top left to Top right     B
-	Points B4(ArrayPoints[TopR2BottomRBack]);//Top right to bottom right B
-	Points C4(B4.x2, B4.y2, A4.x1, A4.y1);   //bottom right to top left  B
+	//Vertex A4(NewVert[]);       //top left to Top right     B
+	Vertex B4(NewVert[topRightB]);//Top right to bottom right B
+	//Vertex C4(NewVert[]);       //bottom right to top left  B
 
-	Triangle TriOnBack4(A4, NewVert[topLeftB].z, B4, NewVert[topRightB].z, C4, NewVert[bottomRightB].z);
+	Triangle TriOnBack4(A3, B4, C3);
 
 
 
 
 	//bottom left triangle Lside
-	Points A5(ArrayPoints[TopL2BottomLBack]);   //top leftB to bottom LeftB         back cube
-	Points B5(ArrayPoints[BottomLeftcorner]); //bottom leftB to bottom LeftF      Back cube to front 
-	Points C5(B5.x2, B5.y2, A5.x1, A5.y1);      //bottom LeftF to top leftB   
+	Vertex A5(NewVert[topLeftB]);         //top leftB to bottom LeftB         back cube
+	Vertex B5(NewVert[bottomLeftB]);      //bottom leftB to bottom LeftF      Back cube to front 
+	Vertex C5(NewVert[bottomLeftF]);      //bottom LeftF to top leftB   
 
-	Triangle TriOnBack5(A5, NewVert[topLeftB].z, B5, NewVert[bottomLeftB].z, C5, NewVert[bottomLeftF].z);
+	Triangle TriOnBack5(A5, B5, C5);
 
 
 	//Top Right triangle Lside
-	Points A6(ArrayPoints[TopL2BottomLFront]);  //TopL to BottomL front
-	Points B6(A6.x2, A6.y2, A5.x1, A5.y1);      //BottomLeftF to TopLeftB 
-	Points C6(A5.x1, A5.y1, A6.x1, A6.y1);    //TopLeftB to TopLeftF
+	Vertex A6(NewVert[topLeftF]);//TopL to BottomL front
+	//Vertex B6(NewVert[]);      //BottomLeftF to TopLeftB 
+	//Vertex C6(NewVert[]);      //TopLeftB to TopLeftF
 
-	Triangle TriOnBack6(A6, NewVert[topLeftF].z, B6, NewVert[bottomLeftF].z, C6, NewVert[topLeftB].z);
+	Triangle TriOnBack6(A6, C5, A5);
 
 
 	//bottom left triangle Rside
-	Points A7(ArrayPoints[TopR2BottomRFront]);    //TopRightF to BottomRightF 
-	Points B7(ArrayPoints[BottomRightcorner]);  //BottomRightF to BottomRightB
-	Points C7(B7.x2, B7.y2, A7.x2, A7.y2);        //BottomRightB to TopRightF
+	Vertex A7(NewVert[topRightF]);     //TopRightF to BottomRightF 
+	Vertex B7(NewVert[bottomRightF]);  //BottomRightF to BottomRightB
+	Vertex C7(NewVert[bottomRightB]);  //BottomRightB to TopRightF
 
-	Triangle TriOnBack7(A7, NewVert[topRightF].z, B7, NewVert[bottomRightF].z, C7, NewVert[bottomRightB].z);
+	Triangle TriOnBack7(A7, B7, C7);
 
 	//Top Right triangle Rside
-	Points A8(ArrayPoints[TopRightcorner]);   //TopRightF to TopRightB 
-	Points B8(ArrayPoints[TopR2BottomRBack]);   //TopRightB to BottomRightB
-	Points C8(B8.x2, B8.y2, A8.x1, A8.y1);      //BottomRightB to TopRightF
+	//Vertex A8(NewVert[topRightF]);   //TopRightF to TopRightB 
+	Vertex B8(NewVert[topRightB]);   //TopRightB to BottomRightB
+	//Vertex C8(NewVert[bottomRightB]);   //BottomRightB to TopRightF
 
-	Triangle TriOnBack8(A8, NewVert[topRightF].z, B8, NewVert[topRightB].z, C8, NewVert[bottomRightB].z);
+	Triangle TriOnBack8(A7, B8, C7);
 
 
 
 
 	//bottom left triangle Topside
-	Points A9(ArrayPoints[TopL2TopRFront]);   //TopLeftF to TopRightF
-	Points B9(ArrayPoints[TopRightcorner]);   //TopRightF to TopRightB
-	Points C9(B9.x2, B9.y2, B9.x1, B9.y1);	  //TopRightB to TopRightF
+	Vertex A9(NewVert[topLeftF]);     //TopLeftF to TopRightF
+	Vertex B9(NewVert[topRightF]);    //TopRightF to TopRightB
+	Vertex C9(NewVert[topRightB]);	  //TopRightB to TopRightF
 
-	Triangle TriOnBack9(A9, NewVert[topLeftF].z, B9, NewVert[topRightF].z, C9, NewVert[topRightB].z);
+	Triangle TriOnBack9(A9, B9, C9);
 
 	//Top Right triangle Topside
-	Points A10(A9.x1, A9.y1, B9.x2, B9.y2);     //TopLeftF to TopRightB
-	Points B10(ArrayPoints[TopL2TopRBack]);     //TopLeftB to TopRightB 
-	Points C10(A10.x2, A10.y2, A10.x1, A10.y1);	//TopRightB to TopLeftF
+	//Vertex A10(NewVert[]);           //TopLeftF to TopRightB
+	Vertex B10(NewVert[topLeftB]);     //TopLeftB to TopRightB 
+	//Vertex C10(NewVert[]);	       //TopRightB to TopLeftF
 
-	Triangle TriOnBack10(A10, NewVert[topLeftF].z, B10, NewVert[topLeftB].z, C10, NewVert[topRightB].z);
+	Triangle TriOnBack10(A9, B10, C9);
 
 
 
 	//bottom left triangle BottomSide
-	Points A11(ArrayPoints[BottomL2BottomRFront]);	 //BottomLeftF to BottomRightF
-	Points B11(ArrayPoints[BottomRightcorner]);	     //BottomRightF to BottomRightB
-	Points C11(B11.x2, B11.y2, A11.x1, A11.y1);	     //BottomRightB to BottomLeftF
+	Vertex A11(NewVert[bottomLeftF]);	     //BottomLeftF to BottomRightF
+	Vertex B11(NewVert[bottomRightF]);	     //BottomRightF to BottomRightB
+	Vertex C11(NewVert[bottomRightB]);	     //BottomRightB to BottomLeftF
 
-	Triangle TriOnBack11(A11, NewVert[bottomLeftF].z, B11, NewVert[bottomRightF].z, C11, NewVert[bottomRightB].z);
+	Triangle TriOnBack11(A11, B11, C11);
 
-	
+
 	//Top Right triangle bottomSide
-	Points A12(ArrayPoints[BottomLeftcorner]);       //BottomLeftF to BottomLeftB
-	Points B12(ArrayPoints[BottomL2BottomRBack]);	 //BottomLeftB to BottomRightB
-	Points C12(B12.x2, B12.y2, A12.x1, A12.y1);	     //BottomRightB to BottomLeftF
+	//Vertex A12(NewVert[]);       //BottomLeftF to BottomLeftB
+	Vertex B12(NewVert[bottomLeftB]);	 //BottomLeftB to BottomRightB
+	//Vertex C12(NewVert[]);	     //BottomRightB to BottomLeftF
 
-	Triangle TriOnBack12(A12, NewVert[bottomLeftF].z, B12, NewVert[bottomLeftB].z, C12, NewVert[bottomRightB].z);
-
+	Triangle TriOnBack12(A11, B12, C11);
 
 
 	Triangle AllTriangles[12] = {
@@ -415,7 +361,7 @@ void DrawCube() {
 			Color = 0xFF123524; //Phthalo
 		}
 
-		BetterBruteTriangle(AllTriangles[i], TotalPixels, MaxPixels, PixelWidth, Color, DepthBuffer);
+		BetterBruteTriangle(AllTriangles[i], TotalPixels, MaxPixels, DepthBuffer);
 	}
 
 	//outline
@@ -446,96 +392,96 @@ void DrawGrid() {
 
 	//43 all together
 	Points ArrayPointGrids[22] = {
-		Points(NDCtoScreen(NewVertGrid[0], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[0], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[1], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[1], PixelWidth, PixelWidth).y1),
+		Points(NDCtoScreen(NewVertGrid[0], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[0], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[1], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[1], PixelWidth, PixelWidth).y),
 
-			Points(NDCtoScreen(NewVertGrid[2], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[2], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[3], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[3], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[2], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[2], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[3], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[3], PixelWidth, PixelWidth).y),
 
 			//4 5
-			Points(NDCtoScreen(NewVertGrid[4], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[4], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[5], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[5], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[4], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[4], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[5], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[5], PixelWidth, PixelWidth).y),
 
 			//6 7
-			Points(NDCtoScreen(NewVertGrid[6], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[6], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[7], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[7], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[6], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[6], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[7], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[7], PixelWidth, PixelWidth).y),
 
 			//8 9
-			Points(NDCtoScreen(NewVertGrid[8], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[8], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[9], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[9], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[8], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[8], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[9], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[9], PixelWidth, PixelWidth).y),
 
 			//10 11
-			Points(NDCtoScreen(NewVertGrid[10], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[10], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[11], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[11], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[10], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[10], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[11], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[11], PixelWidth, PixelWidth).y),
 
 			//12 13
-			Points(NDCtoScreen(NewVertGrid[12], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[12], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[13], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[13], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[12], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[12], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[13], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[13], PixelWidth, PixelWidth).y),
 
 			//14 15
-			Points(NDCtoScreen(NewVertGrid[14], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[14], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[15], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[15], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[14], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[14], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[15], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[15], PixelWidth, PixelWidth).y),
 
 			//16 17
-			Points(NDCtoScreen(NewVertGrid[16], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[16], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[17], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[17], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[16], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[16], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[17], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[17], PixelWidth, PixelWidth).y),
 
 			//18 19
-			Points(NDCtoScreen(NewVertGrid[18], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[18], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[19], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[19], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[18], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[18], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[19], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[19], PixelWidth, PixelWidth).y),
 
 			//20 21
-			Points(NDCtoScreen(NewVertGrid[20], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[20], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[21], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[21], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[20], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[20], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[21], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[21], PixelWidth, PixelWidth).y),
 
 			//22 23
-			Points(NDCtoScreen(NewVertGrid[22], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[22], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[23], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[23], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[22], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[22], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[23], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[23], PixelWidth, PixelWidth).y),
 
 			//	24 25
-			Points(NDCtoScreen(NewVertGrid[24], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[24], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[25], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[25], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[24], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[24], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[25], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[25], PixelWidth, PixelWidth).y),
 
 			//26 27
-			Points(NDCtoScreen(NewVertGrid[26], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[26], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[27], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[27], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[26], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[26], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[27], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[27], PixelWidth, PixelWidth).y),
 
 			//28 29
-			Points(NDCtoScreen(NewVertGrid[28], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[28], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[29], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[29], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[28], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[28], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[29], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[29], PixelWidth, PixelWidth).y),
 
 			//30 31
-			Points(NDCtoScreen(NewVertGrid[30], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[30], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[31], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[31], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[30], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[30], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[31], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[31], PixelWidth, PixelWidth).y),
 
 			//32 33
-			Points(NDCtoScreen(NewVertGrid[32], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[32], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[33], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[33], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[32], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[32], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[33], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[33], PixelWidth, PixelWidth).y),
 
 			//34 35
-			Points(NDCtoScreen(NewVertGrid[34], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[34], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[35], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[35], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[34], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[34], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[35], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[35], PixelWidth, PixelWidth).y),
 
 			//36 37
-			Points(NDCtoScreen(NewVertGrid[36], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[36], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[37], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[37], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[36], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[36], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[37], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[37], PixelWidth, PixelWidth).y),
 
 			//38 39
-			Points(NDCtoScreen(NewVertGrid[38], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[38], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[39], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[39], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[38], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[38], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[39], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[39], PixelWidth, PixelWidth).y),
 
 			//40 41
-			Points(NDCtoScreen(NewVertGrid[40], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[40], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[41], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[41], PixelWidth, PixelWidth).y1),
+			Points(NDCtoScreen(NewVertGrid[40], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[40], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[41], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[41], PixelWidth, PixelWidth).y),
 
 			//42 43
-			Points(NDCtoScreen(NewVertGrid[42], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[42], PixelWidth, PixelWidth).y1,
-			NDCtoScreen(NewVertGrid[43], PixelWidth, PixelWidth).x1, NDCtoScreen(NewVertGrid[43], PixelWidth, PixelWidth).y1)
+			Points(NDCtoScreen(NewVertGrid[42], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[42], PixelWidth, PixelWidth).y,
+			NDCtoScreen(NewVertGrid[43], PixelWidth, PixelWidth).x, NDCtoScreen(NewVertGrid[43], PixelWidth, PixelWidth).y)
 	};
 
 
 	for (int i = 0; i < 22; i++) {
-
+		
 		ParametricLineFunction(ArrayPointGrids[i], ColorWhite, TotalPixels, MaxPixels, PixelWidth, DepthBuffer);
 	}
 }

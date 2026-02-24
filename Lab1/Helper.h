@@ -8,7 +8,17 @@ static const unsigned int _Red = 0xFFFF0000;
 static const unsigned int _Green = 0xFF00FF00;
 static const unsigned int _Blue = 0xFF0000FF;
 
+const unsigned int PixelWidth = 500;
+const unsigned int PixelHeight = 500;
 
+const unsigned int MaxPixels = PixelWidth * PixelHeight;
+
+unsigned int TotalPixels[MaxPixels];
+float DepthBuffer[MaxPixels];
+
+void Print(std::string words) {
+	std::cout << words << std::endl;
+}
 // A function to clear the color buffer to a solid color of your choice.
 void CCBuffer(PColor color, unsigned int* PixelArry, int ArrySize, float* ZBuffer) {
 
@@ -22,34 +32,28 @@ void CCBuffer(PColor color, unsigned int* PixelArry, int ArrySize, float* ZBuffe
 // A function to convert 2 dimensional coordinates to a 1 dimensional coordinate.
 int Convert2Dto1D(int nX, int nY, int nWidth)
 {
+
 	//return a 1d coordinate using the 2D->1D formula
 	return ((nY * nWidth) + nX);
 }
 
 // A function to draw a pixel (fill a certain pixel with a specific color)
-void DrawPixel(int ArrySpot, PColor color, unsigned int* PixelArry, int ArrySize, float* ZBuffer, float Depth = 1.0f) {
-	
+void DrawPixel(int ArrySpot, PColor color, unsigned int* PixelArry, int ArrySize, float* ZBuffer, float Depth) {
 	//changing each slot in the array to one color value
-	for (int i = 0; i < ArrySize; i++) {
 
 		//If the new value is lower (nearer to the camera)
-		if (ZBuffer[i] >= Depth) {
-
-			//you draw the pixel and write that new depth into the buffer.
-			if (ArrySpot == i) {
-				PixelArry[i] = color.color;
-				ZBuffer[i] = Depth;
-			}
-		}
-		//If the new value is farther than what's already in the buffer, you just don't draw it.
+	if (ZBuffer[ArrySpot] >= Depth) {
+		//you draw the pixel and write that new depth into the buffer.
+		PixelArry[ArrySpot] = color.color;
+		ZBuffer[ArrySpot] = Depth;
 	}
+	//If the new value is farther than what's already in the buffer, you just don't draw it.
 }
 
 // Color conversion BGRAtoARGB
 PColor BGRAtoARGB(unsigned int C)
 {
 	PColor ColorConverted;
-
 	// BBGGRRAA
    //0x000000FF = AA   //0xAARRGGBB
 	ColorConverted.A = (C & 0x000000FF) << 24;//0xFF000000 = AA
@@ -100,6 +104,8 @@ unsigned int AlphaBlend(unsigned int DestinationColor, unsigned int SourceColor)
 // A function to BLIT (Block Image Transfer)
 void BLIT(Position SourceRect, Position RasterPos, const unsigned int* pSourceTextureArray, unsigned int* ArryScreen, unsigned int SourceWidth)
 {
+
+
 	for (int y = SourceRect.y; y < SourceRect.height + SourceRect.y; y++)
 	{
 		for (int x = SourceRect.x; x < SourceRect.width + SourceRect.x; x++)
@@ -127,7 +133,6 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 	float Steps;//bottom half of ratio
 	float IncrementX;
 	float IncrementY;
-
 	//Parametric Line Algorithm​
 
 	//Take the largest difference
@@ -147,7 +152,7 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 	for (int i = 0; i < Steps; i++) {
 
 		//PlotPixel(CurrX, Floor(CurrY + 0.5))​ //Convert2Dto1D(CurrentX, CurrentY + 0.5, RasterWidth)
-		DrawPixel(Convert2Dto1D(CurrentX, CurrentY, RasterWidth), _color, PixelArry, ArrySize, ZBuffer);
+		DrawPixel(Convert2Dto1D(CurrentX, CurrentY, RasterWidth), _color, PixelArry, ArrySize, ZBuffer, 1);
 
 		// Increment the current x  
 		CurrentX = CurrentX + IncrementX;
@@ -161,19 +166,16 @@ float ImplicitLineEquation(Position point, Points Line) {
 	float Answer;
 
 	Answer = (((Line.y1 - Line.y2) * (point.x)) + ((Line.x2 - Line.x1) * (point.y)) + ((Line.x1 * Line.y2) - (Line.y1 * Line.x2)));
-
 	return Answer;
 }
 
-Points NDCtoScreen(Vertex NDC, float Width, float Height) {
+Position NDCtoScreen(Vertex NDC, float Width = PixelWidth, float Height = PixelHeight) {
 	float SceenX1 = ((NDC.x + 1) * (Width / 2));
 	float SceenY1 = ((1 - NDC.y) * (Height / 2));
-
-	return Points(SceenX1, SceenY1);
+	return Position(SceenX1, SceenY1);
 }
 
 Matrix4x4 IdentityMatrix() {
-
 	Matrix4x4 Ident
 	(1, 0, 0, 0,
 		0, 1, 0, 0,
@@ -184,7 +186,6 @@ Matrix4x4 IdentityMatrix() {
 }
 
 Matrix4x4 TranslationMatrix(float x, float y, float z) {
-
 	Matrix4x4 Translation
 	(1, 0, 0, 0,
 		0, 1, 0, 0,
@@ -200,7 +201,6 @@ float DegreesToRadians(float Degrees) {
 
 Matrix4x4 RotateY(float x) {
 	float y = DegreesToRadians(x);
-
 
 	Matrix4x4 Rotate
 	(cosf(y), 0, sinf(y), 0,
@@ -227,7 +227,6 @@ Matrix4x4 RotateX(float x) {
 Matrix4x4 RotateZ(float x) {
 	float y = DegreesToRadians(x);
 
-
 	Matrix4x4 Rotate
 	(cosf(y), -sinf(y), 0, 0,
 		sinf(y), cosf(y), 0, 0,
@@ -239,6 +238,7 @@ Matrix4x4 RotateZ(float x) {
 
 Matrix4x4 Transpose(const Matrix4x4& mIn) {
 	Matrix4x4 Trans;
+
 	Trans.xx = mIn.xx; Trans.xy = mIn.yx; Trans.xz = mIn.zx; Trans.xw = mIn.wx;
 	Trans.yx = mIn.xy; Trans.yy = mIn.yy; Trans.yz = mIn.zy; Trans.yw = mIn.wy;
 	Trans.zx = mIn.xz; Trans.zy = mIn.yz; Trans.zz = mIn.zz; Trans.zw = mIn.wz;
@@ -267,7 +267,6 @@ Matrix4x4 PerspectiveProjection(float FOV, float Ratio, float Near, float Far) {
 	float Xscale = Yscale * Ratio;
 	float Zdifference = -((Far * Near) / (Far - Near));
 	float Zdif = (Far / (Far - Near));
-
 	//std::cout << "Ratio: " << Ratio << std::endl;
 	//std::cout << "FOVRad: " << FOVRad << std::endl;
 	//std::cout << "Yscale: " << Yscale << std::endl;
@@ -284,11 +283,10 @@ Matrix4x4 PerspectiveProjection(float FOV, float Ratio, float Near, float Far) {
 	return DoubleP;
 }
 
-float MinOut3(Vertex threepoints) {
-	float A = threepoints.x;
-	float B = threepoints.y;
-	float C = threepoints.z;
-
+float MinOut3(float one, float two , float three) {
+	float A = one;
+	float B = two;
+	float C = three;
 	float MinFloat;
 
 	if (A <= C && B >= A) {
@@ -304,11 +302,10 @@ float MinOut3(Vertex threepoints) {
 	return MinFloat;
 }
 
-float MaxOut3(Vertex threepoints) {
-	float A = threepoints.x;
-	float B = threepoints.y;
-	float C = threepoints.z;
-
+float MaxOut3(float one, float two, float three) {
+	float A = one;
+	float B = two;
+	float C = three;
 	float MaxFloat;
 
 	if (A >= C && B <= A) {
@@ -325,10 +322,9 @@ float MaxOut3(Vertex threepoints) {
 }
 
 BarycentricCoord Barycentric(Position pointA, Position pointB, Position pointC, Position pointP) {
+	BarycentricCoord Three; //NDCtoScreen(Vertex NDC, float Width, float Height)
 
-	BarycentricCoord Three;
-
-	Three.Beta = ImplicitLineEquation(pointB, Points(pointA.x, pointA.y, pointC.x, pointC.y));
+	Three.Beta  = ImplicitLineEquation(pointB, Points(pointA.x, pointA.y, pointC.x, pointC.y));
 	Three.Gamma = ImplicitLineEquation(pointC, Points(pointB.x, pointB.y, pointA.x, pointA.y));
 	Three.Alpha = ImplicitLineEquation(pointA, Points(pointC.x, pointC.y, pointB.x, pointB.y));
 
@@ -342,12 +338,12 @@ BarycentricCoord Barycentric(Position pointA, Position pointB, Position pointC, 
 }
 
 
-void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Width, int _Height, float* ZBuffer) {
+void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, float* ZBuffer) {
 	BarycentricCoord byA;
 	float StartX = 0;
 	float StartY = 0;
-	float EndX = _Width;
-	float EndY = _Height;
+	float EndX = PixelWidth;
+	float EndY = PixelHeight;
 	float BaryInterpo = 0;
 
 
@@ -356,16 +352,16 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Wi
 		for (int CurrX = StartX; CurrX < EndX; CurrX++) {
 
 			//byA = FindBarycentric (CurrX, CurrY )​
-			byA = Barycentric(Position(_Tri.A.x1, _Tri.A.y1), Position(_Tri.B.x1, _Tri.B.y1), Position(_Tri.C.x1, _Tri.C.y1), Position(CurrX, CurrY)); 
+			byA = Barycentric(NDCtoScreen(_Tri.A), NDCtoScreen(_Tri.B), NDCtoScreen(_Tri.C), Position(CurrX, CurrY));
 
 			//IF b >=0 && b <= 1 && ​y >= 0 && y <= 1 &&​ a >= 0 && a <= 1​
 			if ((byA.Beta >= 0 && byA.Beta <= 1) && (byA.Gamma >= 0 && byA.Gamma <= 1) && (byA.Alpha >= 0 && 1 >= byA.Alpha)) {
 
 				//Barycentric Interpolation: X = A * α + B * β + C * γ 
-				BaryInterpo = (_Tri.ZA * byA.Alpha) + (_Tri.ZB * byA.Beta) + (_Tri.ZC * byA.Gamma);
+				BaryInterpo = (_Tri.A.z * byA.Alpha) + (_Tri.B.z * byA.Beta) + (_Tri.C.z * byA.Gamma);
 
 				//THEN - ​PlotPixel ( CurrX, CurrY )​
-				DrawPixel(Convert2Dto1D(CurrX, CurrY, _Width), PColor(0xFFADD8E6), PixelArry, ArrySize, ZBuffer, BaryInterpo);
+				DrawPixel(Convert2Dto1D(CurrX, CurrY, PixelWidth), PColor(0xFFADD8E6), PixelArry, ArrySize, ZBuffer, BaryInterpo);
 			}
 
 		}
@@ -373,31 +369,30 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Wi
 }
 
 
-void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, int _Width, PColor _Color, float* ZBuffer) { 
+void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, float* ZBuffer) {
 	BarycentricCoord byA;
-	float StartX = MinOut3(Vertex(_Tri.A.x1, _Tri.B.x1, _Tri.C.x1));
-	float StartY = MinOut3(Vertex(_Tri.A.y1, _Tri.B.y1, _Tri.C.y1));
-	float EndX = MaxOut3(Vertex(_Tri.A.x1, _Tri.B.x1, _Tri.C.x1));
-	float EndY = MaxOut3(Vertex(_Tri.A.y1, _Tri.B.y1, _Tri.C.y1));
+	float StartX = MinOut3(NDCtoScreen(_Tri.A).x, NDCtoScreen(_Tri.B).x, NDCtoScreen(_Tri.C).x);
+	float StartY = MinOut3(NDCtoScreen(_Tri.A).y, NDCtoScreen(_Tri.B).y, NDCtoScreen(_Tri.C).y);
+	float EndX   = MaxOut3(NDCtoScreen(_Tri.A).x, NDCtoScreen(_Tri.B).x, NDCtoScreen(_Tri.C).x);
+	float EndY   = MaxOut3(NDCtoScreen(_Tri.A).y, NDCtoScreen(_Tri.B).y, NDCtoScreen(_Tri.C).y);
 	float BaryInterpo = 0;
-
 
 	for (int CurrY = StartY; CurrY < EndY; CurrY++) {
 
 		for (int CurrX = StartX; CurrX < EndX; CurrX++) {
 
 			//byA = FindBarycentric (CurrX, CurrY )​
-			byA = Barycentric(Position(_Tri.A.x1, _Tri.A.y1), Position(_Tri.B.x1, _Tri.B.y1), Position(_Tri.C.x1, _Tri.C.y1), Position(CurrX, CurrY)); //FindBarycentric(_Tri, Position(CurrX, CurrY))​;
+			byA = Barycentric(NDCtoScreen(_Tri.A), NDCtoScreen(_Tri.B), NDCtoScreen(_Tri.C), Position(CurrX, CurrY)); //FindBarycentric(_Tri, Position(CurrX, CurrY))​;
 
 			//IF b >=0 && b <= 1 && ​y >= 0 && y <= 1 &&​ a >= 0 && a <= 1​
 			if ((byA.Beta >= 0 && byA.Beta <= 1) && (byA.Gamma >= 0 && byA.Gamma <= 1) && (byA.Alpha >= 0 && 1 >= byA.Alpha)) {
 
 				//Barycentric Interpolation: X = A * α + B * β + C * γ 
 				//get A, B, and C's z value and multiply it with alpha, beta, and gamma
-				BaryInterpo = (_Tri.ZA * byA.Alpha) + (_Tri.ZB * byA.Beta) + (_Tri.ZC * byA.Gamma);
+				BaryInterpo = (_Tri.A.z * byA.Alpha) + (_Tri.B.z * byA.Beta) + (_Tri.C.z * byA.Gamma);
 
 				//THEN - ​PlotPixel ( CurrX, CurrY )​
-				DrawPixel(Convert2Dto1D(CurrX, CurrY, _Width), _Color, PixelArry, ArrySize, ZBuffer, BaryInterpo);
+				DrawPixel(Convert2Dto1D(CurrX, CurrY, PixelWidth), PColor(0xFFFF0000), PixelArry, ArrySize, ZBuffer, BaryInterpo);
 			}
 
 		}
