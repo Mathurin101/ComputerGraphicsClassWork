@@ -377,7 +377,7 @@ void DrawCube() {
 	TriOnFront2,//1
 
 	TriOnBack3, //2 
-	TriOnBack4, //3 -------------------- nothing there
+	TriOnBack4, //3 
 	
 	TriOnBack5, //4
 	TriOnBack6, //5 
@@ -403,7 +403,7 @@ void DrawCube() {
 			Color = 0xFFADD8E6; //Light Blue
 		}
 		else if (i == 4 || i == 5) {
-			Color = 0xFFFFD3D6; //light pink
+			Color = 0x33FFD3D6; //0xFFFFD3D6; //light pink
 		}
 		else if (i == 6 || i == 7) {
 			Color = 0xFF88E788; //light green

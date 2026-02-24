@@ -140,6 +140,7 @@
     <ClCompile Include="XTime.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="flower.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="MiniClasses.h" />
     <ClInclude Include="RasterSurface.h" />

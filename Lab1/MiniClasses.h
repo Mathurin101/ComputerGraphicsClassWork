@@ -95,7 +95,12 @@ struct Vertex
 			float z;
 			float w;
 		};
+		
 	};
+	struct {
+			float u;
+			float v;
+		};
 	Vertex() {
 		for (int i = 0; i < 4; i++) {
 			xyzw[i] = 0;
@@ -187,6 +192,9 @@ struct Triangle {
 		float ZB;
 		float ZC;
 	};
+
+
+
 
 	Triangle(Points _A, Points _B, Points _C) {
 		A = _A; B = _B; C = _C;
