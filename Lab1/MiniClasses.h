@@ -86,8 +86,7 @@ struct PColor {
 		return color;
 	}
 };
-
-struct Vertex
+struct Coord
 {
 	union
 	{
@@ -102,20 +101,34 @@ struct Vertex
 			float z;
 			float w;
 		};
-		
+
 	};
 
+	Coord(float _x = 0, float _y = 0, float _z = 0, float _w = 1.0f) {
+		x = _x; y = _y; z = _z; w = _w;
+	}
+};
+struct Vertex
+{
+	
+	Coord cord;
 
+	float u;
+	float v;
 
 	Vertex() {
 		for (int i = 0; i < 4; i++) {
-			xyzw[i] = 0;
+			cord.xyzw[i] = 0;
 		}
 	}
 	Vertex(float _x, float _y, float _z, float _w = 1.0f) {
-		x = _x; y = _y; z = _z; w = _w;
+		cord.x = _x; cord.y = _y; cord.z = _z; cord.w = _w;
 	}
 
+	Vertex(Vertex _A, float _u, float _v) {
+		cord.x = _A.cord.x; cord.y = _A.cord.y; cord.z = _A.cord.z; cord.w = _A.cord.w;
+		u = _u; v = _v;
+	}
 
 };
 
@@ -151,10 +164,10 @@ struct Matrix4x4
 		};
 		struct
 		{
-			Vertex AxisX;
-			Vertex AxisY;
-			Vertex AxisZ;
-			Vertex AxisW;
+			Coord AxisX;
+			Coord AxisY;
+			Coord AxisZ;
+			Coord AxisW;
 		};
 
 	};
@@ -197,6 +210,7 @@ struct Triangle {
 	Triangle(Vertex _A, Vertex _B, Vertex _C) {
 		A = _A; B = _B; C = _C;
 	}
+
 };
 
 struct BarycentricCoord {
@@ -210,7 +224,7 @@ struct BarycentricCoord {
 			float Alpha;
 		};
 	};
-	
+
 	BarycentricCoord(float _Alpha = 0, float _Beta = 0, float _Gamma = 0) {
 		Alpha = _Alpha; Beta = _Beta; Gamma = _Gamma;
 	}

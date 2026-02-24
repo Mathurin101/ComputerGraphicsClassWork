@@ -8,7 +8,7 @@ static const unsigned int _Red = 0xFFFF0000;
 static const unsigned int _Green = 0xFF00FF00;
 static const unsigned int _Blue = 0xFF0000FF;
 
-const unsigned int PixelWidth = 500;
+const unsigned int PixelWidth = 600;
 const unsigned int PixelHeight = 500;
 
 const unsigned int MaxPixels = PixelWidth * PixelHeight;
@@ -170,8 +170,8 @@ float ImplicitLineEquation(Position point, Points Line) {
 }
 
 Position NDCtoScreen(Vertex NDC, float Width = PixelWidth, float Height = PixelHeight) {
-	float SceenX1 = ((NDC.x + 1) * (Width / 2));
-	float SceenY1 = ((1 - NDC.y) * (Height / 2));
+	float SceenX1 = ((NDC.cord.x + 1) * (Width / 2));
+	float SceenY1 = ((1 - NDC.cord.y) * (Height / 2));
 	return Position(SceenX1, SceenY1);
 }
 
@@ -358,7 +358,7 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, float* 
 			if ((byA.Beta >= 0 && byA.Beta <= 1) && (byA.Gamma >= 0 && byA.Gamma <= 1) && (byA.Alpha >= 0 && 1 >= byA.Alpha)) {
 
 				//Barycentric Interpolation: X = A * α + B * β + C * γ 
-				BaryInterpo = (_Tri.A.z * byA.Alpha) + (_Tri.B.z * byA.Beta) + (_Tri.C.z * byA.Gamma);
+				BaryInterpo = (_Tri.A.cord.z * byA.Alpha) + (_Tri.B.cord.z * byA.Beta) + (_Tri.C.cord.z * byA.Gamma);
 
 				//THEN - ​PlotPixel ( CurrX, CurrY )​
 				DrawPixel(Convert2Dto1D(CurrX, CurrY, PixelWidth), PColor(0xFFADD8E6), PixelArry, ArrySize, ZBuffer, BaryInterpo);
@@ -369,8 +369,9 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, float* 
 }
 
 
-void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, float* ZBuffer) {
+void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, float* ZBuffer, PColor Color) {
 	BarycentricCoord byA;
+	PixelShader = VS_PixelShadder;
 	float StartX = MinOut3(NDCtoScreen(_Tri.A).x, NDCtoScreen(_Tri.B).x, NDCtoScreen(_Tri.C).x);
 	float StartY = MinOut3(NDCtoScreen(_Tri.A).y, NDCtoScreen(_Tri.B).y, NDCtoScreen(_Tri.C).y);
 	float EndX   = MaxOut3(NDCtoScreen(_Tri.A).x, NDCtoScreen(_Tri.B).x, NDCtoScreen(_Tri.C).x);
@@ -389,10 +390,10 @@ void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, f
 
 				//Barycentric Interpolation: X = A * α + B * β + C * γ 
 				//get A, B, and C's z value and multiply it with alpha, beta, and gamma
-				BaryInterpo = (_Tri.A.z * byA.Alpha) + (_Tri.B.z * byA.Beta) + (_Tri.C.z * byA.Gamma);
+				BaryInterpo = (_Tri.A.cord.z * byA.Alpha) + (_Tri.B.cord.z * byA.Beta) + (_Tri.C.cord.z * byA.Gamma);
 
 				//THEN - ​PlotPixel ( CurrX, CurrY )​
-				DrawPixel(Convert2Dto1D(CurrX, CurrY, PixelWidth), PColor(0xFFFF0000), PixelArry, ArrySize, ZBuffer, BaryInterpo);
+				DrawPixel(Convert2Dto1D(CurrX, CurrY, PixelWidth), PixelShader(_Tri, byA), PixelArry, ArrySize, ZBuffer, BaryInterpo);
 			}
 
 		}

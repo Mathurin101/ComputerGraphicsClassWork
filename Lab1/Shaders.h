@@ -1,10 +1,12 @@
 #pragma once
 #include "MiniClasses.h"
+#include "flower.h"
 #include <iostream>
 
 
 //made a pointer function 
 void (*VertexShader) (Vertex&) = 0;
+PColor(*PixelShader) (Triangle&, const BarycentricCoord&) = 0;
 
 Matrix4x4 VS_World;
 
@@ -12,7 +14,7 @@ Matrix4x4 VS_View;
 
 Matrix4x4 VS_Projection;
 
-float DotProduct(Vertex v1, Vertex v2)
+float DotProduct(Coord v1, Coord v2)
 {	
 	return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z) + (v1.w * v2.w);
 }
@@ -21,10 +23,10 @@ Matrix4x4 MultiplyMatrixByMatrix(const Matrix4x4 &matrix1, const Matrix4x4& matr
 {
 	Matrix4x4 mOutput;
 
-	Vertex Column1(matrix2.xx, matrix2.yx, matrix2.zx, matrix2.wx);
-	Vertex Column2(matrix2.xy, matrix2.yy, matrix2.zy, matrix2.wy);
-	Vertex Column3(matrix2.xz, matrix2.yz, matrix2.zz, matrix2.wz);
-	Vertex Column4(matrix2.xw, matrix2.yw, matrix2.zw, matrix2.ww);
+	Coord Column1(matrix2.xx, matrix2.yx, matrix2.zx, matrix2.wx);
+	Coord Column2(matrix2.xy, matrix2.yy, matrix2.zy, matrix2.wy);
+	Coord Column3(matrix2.xz, matrix2.yz, matrix2.zz, matrix2.wz);
+	Coord Column4(matrix2.xw, matrix2.yw, matrix2.zw, matrix2.ww);
 
 	mOutput.xx = DotProduct(matrix1.AxisX, Column1);
     mOutput.xy = DotProduct(matrix1.AxisX, Column2);
@@ -59,10 +61,10 @@ Vertex MultiplyMatrixByVertex(Matrix4x4& matrix4, Vertex& vertex4) {
 	//xw 	yw 	zw	ww  w = (xw * x) + (yw * y) + (zw * z) + (ww * w)
 
 	
-	NewVertex.x = (matrix4.xx * vertex4.x) + (matrix4.yx * vertex4.y) + (matrix4.zx * vertex4.z) + (matrix4.wx * vertex4.w);
-	NewVertex.y = (matrix4.xy * vertex4.x) + (matrix4.yy * vertex4.y) + (matrix4.zy * vertex4.z) + (matrix4.wy * vertex4.w);
-	NewVertex.z = (matrix4.xz * vertex4.x) + (matrix4.yz * vertex4.y) + (matrix4.zz * vertex4.z) + (matrix4.wz * vertex4.w);
-	NewVertex.w = (matrix4.xw * vertex4.x) + (matrix4.yw * vertex4.y) + (matrix4.zw * vertex4.z) + (matrix4.ww * vertex4.w);
+	NewVertex.cord.x = (matrix4.xx * vertex4.cord.x) + (matrix4.yx * vertex4.cord.y) + (matrix4.zx * vertex4.cord.z) + (matrix4.wx * vertex4.cord.w);
+	NewVertex.cord.y = (matrix4.xy * vertex4.cord.x) + (matrix4.yy * vertex4.cord.y) + (matrix4.zy * vertex4.cord.z) + (matrix4.wy * vertex4.cord.w);
+	NewVertex.cord.z = (matrix4.xz * vertex4.cord.x) + (matrix4.yz * vertex4.cord.y) + (matrix4.zz * vertex4.cord.z) + (matrix4.wz * vertex4.cord.w);
+	NewVertex.cord.w = (matrix4.xw * vertex4.cord.x) + (matrix4.yw * vertex4.cord.y) + (matrix4.zw * vertex4.cord.z) + (matrix4.ww * vertex4.cord.w);
 
 
 	vertex4 = NewVertex;
@@ -75,7 +77,54 @@ void VS_WVP(Vertex& vert) {
 	vert = MultiplyMatrixByVertex(VS_World, vert);
 	vert = MultiplyMatrixByVertex(VS_View, vert);
 	vert = MultiplyMatrixByVertex(VS_Projection, vert);
-	vert.x /= vert.w;
-	vert.y /= vert.w;
-	vert.z /= vert.w;
+	vert.cord.x /= vert.cord.w;
+	vert.cord.y /= vert.cord.w;
+	vert.cord.z /= vert.cord.w;
+}
+
+PColor BGRA2ARGB(unsigned int C)
+{
+	PColor ColorConverted;
+	// BBGGRRAA
+   //0x000000FF = AA   //0xAARRGGBB
+	ColorConverted.A = (C & 0x000000FF) << 24;//0xFF000000 = AA
+
+	//0x0000FF00 = RR
+	ColorConverted.R = (C & 0x0000FF00) << 8; //0x00FF0000 = RR
+
+	//0x00FF0000 = GG
+	ColorConverted.G = (C & 0x00FF0000) >> 8; //0x0000FF00 = GG
+
+	//0xFF000000 = BB
+	ColorConverted.B = (C & 0xFF000000) >> 24;//0x000000FF = BB
+
+	//ColorConverted.color = (ColorConverted.A | ColorConverted.R | ColorConverted.G | ColorConverted.B);
+
+	return ColorConverted.color = (ColorConverted.A | ColorConverted.R | ColorConverted.G | ColorConverted.B);
+}
+int Convert2DTWO1D(int nX, int nY, int nWidth)
+{
+
+	//return a 1d coordinate using the 2D->1D formula
+	return ((nY * nWidth) + nX);
+}
+PColor VS_PixelShadder(Triangle& Tri, const BarycentricCoord& Bary) {
+	float u;
+	float v;
+	int Position;
+	PColor _Color;
+	
+	u = (Tri.A.u * Bary.Alpha) + (Tri.B.u * Bary.Beta) + (Tri.C.u * Bary.Gamma);
+	v = (Tri.A.v * Bary.Alpha) + (Tri.B.v * Bary.Beta) + (Tri.C.v * Bary.Gamma);
+	
+	u *= flower_width;
+	v *= flower_height;
+	
+	Position = Convert2DTWO1D(u, v, flower_width);
+	
+	_Color.color = flower_pixels[Position];
+	
+	_Color = BGRA2ARGB(_Color.color);
+
+	return _Color;// _Color;
 }
