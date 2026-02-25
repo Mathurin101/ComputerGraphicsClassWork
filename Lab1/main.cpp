@@ -176,11 +176,11 @@ int main()
 	VS_Projection = Projection;
 	
 	PColor colorRED(0xFFFF0000);
-	PColor colorBLUE(0xFF0000FF);
+	PColor colorYELLOW(0xFFFFFF00);
 	PColor NEWcolor;
 
-	//Combine_colors(PColor color1, PColor color2)
-	NEWcolor = Combine_colors(colorRED, colorBLUE);
+	//Modulate_Colors(PColor color1, PColor color2)
+	NEWcolor = Combine_colors(colorRED, colorYELLOW);
 
 		std::cout << "NEWcolor A:" << NEWcolor.A << std::endl;
 		std::cout << "NEWcolor R:" << NEWcolor.R << std::endl;

@@ -454,7 +454,25 @@ PColor Combine_colors(PColor color1, PColor color2) {
 	return CombineColor;
 }
 
-//modulate_colors -- multiplicatively combine two colors
+//Modulate_Colors -- multiplicatively combine two colors
+PColor Modulate_Colors(PColor color1, PColor color2) {
+	PColor ModulateColor;
+
+	//TODO: add if statements like in "Combine_colors"'s body
+	//Alpha
+	ModulateColor.A = ((color1.A * color2.A) / 255);
+
+	//red
+	ModulateColor.R = ((color1.R * color2.R) / 255);
+
+	//green
+	ModulateColor.G = ((color1.G * color2.G) / 255);
+
+	//blue
+	ModulateColor.B = ((color1.B * color2.B) / 255);
+
+	return ModulateColor;
+}
 
 //saturate -- clamps a value between 0 and 1
 
