@@ -337,7 +337,6 @@ BarycentricCoord Barycentric(Position pointA, Position pointB, Position pointC, 
 	return BarycentricCoord(a / Three.Alpha, b / Three.Beta, y / Three.Gamma);
 }
 
-
 void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, float* ZBuffer) {
 	BarycentricCoord byA;
 	float StartX = 0;
@@ -367,7 +366,6 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, float* 
 		}
 	}
 }
-
 
 void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, float* ZBuffer, PColor Color) {
 	BarycentricCoord byA;
@@ -400,3 +398,18 @@ void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, f
 	}
 }
 
+float DotProductVerts(Vertex Vert1, Vertex Vert2) {
+	float Answer;
+
+	Answer = (Vert1.cord.x * Vert2.cord.x) + (Vert1.cord.y * Vert2.cord.y) * (Vert1.cord.z * Vert2.cord.z);
+	return Answer;
+}
+
+Vertex Cross_ProductVerts(Vertex Vert1, Vertex Vert2) {
+	//1xA   Bx1
+	//2yA   By2
+	//3zA   Bz3
+	return Vertex((Vert1.cord.y * Vert2.cord.z) - (Vert1.cord.z * Vert2.cord.y), //x
+		(Vert1.cord.z * Vert2.cord.x) - (Vert1.cord.x * Vert2.cord.z), //y
+		(Vert1.cord.x * Vert2.cord.y) - (Vert1.cord.y * Vert2.cord.x)); //z
+}

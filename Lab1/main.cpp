@@ -11,12 +11,6 @@
 const char* Name = "MathurinGenty_Line Drawing";
 
 
-
-
-
-
-
-
 enum FrontCubeE {
 	topLeftF,	 //0
 	topRightF,   //1
@@ -153,8 +147,6 @@ void DrawGrid();
 
 PColor ColorGreen(0xFF123524);//green
 PColor ColorWhite(0xFFFFFFFF);//white
-
-
 
 PColor LightBlue(0xFFADD8E6);
 
