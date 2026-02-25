@@ -175,9 +175,18 @@ int main()
 	VS_View = view;
 	VS_Projection = Projection;
 	
+	PColor colorRED(0xFFFF0000);
+	PColor colorBLUE(0xFF0000FF);
+	PColor NEWcolor;
 
-	
-	
+	//Combine_colors(PColor color1, PColor color2)
+	NEWcolor = Combine_colors(colorRED, colorBLUE);
+
+		std::cout << "NEWcolor A:" << NEWcolor.A << std::endl;
+		std::cout << "NEWcolor R:" << NEWcolor.R << std::endl;
+		std::cout << "NEWcolor G:" << NEWcolor.G << std::endl;
+		std::cout << "NEWcolor B:" << NEWcolor.B << std::endl;
+
 	//will print on the screen
 	do {
 

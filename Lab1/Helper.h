@@ -283,7 +283,7 @@ Matrix4x4 PerspectiveProjection(float FOV, float Ratio, float Near, float Far) {
 	return DoubleP;
 }
 
-float MinOut3(float one, float two , float three) {
+float MinOut3(float one, float two, float three) {
 	float A = one;
 	float B = two;
 	float C = three;
@@ -324,7 +324,7 @@ float MaxOut3(float one, float two, float three) {
 BarycentricCoord Barycentric(Position pointA, Position pointB, Position pointC, Position pointP) {
 	BarycentricCoord Three; //NDCtoScreen(Vertex NDC, float Width, float Height)
 
-	Three.Beta  = ImplicitLineEquation(pointB, Points(pointA.x, pointA.y, pointC.x, pointC.y));
+	Three.Beta = ImplicitLineEquation(pointB, Points(pointA.x, pointA.y, pointC.x, pointC.y));
 	Three.Gamma = ImplicitLineEquation(pointC, Points(pointB.x, pointB.y, pointA.x, pointA.y));
 	Three.Alpha = ImplicitLineEquation(pointA, Points(pointC.x, pointC.y, pointB.x, pointB.y));
 
@@ -372,8 +372,8 @@ void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, f
 	PixelShader = VS_PixelShadder;
 	float StartX = MinOut3(NDCtoScreen(_Tri.A).x, NDCtoScreen(_Tri.B).x, NDCtoScreen(_Tri.C).x);
 	float StartY = MinOut3(NDCtoScreen(_Tri.A).y, NDCtoScreen(_Tri.B).y, NDCtoScreen(_Tri.C).y);
-	float EndX   = MaxOut3(NDCtoScreen(_Tri.A).x, NDCtoScreen(_Tri.B).x, NDCtoScreen(_Tri.C).x);
-	float EndY   = MaxOut3(NDCtoScreen(_Tri.A).y, NDCtoScreen(_Tri.B).y, NDCtoScreen(_Tri.C).y);
+	float EndX = MaxOut3(NDCtoScreen(_Tri.A).x, NDCtoScreen(_Tri.B).x, NDCtoScreen(_Tri.C).x);
+	float EndY = MaxOut3(NDCtoScreen(_Tri.A).y, NDCtoScreen(_Tri.B).y, NDCtoScreen(_Tri.C).y);
 	float BaryInterpo = 0;
 
 	for (int CurrY = StartY; CurrY < EndY; CurrY++) {
@@ -398,6 +398,8 @@ void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, f
 	}
 }
 
+
+
 float DotProductVerts(Vertex Vert1, Vertex Vert2) {
 	float Answer;
 
@@ -413,3 +415,47 @@ Vertex Cross_ProductVerts(Vertex Vert1, Vertex Vert2) {
 		(Vert1.cord.z * Vert2.cord.x) - (Vert1.cord.x * Vert2.cord.z), //y
 		(Vert1.cord.x * Vert2.cord.y) - (Vert1.cord.y * Vert2.cord.x)); //z
 }
+
+//vec3_normalize -- normalize a vector with x,y,z components
+
+//Combine_colors -- additively combine two colors
+PColor Combine_colors(PColor color1, PColor color2) {
+	PColor CombineColor;
+
+	if ((color1.A + color2.A) > 255)
+	{
+		CombineColor.A = 255;
+	}
+	else {
+		CombineColor.A = (color1.A + color2.A);
+	}
+
+	if ((color1.R + color2.R) > 255) {
+		CombineColor.R = 255;
+	}
+	else {
+		CombineColor.R = (color1.R + color2.R);
+	}
+
+	if ((color1.G + color2.G) > 255) {
+		CombineColor.G = 255;
+	}
+	else {
+		CombineColor.G = (color1.G + color2.G);
+	}
+
+	if ((color1.B + color2.B) > 255) {
+		CombineColor.B = 255;
+	}
+	else {
+		CombineColor.B = (color1.B + color2.B);
+	}
+
+	return CombineColor;
+}
+
+//modulate_colors -- multiplicatively combine two colors
+
+//saturate -- clamps a value between 0 and 1
+
+//vec3_length -- computes the vectors length
