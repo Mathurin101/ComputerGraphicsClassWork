@@ -236,16 +236,16 @@ void DrawCube() {
 
 
 
-	//bottom left triangle B  
-	Vertex A3(NewVert[topLeftB], 0,0);      //top left to bottom Left     B
-	Vertex B3(NewVert[bottomLeftB], 0,1);   //bottom left to bottom right B
-	Vertex C3(NewVert[bottomRightB], 1,1);  //bottom right to top left    B
+	//bottom left triangle B  back side of cube
+	Vertex A3(NewVert[topLeftB], 1,0);      //top left to bottom Left     B
+	Vertex B3(NewVert[bottomLeftB], 1,1);   //bottom left to bottom right B
+	Vertex C3(NewVert[bottomRightB], 0,1);  //bottom right to top left    B
 
 	Triangle TriOnBack3(A3, B3, C3);
 
 	//Top Right triangle B
 	//Vertex A4(NewVert[]);       //top left to Top right     B
-	Vertex B4(NewVert[topRightB], 1,0);//Top right to bottom right B
+	Vertex B4(NewVert[topRightB], 0,0);//Top right to bottom right B
 	//Vertex C4(NewVert[]);       //bottom right to top left  B
 
 	Triangle TriOnBack4(A3, B4, C3);
@@ -317,30 +317,37 @@ void DrawCube() {
 
 	Triangle TriOnBack12(A11, B12, C11);
 
+	const int NumberSize = 12;
 
-	Triangle AllTriangles[12] = {
+	Triangle AllTriangles[NumberSize] = {//[12]
+	//front
 	TriOnFront, //0
 	TriOnFront2,//1
 
+	//back
 	TriOnBack3, //2 
 	TriOnBack4, //3 
 	
+	//left side
 	TriOnBack5, //4
 	TriOnBack6, //5 
 	
+	//right side
 	TriOnBack7, //6
 	TriOnBack8, //7
 	
+	//top side
 	TriOnBack9, //8
 	TriOnBack10,//9
 	
+	//bottom side
 	TriOnBack11,//10
 	TriOnBack12 //11
 	};
 
 	PColor Color;
 
-	for (int i = 0; i < 12; i++) {
+	for (int i = 0; i < NumberSize; i++) {
 		
 		if (i == 0 || i == 1) {
 			Color = 0xFF5b3a80; //purple dizanezodifnawe
@@ -368,17 +375,6 @@ void DrawCube() {
 	//for (int i = 0; i < 12; i++) {
 	//	ParametricLineFunction(ArrayPoints[i], LightBlue, TotalPixels, MaxPixels, PixelWidth);
 	//}
-
-	//used to debug the triangles
-	//ParametricLineFunction(AllTriangles[2].LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	//ParametricLineFunction(AllTriangles[2].LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	//ParametricLineFunction(AllTriangles[2].LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	//   BetterBruteTriangle(AllTriangles[2], TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
-	//
-	//ParametricLineFunction(AllTriangles[3].LineABC[0], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	//ParametricLineFunction(AllTriangles[3].LineABC[1], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	//ParametricLineFunction(AllTriangles[3].LineABC[2], LightBlue, TotalPixels, MaxPixels, PixelWidth);
-	//   BetterBruteTriangle(AllTriangles[3], TotalPixels, MaxPixels, PixelWidth, PColor(0xFF5b3a80));
 }
 void DrawGrid() {
 	//made a copy
