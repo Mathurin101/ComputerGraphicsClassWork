@@ -170,7 +170,7 @@ int main()
 	view = OrthonormalInverse(view);
 	VS_View = view;
 	VS_Projection = Projection;
-	
+
 	//will print on the screen
 	do {
 		//clears screen every loop

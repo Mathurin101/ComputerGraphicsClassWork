@@ -483,4 +483,11 @@ void Saturate(float& InputNUM) {
 	}
 }
 
-//vec3_length -- computes the vectors length
+//Vec3_length -- computes the vectors length
+float Vector_length(Vertex Vert) {
+	float length;
+	
+	length = sqrt((Vert.cord.x * Vert.cord.x) + (Vert.cord.y * Vert.cord.y) + (Vert.cord.z * Vert.cord.z));
+	
+	return length;
+}
