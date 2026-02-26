@@ -488,14 +488,11 @@ void RandomStars() {
 	float Rw = 1.0f;
 
 	for (int i = 0; i < 3000; i++) {
-		Rx = SpitRandoNUM();
-		Ry = SpitRandoNUM();
-		Rz = SpitRandoNUM();
+		Rx = SpitRandoNUM() * 50;
+		Ry = SpitRandoNUM() * 50;
+		Rz = SpitRandoNUM() * 50;
 
 		RandomNUMs[i] = Vertex(Rx, Ry, Rz, Rw);
-		cout << "Index " << i << "--\nx: " << RandomNUMs[i].cord.x
-			                    << "\ny: " << RandomNUMs[i].cord.y
-			                    << "\nz: " << RandomNUMs[i].cord.z << endl;
 	}
 
 }
