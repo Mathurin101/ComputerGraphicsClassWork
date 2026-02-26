@@ -416,8 +416,6 @@ Vertex Cross_ProductVerts(Vertex Vert1, Vertex Vert2) {
 		(Vert1.cord.x * Vert2.cord.y) - (Vert1.cord.y * Vert2.cord.x)); //z
 }
 
-//vec3_normalize -- normalize a vector with x,y,z components
-
 //Combine_colors -- additively combine two colors
 PColor Combine_colors(PColor color1, PColor color2) {
 	PColor CombineColor;
@@ -490,4 +488,13 @@ float Vector_length(Vertex Vert) {
 	length = sqrt((Vert.cord.x * Vert.cord.x) + (Vert.cord.y * Vert.cord.y) + (Vert.cord.z * Vert.cord.z));
 	
 	return length;
+}
+
+//vec3_Normalize -- normalize a vector with x,y,z components
+void Vector_Normalize(Vertex& Vert) {
+	float Length = Vector_length(Vert);
+
+	Vert.cord.x = (Vert.cord.x / Length);
+	Vert.cord.y = (Vert.cord.y / Length);
+	Vert.cord.z = (Vert.cord.z / Length);
 }
