@@ -7,6 +7,7 @@
 
 #include <random> //random number class "std::rand()"
 #include <iostream>
+using namespace std;
 
 const char* Name = "MathurinGenty_Line Drawing";
 
@@ -147,6 +148,10 @@ PColor ColorWhite(0xFFFFFFFF);//white
 
 PColor LightBlue(0xFFADD8E6);
 
+Vertex RandomNUMs[3000];
+float SpitRandoNUM();
+void RandomStars();
+
 int main()
 {
 	XTime Time;
@@ -170,6 +175,8 @@ int main()
 	view = OrthonormalInverse(view);
 	VS_View = view;
 	VS_Projection = Projection;
+
+	RandomStars();
 
 	//will print on the screen
 	do {
@@ -206,15 +213,15 @@ void DrawCube() {
 	}
 
 	//bottom left triangle F
-	Vertex A(NewVert[topLeftF],    0,0);      //top left to bottom Left
-	Vertex B(NewVert[bottomLeftF], 0,1);   //bottom left to bottom right
-	Vertex C(NewVert[bottomRightF], 1,1);  //bottom right to top left
+	Vertex A(NewVert[topLeftF], 0, 0);      //top left to bottom Left
+	Vertex B(NewVert[bottomLeftF], 0, 1);   //bottom left to bottom right
+	Vertex C(NewVert[bottomRightF], 1, 1);  //bottom right to top left
 
 	Triangle TriOnFront(A, B, C);
 
 	//Top Right triangle F
 	//Vertex A2(NewVert[]);   //top left to Top right
-	Vertex B2(NewVert[topRightF], 1,0);   //Top right to bottom right
+	Vertex B2(NewVert[topRightF], 1, 0);   //Top right to bottom right
 	//Vertex C2(NewVert[]);   //bottom right to top left
 
 	Triangle TriOnFront2(A, B2, C);//NewVert[].z
@@ -222,15 +229,15 @@ void DrawCube() {
 
 
 	//bottom left triangle B  back side of cube
-	Vertex A3(NewVert[topLeftB], 1,0);      //top left to bottom Left     B
-	Vertex B3(NewVert[bottomLeftB], 1,1);   //bottom left to bottom right B
-	Vertex C3(NewVert[bottomRightB], 0,1);  //bottom right to top left    B
+	Vertex A3(NewVert[topLeftB], 1, 0);      //top left to bottom Left     B
+	Vertex B3(NewVert[bottomLeftB], 1, 1);   //bottom left to bottom right B
+	Vertex C3(NewVert[bottomRightB], 0, 1);  //bottom right to top left    B
 
 	Triangle TriOnBack3(A3, B3, C3);
 
 	//Top Right triangle B
 	//Vertex A4(NewVert[]);       //top left to Top right     B
-	Vertex B4(NewVert[topRightB], 0,0);//Top right to bottom right B
+	Vertex B4(NewVert[topRightB], 0, 0);//Top right to bottom right B
 	//Vertex C4(NewVert[]);       //bottom right to top left  B
 
 	Triangle TriOnBack4(A3, B4, C3);
@@ -239,15 +246,15 @@ void DrawCube() {
 
 
 	//bottom left triangle Lside
-	Vertex A5(NewVert[topLeftB], 0,0);         //top leftB to bottom LeftB         back cube
-	Vertex B5(NewVert[bottomLeftB], 0,1);      //bottom leftB to bottom LeftF      Back cube to front 
-	Vertex C5(NewVert[bottomLeftF], 1,1);      //bottom LeftF to top leftB   
+	Vertex A5(NewVert[topLeftB], 0, 0);         //top leftB to bottom LeftB         back cube
+	Vertex B5(NewVert[bottomLeftB], 0, 1);      //bottom leftB to bottom LeftF      Back cube to front 
+	Vertex C5(NewVert[bottomLeftF], 1, 1);      //bottom LeftF to top leftB   
 
 	Triangle TriOnBack5(A5, B5, C5);
 
 
 	//Top Right triangle Lside
-	Vertex A6(NewVert[topLeftF], 1,0);//TopL to BottomL front
+	Vertex A6(NewVert[topLeftF], 1, 0);//TopL to BottomL front
 	//Vertex B6(NewVert[]);      //BottomLeftF to TopLeftB 
 	//Vertex C6(NewVert[]);      //TopLeftB to TopLeftF
 
@@ -255,15 +262,15 @@ void DrawCube() {
 
 
 	//bottom left triangle Rside
-	Vertex A7(NewVert[topRightF], 0,0);     //TopRightF to BottomRightF 
-	Vertex B7(NewVert[bottomRightF], 0,1);  //BottomRightF to BottomRightB
-	Vertex C7(NewVert[bottomRightB], 1,1);  //BottomRightB to TopRightF
+	Vertex A7(NewVert[topRightF], 0, 0);     //TopRightF to BottomRightF 
+	Vertex B7(NewVert[bottomRightF], 0, 1);  //BottomRightF to BottomRightB
+	Vertex C7(NewVert[bottomRightB], 1, 1);  //BottomRightB to TopRightF
 
 	Triangle TriOnBack7(A7, B7, C7);
 
 	//Top Right triangle Rside
 	//Vertex A8(NewVert[topRightF]);   //TopRightF to TopRightB 
-	Vertex B8(NewVert[topRightB], 1,0);   //TopRightB to BottomRightB
+	Vertex B8(NewVert[topRightB], 1, 0);   //TopRightB to BottomRightB
 	//Vertex C8(NewVert[bottomRightB]);   //BottomRightB to TopRightF
 
 	Triangle TriOnBack8(A7, B8, C7);
@@ -272,15 +279,15 @@ void DrawCube() {
 
 
 	//bottom left triangle Topside
-	Vertex A9(NewVert[topLeftF], 0,1);     //TopLeftF to TopRightF
-	Vertex B9(NewVert[topRightF], 1,1);    //TopRightF to TopRightB
-	Vertex C9(NewVert[topRightB], 1,0);	  //TopRightB to TopRightF
+	Vertex A9(NewVert[topLeftF], 0, 1);     //TopLeftF to TopRightF
+	Vertex B9(NewVert[topRightF], 1, 1);    //TopRightF to TopRightB
+	Vertex C9(NewVert[topRightB], 1, 0);	  //TopRightB to TopRightF
 
 	Triangle TriOnBack9(A9, B9, C9);
 
 	//Top Right triangle Topside
 	//Vertex A10(NewVert[]);           //TopLeftF to TopRightB
-	Vertex B10(NewVert[topLeftB], 0,0);     //TopLeftB to TopRightB 
+	Vertex B10(NewVert[topLeftB], 0, 0);     //TopLeftB to TopRightB 
 	//Vertex C10(NewVert[]);	       //TopRightB to TopLeftF
 
 	Triangle TriOnBack10(A9, B10, C9);
@@ -288,16 +295,16 @@ void DrawCube() {
 
 
 	//bottom left triangle BottomSide
-	Vertex A11(NewVert[bottomLeftF], 0,1);	     //BottomLeftF to BottomRightF
-	Vertex B11(NewVert[bottomRightF], 1,1);	     //BottomRightF to BottomRightB
-	Vertex C11(NewVert[bottomRightB] , 1,0);	     //BottomRightB to BottomLeftF
+	Vertex A11(NewVert[bottomLeftF], 0, 1);	     //BottomLeftF to BottomRightF
+	Vertex B11(NewVert[bottomRightF], 1, 1);	     //BottomRightF to BottomRightB
+	Vertex C11(NewVert[bottomRightB], 1, 0);	     //BottomRightB to BottomLeftF
 
 	Triangle TriOnBack11(A11, B11, C11);
 
 
 	//Top Right triangle bottomSide
 	//Vertex A12(NewVert[]);       //BottomLeftF to BottomLeftB
-	Vertex B12(NewVert[bottomLeftB], 0,0);	 //BottomLeftB to BottomRightB
+	Vertex B12(NewVert[bottomLeftB], 0, 0);	 //BottomLeftB to BottomRightB
 	//Vertex C12(NewVert[]);	     //BottomRightB to BottomLeftF
 
 	Triangle TriOnBack12(A11, B12, C11);
@@ -305,35 +312,35 @@ void DrawCube() {
 	const int NumberSize = 12;
 
 	Triangle AllTriangles[NumberSize] = {//[12]
-	//front
-	TriOnFront, //0
-	TriOnFront2,//1
+		//front
+		TriOnFront, //0
+		TriOnFront2,//1
 
-	//back
-	TriOnBack3, //2 
-	TriOnBack4, //3 
-	
-	//left side
-	TriOnBack5, //4
-	TriOnBack6, //5 
-	
-	//right side
-	TriOnBack7, //6
-	TriOnBack8, //7
-	
-	//top side
-	TriOnBack9, //8
-	TriOnBack10,//9
-	
-	//bottom side
-	TriOnBack11,//10
-	TriOnBack12 //11
+		//back
+		TriOnBack3, //2 
+		TriOnBack4, //3 
+
+		//left side
+		TriOnBack5, //4
+		TriOnBack6, //5 
+
+		//right side
+		TriOnBack7, //6
+		TriOnBack8, //7
+
+		//top side
+		TriOnBack9, //8
+		TriOnBack10,//9
+
+		//bottom side
+		TriOnBack11,//10
+		TriOnBack12 //11
 	};
 
 	PColor Color;
 
 	for (int i = 0; i < NumberSize; i++) {
-		
+
 		if (i == 0 || i == 1) {
 			Color = 0xFF5b3a80; //purple dizanezodifnawe
 		}
@@ -373,97 +380,123 @@ void DrawGrid() {
 
 	//43 all together
 	Points ArrayPointGrids[22] = {
-		Points(NDCtoScreen(NewVertGrid[0] ).x, NDCtoScreen(NewVertGrid[0] ).y,
-			NDCtoScreen(NewVertGrid[1] ).x, NDCtoScreen(NewVertGrid[1] ).y),
+		Points(NDCtoScreen(NewVertGrid[0]).x, NDCtoScreen(NewVertGrid[0]).y,
+			NDCtoScreen(NewVertGrid[1]).x, NDCtoScreen(NewVertGrid[1]).y),
 
-			Points(NDCtoScreen(NewVertGrid[2] ).x, NDCtoScreen(NewVertGrid[2] ).y,
-			NDCtoScreen(NewVertGrid[3] ).x, NDCtoScreen(NewVertGrid[3] ).y),
+			Points(NDCtoScreen(NewVertGrid[2]).x, NDCtoScreen(NewVertGrid[2]).y,
+			NDCtoScreen(NewVertGrid[3]).x, NDCtoScreen(NewVertGrid[3]).y),
 
 			//4 5
-			Points(NDCtoScreen(NewVertGrid[4] ).x, NDCtoScreen(NewVertGrid[4] ).y,
-			NDCtoScreen(NewVertGrid[5] ).x, NDCtoScreen(NewVertGrid[5] ).y),
+			Points(NDCtoScreen(NewVertGrid[4]).x, NDCtoScreen(NewVertGrid[4]).y,
+			NDCtoScreen(NewVertGrid[5]).x, NDCtoScreen(NewVertGrid[5]).y),
 
 			//6 7
-			Points(NDCtoScreen(NewVertGrid[6] ).x, NDCtoScreen(NewVertGrid[6] ).y,
-			NDCtoScreen(NewVertGrid[7] ).x, NDCtoScreen(NewVertGrid[7] ).y),
+			Points(NDCtoScreen(NewVertGrid[6]).x, NDCtoScreen(NewVertGrid[6]).y,
+			NDCtoScreen(NewVertGrid[7]).x, NDCtoScreen(NewVertGrid[7]).y),
 
 			//8 9
-			Points(NDCtoScreen(NewVertGrid[8] ).x, NDCtoScreen(NewVertGrid[8] ).y,
-			NDCtoScreen(NewVertGrid[9] ).x, NDCtoScreen(NewVertGrid[9] ).y),
+			Points(NDCtoScreen(NewVertGrid[8]).x, NDCtoScreen(NewVertGrid[8]).y,
+			NDCtoScreen(NewVertGrid[9]).x, NDCtoScreen(NewVertGrid[9]).y),
 
 			//10 11
-			Points(NDCtoScreen(NewVertGrid[10] ).x, NDCtoScreen(NewVertGrid[10] ).y,
-			NDCtoScreen(NewVertGrid[11] ).x, NDCtoScreen(NewVertGrid[11] ).y),
+			Points(NDCtoScreen(NewVertGrid[10]).x, NDCtoScreen(NewVertGrid[10]).y,
+			NDCtoScreen(NewVertGrid[11]).x, NDCtoScreen(NewVertGrid[11]).y),
 
 			//12 13
-			Points(NDCtoScreen(NewVertGrid[12] ).x, NDCtoScreen(NewVertGrid[12] ).y,
-			NDCtoScreen(NewVertGrid[13] ).x, NDCtoScreen(NewVertGrid[13] ).y),
+			Points(NDCtoScreen(NewVertGrid[12]).x, NDCtoScreen(NewVertGrid[12]).y,
+			NDCtoScreen(NewVertGrid[13]).x, NDCtoScreen(NewVertGrid[13]).y),
 
 			//14 15
-			Points(NDCtoScreen(NewVertGrid[14] ).x, NDCtoScreen(NewVertGrid[14] ).y,
-			NDCtoScreen(NewVertGrid[15] ).x, NDCtoScreen(NewVertGrid[15] ).y),
+			Points(NDCtoScreen(NewVertGrid[14]).x, NDCtoScreen(NewVertGrid[14]).y,
+			NDCtoScreen(NewVertGrid[15]).x, NDCtoScreen(NewVertGrid[15]).y),
 
 			//16 17
-			Points(NDCtoScreen(NewVertGrid[16] ).x, NDCtoScreen(NewVertGrid[16] ).y,
-			NDCtoScreen(NewVertGrid[17] ).x, NDCtoScreen(NewVertGrid[17] ).y),
+			Points(NDCtoScreen(NewVertGrid[16]).x, NDCtoScreen(NewVertGrid[16]).y,
+			NDCtoScreen(NewVertGrid[17]).x, NDCtoScreen(NewVertGrid[17]).y),
 
 			//18 19
-			Points(NDCtoScreen(NewVertGrid[18] ).x, NDCtoScreen(NewVertGrid[18] ).y,
-			NDCtoScreen(NewVertGrid[19] ).x, NDCtoScreen(NewVertGrid[19] ).y),
+			Points(NDCtoScreen(NewVertGrid[18]).x, NDCtoScreen(NewVertGrid[18]).y,
+			NDCtoScreen(NewVertGrid[19]).x, NDCtoScreen(NewVertGrid[19]).y),
 
 			//20 21
-			Points(NDCtoScreen(NewVertGrid[20] ).x, NDCtoScreen(NewVertGrid[20] ).y,
-			NDCtoScreen(NewVertGrid[21] ).x, NDCtoScreen(NewVertGrid[21] ).y),
+			Points(NDCtoScreen(NewVertGrid[20]).x, NDCtoScreen(NewVertGrid[20]).y,
+			NDCtoScreen(NewVertGrid[21]).x, NDCtoScreen(NewVertGrid[21]).y),
 
 			//22 23
-			Points(NDCtoScreen(NewVertGrid[22] ).x, NDCtoScreen(NewVertGrid[22] ).y,
-			NDCtoScreen(NewVertGrid[23] ).x, NDCtoScreen(NewVertGrid[23] ).y),
+			Points(NDCtoScreen(NewVertGrid[22]).x, NDCtoScreen(NewVertGrid[22]).y,
+			NDCtoScreen(NewVertGrid[23]).x, NDCtoScreen(NewVertGrid[23]).y),
 
 			//	24 25
-			Points(NDCtoScreen(NewVertGrid[24] ).x, NDCtoScreen(NewVertGrid[24] ).y,
-			NDCtoScreen(NewVertGrid[25] ).x, NDCtoScreen(NewVertGrid[25] ).y),
+			Points(NDCtoScreen(NewVertGrid[24]).x, NDCtoScreen(NewVertGrid[24]).y,
+			NDCtoScreen(NewVertGrid[25]).x, NDCtoScreen(NewVertGrid[25]).y),
 
 			//26 27
-			Points(NDCtoScreen(NewVertGrid[26] ).x, NDCtoScreen(NewVertGrid[26] ).y,
-			NDCtoScreen(NewVertGrid[27] ).x, NDCtoScreen(NewVertGrid[27] ).y),
+			Points(NDCtoScreen(NewVertGrid[26]).x, NDCtoScreen(NewVertGrid[26]).y,
+			NDCtoScreen(NewVertGrid[27]).x, NDCtoScreen(NewVertGrid[27]).y),
 
 			//28 29
-			Points(NDCtoScreen(NewVertGrid[28] ).x, NDCtoScreen(NewVertGrid[28] ).y,
-			NDCtoScreen(NewVertGrid[29] ).x, NDCtoScreen(NewVertGrid[29] ).y),
+			Points(NDCtoScreen(NewVertGrid[28]).x, NDCtoScreen(NewVertGrid[28]).y,
+			NDCtoScreen(NewVertGrid[29]).x, NDCtoScreen(NewVertGrid[29]).y),
 
 			//30 31
-			Points(NDCtoScreen(NewVertGrid[30] ).x, NDCtoScreen(NewVertGrid[30] ).y,
-			NDCtoScreen(NewVertGrid[31] ).x, NDCtoScreen(NewVertGrid[31] ).y),
+			Points(NDCtoScreen(NewVertGrid[30]).x, NDCtoScreen(NewVertGrid[30]).y,
+			NDCtoScreen(NewVertGrid[31]).x, NDCtoScreen(NewVertGrid[31]).y),
 
 			//32 33
-			Points(NDCtoScreen(NewVertGrid[32] ).x, NDCtoScreen(NewVertGrid[32] ).y,
-			NDCtoScreen(NewVertGrid[33] ).x, NDCtoScreen(NewVertGrid[33] ).y),
+			Points(NDCtoScreen(NewVertGrid[32]).x, NDCtoScreen(NewVertGrid[32]).y,
+			NDCtoScreen(NewVertGrid[33]).x, NDCtoScreen(NewVertGrid[33]).y),
 
 			//34 35
-			Points(NDCtoScreen(NewVertGrid[34] ).x, NDCtoScreen(NewVertGrid[34] ).y,
-			NDCtoScreen(NewVertGrid[35] ).x, NDCtoScreen(NewVertGrid[35] ).y),
+			Points(NDCtoScreen(NewVertGrid[34]).x, NDCtoScreen(NewVertGrid[34]).y,
+			NDCtoScreen(NewVertGrid[35]).x, NDCtoScreen(NewVertGrid[35]).y),
 
 			//36 37
-			Points(NDCtoScreen(NewVertGrid[36] ).x, NDCtoScreen(NewVertGrid[36] ).y,
-			NDCtoScreen(NewVertGrid[37] ).x, NDCtoScreen(NewVertGrid[37] ).y),
+			Points(NDCtoScreen(NewVertGrid[36]).x, NDCtoScreen(NewVertGrid[36]).y,
+			NDCtoScreen(NewVertGrid[37]).x, NDCtoScreen(NewVertGrid[37]).y),
 
 			//38 39
-			Points(NDCtoScreen(NewVertGrid[38] ).x, NDCtoScreen(NewVertGrid[38] ).y,
-			NDCtoScreen(NewVertGrid[39] ).x, NDCtoScreen(NewVertGrid[39] ).y),
+			Points(NDCtoScreen(NewVertGrid[38]).x, NDCtoScreen(NewVertGrid[38]).y,
+			NDCtoScreen(NewVertGrid[39]).x, NDCtoScreen(NewVertGrid[39]).y),
 
 			//40 41
-			Points(NDCtoScreen(NewVertGrid[40] ).x, NDCtoScreen(NewVertGrid[40] ).y,
-			NDCtoScreen(NewVertGrid[41] ).x, NDCtoScreen(NewVertGrid[41] ).y),
+			Points(NDCtoScreen(NewVertGrid[40]).x, NDCtoScreen(NewVertGrid[40]).y,
+			NDCtoScreen(NewVertGrid[41]).x, NDCtoScreen(NewVertGrid[41]).y),
 
 			//42 43
-			Points(NDCtoScreen(NewVertGrid[42] ).x, NDCtoScreen(NewVertGrid[42] ).y,
-			NDCtoScreen(NewVertGrid[43] ).x, NDCtoScreen(NewVertGrid[43] ).y)
+			Points(NDCtoScreen(NewVertGrid[42]).x, NDCtoScreen(NewVertGrid[42]).y,
+			NDCtoScreen(NewVertGrid[43]).x, NDCtoScreen(NewVertGrid[43]).y)
 	};
 
 
 	for (int i = 0; i < 22; i++) {
-		
+
 		ParametricLineFunction(ArrayPointGrids[i], ColorWhite, TotalPixels, MaxPixels, PixelWidth, DepthBuffer);
 	}
+}
+float SpitRandoNUM() {
+	float Ran;
+
+	Ran = (float)rand() / (float)RAND_MAX;//gives a number between 0 and 1
+
+	return (-1 + Ran * (1 - (-1))); // will give a number between -1 and 1
+}
+void RandomStars() {
+
+	float Rx;
+	float Ry;
+	float Rz;
+	float Rw = 1.0f;
+
+	for (int i = 0; i < 3000; i++) {
+		Rx = SpitRandoNUM();
+		Ry = SpitRandoNUM();
+		Rz = SpitRandoNUM();
+
+		RandomNUMs[i] = Vertex(Rx, Ry, Rz, Rw);
+		cout << "Index " << i << "--\nx: " << RandomNUMs[i].cord.x
+			                    << "\ny: " << RandomNUMs[i].cord.y
+			                    << "\nz: " << RandomNUMs[i].cord.z << endl;
+	}
+
 }
 
