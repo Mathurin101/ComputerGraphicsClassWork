@@ -20,7 +20,7 @@ void Print(std::string words) {
 	std::cout << words << std::endl;
 }
 // A function to clear the color buffer to a solid color of your choice.
-void CCBuffer(PColor color, unsigned int* PixelArry, int ArrySize, float* ZBuffer) {
+void CCBuffer(PColor color, unsigned int* PixelArry = TotalPixels, int ArrySize = MaxPixels, float* ZBuffer = DepthBuffer) {
 
 	//changing each slot in the array to one color value
 	for (int i = 0; i < ArrySize; i++) {
@@ -30,7 +30,7 @@ void CCBuffer(PColor color, unsigned int* PixelArry, int ArrySize, float* ZBuffe
 }
 
 // A function to convert 2 dimensional coordinates to a 1 dimensional coordinate.
-int Convert2Dto1D(int nX, int nY, int nWidth)
+int Convert2Dto1D(int nX, int nY, int nWidth = PixelWidth)
 {
 
 	//return a 1d coordinate using the 2D->1D formula
@@ -38,9 +38,12 @@ int Convert2Dto1D(int nX, int nY, int nWidth)
 }
 
 // A function to draw a pixel (fill a certain pixel with a specific color)
-void DrawPixel(int ArrySpot, PColor color, unsigned int* PixelArry, int ArrySize, float* ZBuffer, float Depth) {
+void DrawPixel(int ArrySpot, PColor color, float Depth, unsigned int* PixelArry = TotalPixels, int ArrySize = MaxPixels, float* ZBuffer = DepthBuffer) {
 	//changing each slot in the array to one color value
 
+	if (ArrySpot > ArrySize || 0 > ArrySpot) {
+		return;
+	}
 		//If the new value is lower (nearer to the camera)
 	if (ZBuffer[ArrySpot] >= Depth) {
 		//you draw the pixel and write that new depth into the buffer.
@@ -152,7 +155,7 @@ void ParametricLineFunction(Points Spots, PColor _color, unsigned int* PixelArry
 	for (int i = 0; i < Steps; i++) {
 
 		//PlotPixel(CurrX, Floor(CurrY + 0.5))​ //Convert2Dto1D(CurrentX, CurrentY + 0.5, RasterWidth)
-		DrawPixel(Convert2Dto1D(CurrentX, CurrentY, RasterWidth), _color, PixelArry, ArrySize, ZBuffer, 1);
+		DrawPixel(Convert2Dto1D(CurrentX, CurrentY, RasterWidth), _color, 1, PixelArry, ArrySize, ZBuffer);
 
 		// Increment the current x  
 		CurrentX = CurrentX + IncrementX;
@@ -360,7 +363,7 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, float* 
 				BaryInterpo = (_Tri.A.cord.z * byA.Alpha) + (_Tri.B.cord.z * byA.Beta) + (_Tri.C.cord.z * byA.Gamma);
 
 				//THEN - ​PlotPixel ( CurrX, CurrY )​
-				DrawPixel(Convert2Dto1D(CurrX, CurrY, PixelWidth), PColor(0xFFADD8E6), PixelArry, ArrySize, ZBuffer, BaryInterpo);
+				DrawPixel(Convert2Dto1D(CurrX, CurrY, PixelWidth), PColor(0xFFADD8E6), BaryInterpo, PixelArry, ArrySize, ZBuffer);
 			}
 
 		}
@@ -391,7 +394,7 @@ void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, f
 				BaryInterpo = (_Tri.A.cord.z * byA.Alpha) + (_Tri.B.cord.z * byA.Beta) + (_Tri.C.cord.z * byA.Gamma);
 
 				//THEN - ​PlotPixel ( CurrX, CurrY )​
-				DrawPixel(Convert2Dto1D(CurrX, CurrY, PixelWidth), PixelShader(_Tri, byA), PixelArry, ArrySize, ZBuffer, BaryInterpo);
+				DrawPixel(Convert2Dto1D(CurrX, CurrY, PixelWidth), PixelShader(_Tri, byA), BaryInterpo, PixelArry, ArrySize, ZBuffer);
 			}
 
 		}

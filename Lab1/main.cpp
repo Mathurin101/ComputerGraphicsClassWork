@@ -151,6 +151,8 @@ PColor LightBlue(0xFFADD8E6);
 Vertex RandomNUMs[3000];
 float SpitRandoNUM();
 void RandomStars();
+void DrawStars();
+void PutKeys();
 
 int main()
 {
@@ -161,36 +163,47 @@ int main()
 	RS_Initialize(Name, PixelWidth, PixelHeight);
 	srand(time(0));
 
-	//checking if this line print on the screen
-	Points Line(32, 54, 63, 79);
-	PColor ColorOG(0xFF8e6acc);//purple
+
 
 	VertexShader = VS_WVP;
 
 	Matrix4x4 GridWorld = IdentityMatrix();
 
 	Matrix4x4 CubeWorld = TranslationMatrix(0, 0.25f, 0);
-	Matrix4x4 view = MultiplyMatrixByMatrix(TranslationMatrix(0, 0, -1), RotateX(-18));//
+	Matrix4x4 view = MultiplyMatrixByMatrix(TranslationMatrix(0, 0, -1), RotateX(-18));
 	Matrix4x4 Projection = PerspectiveProjection(90, (float)PixelHeight / PixelWidth, 0.1f, 10);
 	view = OrthonormalInverse(view);
+
+	PColor ColorLightBlue(0xFFADD8E6);
+
 	VS_View = view;
 	VS_Projection = Projection;
+	VS_World = IdentityMatrix();
 
 	RandomStars();
+
+
+
 
 	//will print on the screen
 	do {
 		//clears screen every loop
 		CCBuffer(0xFF000000, TotalPixels, MaxPixels, DepthBuffer);
 
-		VS_World = GridWorld;
-		DrawGrid();
+		DrawStars();
+     	PutKeys();
 
-		Time.Signal();
-		CubeWorld = MultiplyMatrixByMatrix(CubeWorld, RotateY(45.0f * Time.Delta()));
+		//VS_View = view;
+		//VS_Projection = Projection;
+		//
+		//VS_World = GridWorld;
+		//DrawGrid();
 
-		VS_World = CubeWorld;
-		DrawCube();
+		//Time.Signal();
+		//CubeWorld = MultiplyMatrixByMatrix(CubeWorld, RotateY(45.0f * Time.Delta()));
+		//
+		//VS_World = CubeWorld;
+		//DrawCube();
 
 
 
@@ -488,12 +501,41 @@ void RandomStars() {
 	float Rw = 1.0f;
 
 	for (int i = 0; i < 3000; i++) {
-		Rx = SpitRandoNUM() * 50;
-		Ry = SpitRandoNUM() * 50;
-		Rz = SpitRandoNUM() * 50;
+		Rx = SpitRandoNUM() * 50;//
+		Ry = SpitRandoNUM() * 50;//
+		Rz = SpitRandoNUM() * 50;//
 
-		RandomNUMs[i] = Vertex(Rx, Ry, Rz, Rw);
+		RandomNUMs[i] = Vertex(Rx, Ry, Rz, Rw);		
 	}
 
 }
+void DrawStars() {
+	Vertex Star;
 
+	for (int i = 0; i < 3000; i++)
+	{
+		Star = RandomNUMs[i];
+		VS_WVP(Star);
+		DrawPixel(Convert2Dto1D(NDCtoScreen(Star).x, NDCtoScreen(Star).y), LightBlue, Star.cord.z);
+	}
+}
+
+void PutKeys() {
+	
+	if (GetAsyncKeyState('W') && 0x800) {
+		VS_View = MultiplyMatrixByMatrix(VS_View, RotateY(20));
+		//Projection = PerspectiveProjection(90, (float)PixelHeight / PixelWidth, 0.1f, 10);
+	}
+	if (GetAsyncKeyState('S') && 0x800)
+	{
+		VS_View = MultiplyMatrixByMatrix(VS_View, RotateY(-20));
+	}
+	if (GetAsyncKeyState('A') && 0x800)
+	{
+		VS_View = MultiplyMatrixByMatrix(VS_View, RotateX(-20));
+	}
+	if (GetAsyncKeyState('D') && 0x800)
+	{
+		VS_View = MultiplyMatrixByMatrix(VS_View, RotateX(20));
+	}
+}
