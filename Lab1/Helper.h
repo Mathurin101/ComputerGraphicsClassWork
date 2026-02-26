@@ -458,7 +458,6 @@ PColor Combine_colors(PColor color1, PColor color2) {
 PColor Modulate_Colors(PColor color1, PColor color2) {
 	PColor ModulateColor;
 
-	//TODO: add if statements like in "Combine_colors"'s body
 	//Alpha
 	ModulateColor.A = ((color1.A * color2.A) / 255);
 
@@ -475,5 +474,13 @@ PColor Modulate_Colors(PColor color1, PColor color2) {
 }
 
 //saturate -- clamps a value between 0 and 1
+void Saturate(float& InputNUM) {
+	if (InputNUM < 0) {
+		InputNUM = 0;
+	}
+	else if (InputNUM > 1) {
+		InputNUM = 1;
+	}
+}
 
 //vec3_length -- computes the vectors length

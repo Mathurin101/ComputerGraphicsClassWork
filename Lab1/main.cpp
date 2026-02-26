@@ -10,7 +10,6 @@
 
 const char* Name = "MathurinGenty_Line Drawing";
 
-
 enum FrontCubeE {
 	topLeftF,	 //0
 	topRightF,   //1
@@ -140,10 +139,8 @@ Vertex Grid[44] = {
 	Vertex(0, 0, -0.50f),//downLM      = 43
 };
 
-
 void DrawCube();
 void DrawGrid();
-
 
 PColor ColorGreen(0xFF123524);//green
 PColor ColorWhite(0xFFFFFFFF);//white
@@ -163,7 +160,6 @@ int main()
 	Points Line(32, 54, 63, 79);
 	PColor ColorOG(0xFF8e6acc);//purple
 
-
 	VertexShader = VS_WVP;
 
 	Matrix4x4 GridWorld = IdentityMatrix();
@@ -175,21 +171,9 @@ int main()
 	VS_View = view;
 	VS_Projection = Projection;
 	
-	PColor colorRED(0xFFFF0000);
-	PColor colorYELLOW(0xFFFFFF00);
-	PColor NEWcolor;
-
-	//Modulate_Colors(PColor color1, PColor color2)
-	NEWcolor = Combine_colors(colorRED, colorYELLOW);
-
-		std::cout << "NEWcolor A:" << NEWcolor.A << std::endl;
-		std::cout << "NEWcolor R:" << NEWcolor.R << std::endl;
-		std::cout << "NEWcolor G:" << NEWcolor.G << std::endl;
-		std::cout << "NEWcolor B:" << NEWcolor.B << std::endl;
-
 	//will print on the screen
 	do {
-
+		//clears screen every loop
 		CCBuffer(0xFF000000, TotalPixels, MaxPixels, DepthBuffer);
 
 		VS_World = GridWorld;
