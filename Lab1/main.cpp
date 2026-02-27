@@ -162,7 +162,7 @@ float SpitRandoNUM();
 void RandomStars();
 void DrawStars();
 
-void PutKeys(Matrix4x4& view, XTime Timer);
+void PutKeys(Matrix4x4& view, XTime Timer, Matrix4x4& world);
 void PlacingStoneTri();
 void StoringStoneData();
 
@@ -182,7 +182,7 @@ int main()
 	Matrix4x4 GridWorld = IdentityMatrix();
 
 	Matrix4x4 CubeWorld = TranslationMatrix(0, 0.25f, 0);
-	Matrix4x4 view = MultiplyMatrixByMatrix(TranslationMatrix(0, 1, -5), RotateX(-18));
+	Matrix4x4 view = TranslationMatrix(0, 1, -5);
 	Matrix4x4 Projection = PerspectiveProjection(90, (float)PixelHeight / PixelWidth, 0.1f, 10);
 
 
@@ -202,7 +202,7 @@ int main()
 		//clears screen every loop
 		CCBuffer(0xFF000000, TotalPixels, MaxPixels, DepthBuffer);
 
-		PutKeys(view, Time);
+		PutKeys(view, Time, VS_World);
 		DrawStars();
 		PlacingStoneTri();
 		
@@ -523,7 +523,7 @@ void DrawStars() {
 	}
 }
 
-void PutKeys(Matrix4x4& view, XTime Timer) {
+void PutKeys(Matrix4x4& view, XTime Timer, Matrix4x4& world) {
 
 	if (GetAsyncKeyState('W') && 0x800) {
 		view = MultiplyMatrixByMatrix(view, RotateX(-20 * Timer.Delta()));
@@ -535,14 +535,15 @@ void PutKeys(Matrix4x4& view, XTime Timer) {
 	}
 	if (GetAsyncKeyState('A') && 0x800)
 	{
-		view = MultiplyMatrixByMatrix(view, RotateY(-20 * Timer.Delta()));
+		world = MultiplyMatrixByMatrix(world, RotateY(-20 * Timer.Delta()));
 	}
 	if (GetAsyncKeyState('D') && 0x800)
 	{
-		view = MultiplyMatrixByMatrix(view, RotateY(20 * Timer.Delta()));
+		world = MultiplyMatrixByMatrix(world, RotateY(20 * Timer.Delta()));
 	}
 
 	VS_View = OrthonormalInverse(view);
+	VS_World = world;
 }
 
 void StoringStoneData() {

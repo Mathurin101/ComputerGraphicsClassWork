@@ -190,7 +190,7 @@ Matrix4x4 IdentityMatrix() {
 
 Matrix4x4 TranslationMatrix(float x, float y, float z) {
 	Matrix4x4 Translation
-	(1, 0, 0, 0,
+	(   1, 0, 0, 0,
 		0, 1, 0, 0,
 		0, 0, 1, 0,
 		x, y, z, 1);
@@ -242,10 +242,10 @@ Matrix4x4 RotateZ(float x) {
 Matrix4x4 Transpose(const Matrix4x4& mIn) {
 	Matrix4x4 Trans;
 
-	Trans.xx = mIn.xx; Trans.xy = mIn.yx; Trans.xz = mIn.zx; Trans.xw = mIn.wx;
-	Trans.yx = mIn.xy; Trans.yy = mIn.yy; Trans.yz = mIn.zy; Trans.yw = mIn.wy;
-	Trans.zx = mIn.xz; Trans.zy = mIn.yz; Trans.zz = mIn.zz; Trans.zw = mIn.wz;
-	Trans.wx = mIn.xw; Trans.wy = mIn.yw; Trans.wz = mIn.zw; Trans.ww = mIn.ww;
+	Trans.xx = mIn.xx; Trans.xy = mIn.yx; Trans.xz = mIn.zx; Trans.xw = 0;
+	Trans.yx = mIn.xy; Trans.yy = mIn.yy; Trans.yz = mIn.zy; Trans.yw = 0;
+	Trans.zx = mIn.xz; Trans.zy = mIn.yz; Trans.zz = mIn.zz; Trans.zw = 0;
+	Trans.wx = 0;      Trans.wy = 0;      Trans.wz = 0;      Trans.ww = mIn.ww;
 	return Trans;
 }
 
@@ -325,9 +325,9 @@ float MaxOut3(float one, float two, float three) {
 }
 
 BarycentricCoord Barycentric(Position pointA, Position pointB, Position pointC, Position pointP) {
-	BarycentricCoord Three; //NDCtoScreen(Vertex NDC, float Width, float Height)
+	BarycentricCoord Three;
 
-	Three.Beta = ImplicitLineEquation(pointB, Points(pointA.x, pointA.y, pointC.x, pointC.y));
+	Three.Beta  = ImplicitLineEquation(pointB, Points(pointA.x, pointA.y, pointC.x, pointC.y));
 	Three.Gamma = ImplicitLineEquation(pointC, Points(pointB.x, pointB.y, pointA.x, pointA.y));
 	Three.Alpha = ImplicitLineEquation(pointA, Points(pointC.x, pointC.y, pointB.x, pointB.y));
 
@@ -391,8 +391,7 @@ void BetterBruteTriangle(Triangle _Tri, PColor Color, unsigned int* PixelArry = 
 
 				//Barycentric Interpolation: X = A * α + B * β + C * γ 
 				//get A, B, and C's z value and multiply it with alpha, beta, and gamma
-				BaryInterpo = (_Tri.A.cord.z * byA.Alpha) + (_Tri.B.cord.z * byA.Beta) + (_Tri.C.cord.z * byA.Gamma);
-
+				BaryInterpo = (byA.Alpha * _Tri.A.cord.z) + (_Tri.B.cord.z * byA.Beta) + (_Tri.C.cord.z * byA.Gamma);
 				//THEN - ​PlotPixel ( CurrX, CurrY )​
 				DrawPixel(Convert2Dto1D(CurrX, CurrY, PixelWidth), PixelShader(_Tri, byA), BaryInterpo, PixelArry, ArrySize, ZBuffer);
 			}
