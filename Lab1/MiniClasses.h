@@ -121,15 +121,15 @@ struct Vertex
 			cord.xyzw[i] = 0;
 		}
 	}
-	Vertex(float _x, float _y, float _z, float _w = 1.0f) {
+	Vertex(float _x, float _y, float _z, float _w = 1.0f, float _u = 0, float _v = 0) {
 		cord.x = _x; cord.y = _y; cord.z = _z; cord.w = _w;
+		u = _u; v = _v;
 	}
 
 	Vertex(Vertex _A, float _u, float _v) {
 		cord.x = _A.cord.x; cord.y = _A.cord.y; cord.z = _A.cord.z; cord.w = _A.cord.w;
 		u = _u; v = _v;
 	}
-
 };
 
 struct Matrix4x4
@@ -206,6 +206,11 @@ struct Triangle {
 		};
 	};
 
+	Triangle() {
+		A = Vertex(0,0,0);
+		B = Vertex(0,0,0);
+		C = Vertex(0,0,0);
+	}
 
 	Triangle(Vertex _A, Vertex _B, Vertex _C) {
 		A = _A; B = _B; C = _C;

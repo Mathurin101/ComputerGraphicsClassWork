@@ -5,6 +5,8 @@
 #include "teleporter_hit.h"
 #include "Shaders.h"
 
+
+
 #include <random> //random number class "std::rand()"
 #include <iostream>
 using namespace std;
@@ -149,10 +151,20 @@ PColor ColorWhite(0xFFFFFFFF);//white
 PColor LightBlue(0xFFADD8E6);
 
 Vertex RandomNUMs[3000];
+
+Vertex Indentices[844];
+PColor StoneTexture[StoneHenge_numpixels];
+Vertex StoneVertices[1457];
+Triangle StoneTri[2532];
+
+
 float SpitRandoNUM();
 void RandomStars();
 void DrawStars();
-void PutKeys();
+
+void PutKeys(Matrix4x4& view, XTime Timer);
+void PlacingStoneTri();
+void StoringStoneData();
 
 int main()
 {
@@ -170,9 +182,9 @@ int main()
 	Matrix4x4 GridWorld = IdentityMatrix();
 
 	Matrix4x4 CubeWorld = TranslationMatrix(0, 0.25f, 0);
-	Matrix4x4 view = MultiplyMatrixByMatrix(TranslationMatrix(0, 0, -1), RotateX(-18));
+	Matrix4x4 view = MultiplyMatrixByMatrix(TranslationMatrix(0, 1, -5), RotateX(-18));
 	Matrix4x4 Projection = PerspectiveProjection(90, (float)PixelHeight / PixelWidth, 0.1f, 10);
-	view = OrthonormalInverse(view);
+
 
 	PColor ColorLightBlue(0xFFADD8E6);
 
@@ -182,31 +194,22 @@ int main()
 
 	RandomStars();
 
-
-
+	//PlacingStoneTri();
+	StoringStoneData();
 
 	//will print on the screen
 	do {
 		//clears screen every loop
 		CCBuffer(0xFF000000, TotalPixels, MaxPixels, DepthBuffer);
 
+		PutKeys(view, Time);
 		DrawStars();
-     	PutKeys();
+		PlacingStoneTri();
+		
+		Time.Signal();
 
 		//VS_View = view;
 		//VS_Projection = Projection;
-		//
-		//VS_World = GridWorld;
-		//DrawGrid();
-
-		//Time.Signal();
-		//CubeWorld = MultiplyMatrixByMatrix(CubeWorld, RotateY(45.0f * Time.Delta()));
-		//
-		//VS_World = CubeWorld;
-		//DrawCube();
-
-
-
 
 	} while (RS_Update(TotalPixels, MaxPixels));
 
@@ -373,7 +376,7 @@ void DrawCube() {
 			Color = 0xFF123524; //Phthalo
 		}
 
-		BetterBruteTriangle(AllTriangles[i], TotalPixels, MaxPixels, DepthBuffer, Color);
+		BetterBruteTriangle(AllTriangles[i], Color, TotalPixels, MaxPixels, DepthBuffer);
 	}
 
 	//outline
@@ -505,7 +508,7 @@ void RandomStars() {
 		Ry = SpitRandoNUM() * 50;//
 		Rz = SpitRandoNUM() * 50;//
 
-		RandomNUMs[i] = Vertex(Rx, Ry, Rz, Rw);		
+		RandomNUMs[i] = Vertex(Rx, Ry, Rz, Rw);
 	}
 
 }
@@ -520,22 +523,78 @@ void DrawStars() {
 	}
 }
 
-void PutKeys() {
-	
+void PutKeys(Matrix4x4& view, XTime Timer) {
+
 	if (GetAsyncKeyState('W') && 0x800) {
-		VS_View = MultiplyMatrixByMatrix(VS_View, RotateY(20));
-		//Projection = PerspectiveProjection(90, (float)PixelHeight / PixelWidth, 0.1f, 10);
+		view = MultiplyMatrixByMatrix(view, RotateX(-20 * Timer.Delta()));
+
 	}
 	if (GetAsyncKeyState('S') && 0x800)
 	{
-		VS_View = MultiplyMatrixByMatrix(VS_View, RotateY(-20));
+		view = MultiplyMatrixByMatrix(view, RotateX(20 * Timer.Delta()));
 	}
 	if (GetAsyncKeyState('A') && 0x800)
 	{
-		VS_View = MultiplyMatrixByMatrix(VS_View, RotateX(-20));
+		view = MultiplyMatrixByMatrix(view, RotateY(-20 * Timer.Delta()));
 	}
 	if (GetAsyncKeyState('D') && 0x800)
 	{
-		VS_View = MultiplyMatrixByMatrix(VS_View, RotateX(20));
+		view = MultiplyMatrixByMatrix(view, RotateY(20 * Timer.Delta()));
 	}
+
+	VS_View = OrthonormalInverse(view);
+}
+
+void StoringStoneData() {
+	float StoneA;
+	float StoneB;
+	float StoneC;
+
+	//First start off with the vertex information by looping through the number of vertices.
+	for (int i = 0; i < 1457; i++)
+	{
+		//Store the positions and scale them by 0.1f. (The model is enormous, so we will scale the model down)
+		StoneA = StoneHenge_data[i].pos[0] * 0.1f;
+		StoneB = StoneHenge_data[i].pos[1] * 0.1f;
+		StoneC = StoneHenge_data[i].pos[2] * 0.1f;
+
+		//You can hard code the w component of the position vector to 1.0f.
+		StoneVertices[i] = Vertex(StoneA, StoneB, StoneC, 1.0f, StoneHenge_data[i].uvw[0], StoneHenge_data[i].uvw[1]);
+	}
+}
+
+void PlacingStoneTri() {
+	Triangle TriStone;
+
+	//First start off with the vertex information by looping through the number of vertices.
+	//Store the positions and scale them by 0.1f. (The model is enormous, so we will scale the model down)
+	//StoringStoneData();
+
+	//Store the texture coordinates and normal as well (DO NOT SCALE THE NORMALS AND TEXTURECOORDINATES)
+	//You can hard code the w component of the position vector to 1.0f.
+
+	//Once all of this data is properly stored, we will continue on and render this model. 
+	// Loop through the number of indicies and draw a triangle at a time.
+
+
+	//Ensure you are using the index buffer to get the correct triangle information.
+
+	//You will be indexing into the vertex buffer using the index buffer. 
+	// Your loop will increment by 3 indicies at a time.
+
+	for (int i = 0; i < 2532; i +=3)
+	{
+		TriStone.A = StoneVertices[StoneHenge_indicies[i]];
+		VS_WVP(TriStone.A);
+
+		TriStone.B = StoneVertices[StoneHenge_indicies[i + 1]];
+		VS_WVP(TriStone.B);
+
+		TriStone.C = StoneVertices[StoneHenge_indicies[i + 2]];
+		VS_WVP(TriStone.C);
+
+		BetterBruteTriangle(TriStone, LightBlue);
+
+	}
+
 }

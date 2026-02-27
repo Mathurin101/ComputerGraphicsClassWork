@@ -1,6 +1,8 @@
 #pragma once
 #include "MiniClasses.h"
 #include "flower.h"
+#include "StoneHenge.h"
+#include "StoneHenge_Texture.h"
 #include <iostream>
 
 
@@ -53,7 +55,7 @@ Matrix4x4 MultiplyMatrixByMatrix(const Matrix4x4 &matrix1, const Matrix4x4& matr
 
 Vertex MultiplyMatrixByVertex(Matrix4x4& matrix4, Vertex& vertex4) {
 	
-	Vertex NewVertex;
+	Vertex NewVertex = vertex4;
 
 	//xx 	yx 	zx	wx  x = (xx * x) + (yx * y) + (zx * z) + (wx * w)
 	//xy 	yy 	zy	wy  y = (xy * x) + (yy * y) + (zy * z) + (wy * w)
@@ -127,4 +129,29 @@ PColor VS_PixelShadder(Triangle& Tri, const BarycentricCoord& Bary) {
 	_Color = BGRA2ARGB(_Color.color);
 
 	return _Color;// _Color;
+}
+
+PColor VS_PixelShadderH(Triangle& Tri, const BarycentricCoord& Bary) {
+	float u;
+	float v;
+	int Position;
+	PColor _Color;
+
+	u = (Tri.A.u * Bary.Alpha) + (Tri.B.u * Bary.Beta) + (Tri.C.u * Bary.Gamma);
+	v = (Tri.A.v * Bary.Alpha) + (Tri.B.v * Bary.Beta) + (Tri.C.v * Bary.Gamma);
+
+	u *= StoneHenge_width;
+	v *= StoneHenge_height;
+
+	Position = Convert2DTWO1D(u, v, StoneHenge_width);
+
+	_Color.color = StoneHenge_pixels[Position];
+
+	_Color = BGRA2ARGB(_Color.color);
+
+	return _Color;// _Color;
+}
+
+PColor SoildColor(Triangle& Tri, const BarycentricCoord& Bary) {
+	return 0xFFFFFFFF;
 }

@@ -370,9 +370,9 @@ void BruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, float* 
 	}
 }
 
-void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, float* ZBuffer, PColor Color) {
+void BetterBruteTriangle(Triangle _Tri, PColor Color, unsigned int* PixelArry = TotalPixels, int ArrySize = MaxPixels, float* ZBuffer = DepthBuffer) {
 	BarycentricCoord byA;
-	PixelShader = VS_PixelShadder;
+	PixelShader = VS_PixelShadderH; //PixelShader = VS_PixelShadder;
 	float StartX = MinOut3(NDCtoScreen(_Tri.A).x, NDCtoScreen(_Tri.B).x, NDCtoScreen(_Tri.C).x);
 	float StartY = MinOut3(NDCtoScreen(_Tri.A).y, NDCtoScreen(_Tri.B).y, NDCtoScreen(_Tri.C).y);
 	float EndX = MaxOut3(NDCtoScreen(_Tri.A).x, NDCtoScreen(_Tri.B).x, NDCtoScreen(_Tri.C).x);
@@ -384,7 +384,7 @@ void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, f
 		for (int CurrX = StartX; CurrX < EndX; CurrX++) {
 
 			//byA = FindBarycentric (CurrX, CurrY )​
-			byA = Barycentric(NDCtoScreen(_Tri.A), NDCtoScreen(_Tri.B), NDCtoScreen(_Tri.C), Position(CurrX, CurrY)); //FindBarycentric(_Tri, Position(CurrX, CurrY))​;
+			byA = Barycentric(NDCtoScreen(_Tri.A), NDCtoScreen(_Tri.B), NDCtoScreen(_Tri.C), Position(CurrX, CurrY));
 
 			//IF b >=0 && b <= 1 && ​y >= 0 && y <= 1 &&​ a >= 0 && a <= 1​
 			if ((byA.Beta >= 0 && byA.Beta <= 1) && (byA.Gamma >= 0 && byA.Gamma <= 1) && (byA.Alpha >= 0 && 1 >= byA.Alpha)) {
@@ -396,7 +396,6 @@ void BetterBruteTriangle(Triangle _Tri, unsigned int* PixelArry, int ArrySize, f
 				//THEN - ​PlotPixel ( CurrX, CurrY )​
 				DrawPixel(Convert2Dto1D(CurrX, CurrY, PixelWidth), PixelShader(_Tri, byA), BaryInterpo, PixelArry, ArrySize, ZBuffer);
 			}
-
 		}
 	}
 }
