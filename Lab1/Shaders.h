@@ -10,6 +10,10 @@
 void (*VertexShader) (Vertex&) = 0;
 PColor(*PixelShader) (Triangle&, const BarycentricCoord&) = 0;
 
+//shadder
+Vertex ColorShade(-0.577, -0.577, 0.577);
+PColor ShadeAm(0xFFC0C0F0);
+
 Matrix4x4 VS_World;
 
 Matrix4x4 VS_View;
@@ -148,6 +152,7 @@ PColor VS_PixelShadderH(Triangle& Tri, const BarycentricCoord& Bary) {
 	_Color.color = StoneHenge_pixels[Position];
 
 	_Color = BGRA2ARGB(_Color.color);
+	_Color = Combine_colors(_Color, ShadeAm);
 
 	return _Color;// _Color;
 }

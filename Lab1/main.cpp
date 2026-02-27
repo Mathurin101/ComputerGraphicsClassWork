@@ -166,6 +166,9 @@ void PutKeys(Matrix4x4& view, XTime Timer, Matrix4x4& world);
 void PlacingStoneTri();
 void StoringStoneData();
 
+
+
+
 int main()
 {
 	XTime Time;
