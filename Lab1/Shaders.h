@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "MiniClasses.h"
 #include "flower.h"
 #include "StoneHenge.h"
@@ -13,6 +13,7 @@ PColor(*PixelShader) (Triangle&, const BarycentricCoord&) = 0;
 //shadder
 Vertex ColorShade(-0.577, -0.577, 0.577);
 PColor ShadeAm(0xFFC0C0F0);
+Vertex PointLight(-1, 0.5, 1);
 
 Matrix4x4 VS_World;
 
@@ -135,11 +136,31 @@ PColor VS_PixelShadder(Triangle& Tri, const BarycentricCoord& Bary) {
 	return _Color;// _Color;
 }
 
+PColor Modulate_ColorS(PColor color1, PColor color2) {
+	PColor ModulateColor;
+
+	//Alpha
+	ModulateColor.A = ((color1.A * color2.A) / 255);
+
+	//red
+	ModulateColor.R = ((color1.R * color2.R) / 255);
+
+	//green
+	ModulateColor.G = ((color1.G * color2.G) / 255);
+
+	//blue
+	ModulateColor.B = ((color1.B * color2.B) / 255);
+
+	return ModulateColor;
+}
+
 PColor VS_PixelShadderH(Triangle& Tri, const BarycentricCoord& Bary) {
 	float u;
 	float v;
 	int Position;
 	PColor _Color;
+	float LIGHTRATIO;
+	float Result;
 
 	u = (Tri.A.u * Bary.Alpha) + (Tri.B.u * Bary.Beta) + (Tri.C.u * Bary.Gamma);
 	v = (Tri.A.v * Bary.Alpha) + (Tri.B.v * Bary.Beta) + (Tri.C.v * Bary.Gamma);
@@ -152,7 +173,14 @@ PColor VS_PixelShadderH(Triangle& Tri, const BarycentricCoord& Bary) {
 	_Color.color = StoneHenge_pixels[Position];
 
 	_Color = BGRA2ARGB(_Color.color);
-	_Color = Combine_colors(_Color, ShadeAm);
+
+	//LIGHTRATIO = CLAMP( DOT(-LIGHTDIR, SURFACENORMAL ) )​
+	LIGHTRATIO = DotProduct(ColorShade.cord, PointLight.cord);
+
+	Saturate(LIGHTRATIO);
+
+	//RESULT = LIGHTRATIO * LIGHTCOLOR * SURFACECOLOR
+	Result = PColor(Modulate_ColorS(LIGHTRATIO ,Modulate_ColorS(ShadeAm, PColor(0xFFFFFF00))));
 
 	return _Color;// _Color;
 }
